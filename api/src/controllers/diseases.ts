@@ -33,6 +33,7 @@ export const identifyDiseaseController = async (
       res.status(200).json({ data: response.data });
     })
     .catch((error) => {
+      console.log("=========== ERROR: ===========");
       console.error(error);
       res.json(error);
     });
