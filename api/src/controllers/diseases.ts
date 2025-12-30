@@ -1,5 +1,7 @@
 import axios from "axios";
 import type { Request, Response } from "express";
+import fs from "node:fs";
+import { loadImage, model } from "../utils/tfjs";
 
 export const identifyDiseaseController = async (
   req: Request,
@@ -43,4 +45,14 @@ export const identifyDiseaseController = async (
       console.log(error);
       res.json(error);
     });
+};
+
+export const predictDiseaseController = async (req: Request, res: Response) => {
+  if (!req.file) return res.status(400).json({ error: "No image uploaded" });
+
+  const image = loadImage(req.file.path);
+  const predictions = await model.classify(image as any);
+  fs.unlinkSync(req.file.path);
+
+  res.json({ predictions });
 };
