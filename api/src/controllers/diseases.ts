@@ -29,7 +29,7 @@ export const identifyDiseaseController = async (
       },
     )
     .then((response) => {
-      console.log(JSON.stringify(response.data));
+      console.log(JSON.stringify(response.data.data));
       res.status(200).json({ data: response.data });
     })
     .catch((error) => {

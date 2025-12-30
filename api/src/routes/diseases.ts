@@ -9,7 +9,7 @@ Router.post("/identify", upload.single("img"), identifyDiseaseController);
 
 Router.post("/identify-debug", multer().any(), (req, res) => {
   console.log("Files:", req.files);
-  console.log("Body:", req.body);
+  console.log("Body:", JSON.stringify(req.body, null, 2));
   res.send("Check console for field names");
 });
 
