@@ -14,12 +14,11 @@ export const identifyDiseaseController = async (
   const form = new FormData();
 
   // ✅ Attach the actual file
-  form.append("images", req.file.path);
-
-  // ✅ Other fields
   form.append("similar_images", "true");
-
+  form.append("images", req.file.path);
+  form.append("similar_images", "true");
   form.append("details", "severity,treatment");
+  form.append("similar_images", "true");
 
   await axios
     .post(
