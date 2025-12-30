@@ -12,7 +12,7 @@ export const identifyDiseaseController = async (
   const form = new FormData();
 
   // ✅ Attach the actual file
-  form.append("images", fs.createReadStream(req.file.path));
+  form.append("images", req.body.img);
 
   // ✅ Other fields
   form.append("similar_images", "true");
