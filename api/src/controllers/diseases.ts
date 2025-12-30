@@ -1,14 +1,11 @@
 import axios from "axios";
 import type { Request, Response } from "express";
 import FormData from "form-data";
-import fs from "node:fs";
 
 export const identifyDiseaseController = async (
   req: Request,
   res: Response,
 ) => {
-  if (!req.file) return res.status(400).json({ message: "No file uploaded." });
-
   const form = new FormData();
 
   // ✅ Attach the actual file
