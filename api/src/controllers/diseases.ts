@@ -1,5 +1,7 @@
 import axios from "axios";
 import type { Request, Response } from "express";
+import FormData from "form-data";
+import fs from "node:fs";
 
 export const identifyDiseaseController = async (
   req: Request,
@@ -10,7 +12,7 @@ export const identifyDiseaseController = async (
   const form = new FormData();
 
   // ✅ Attach the actual file
-  form.append("images", req.file?.path || "");
+  form.append("images", fs.createReadStream(req.file.path));
 
   // ✅ Other fields
   form.append("similar_images", "true");
