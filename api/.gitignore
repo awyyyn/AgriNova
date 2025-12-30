@@ -1,3 +1,4 @@
 src/uploads
 .env*
 !.env.sample
+dist/
