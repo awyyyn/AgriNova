@@ -1,22 +1,29 @@
 import axios from "axios";
 import type { Request, Response } from "express";
-import FormData from "form-data";
 
 export const identifyDiseaseController = async (
   req: Request,
   res: Response,
 ) => {
+  if (!req.file) {
+    console.log("No file uploaded");
+    res.status(400).json({ error: "No file uploaded" });
+    return;
+  }
+
   const form = new FormData();
 
   // ✅ Attach the actual file
-  form.append("images", req.body.img);
+  form.append("images", req.file.path);
 
   // ✅ Other fields
   form.append("similar_images", "true");
 
+  form.append("details", "severity,treatment");
+
   await axios
     .post(
-      `https://my-api.plantnet.org/v2/diseases/identify?api-key=${process.env.PLANTNET_API_KEY}`,
+      `https://my-api.plantnet.org/v2/diseases/identify?include-related-images=true&api-key=${process.env.PLANTNET_API_KEY}`,
       form,
       {
         headers: {
@@ -28,12 +35,13 @@ export const identifyDiseaseController = async (
       },
     )
     .then((response) => {
-      console.log(JSON.stringify(response.data.data));
+      console.log("============ RESPONSE ============");
+      console.log(JSON.stringify(response.data));
       res.status(200).json({ data: response.data });
     })
     .catch((error) => {
-      console.log("=========== ERROR: ===========");
-      console.error(error);
+      console.log("============ ERROR ============");
+      console.log(error);
       res.json(error);
     });
 };
