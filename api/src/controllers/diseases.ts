@@ -5,6 +5,8 @@ export const identifyDiseaseController = async (
   req: Request,
   res: Response,
 ) => {
+  if (!req.file) return res.status(400).json({ message: "No file uploaded." });
+
   const form = new FormData();
 
   // ✅ Attach the actual file
