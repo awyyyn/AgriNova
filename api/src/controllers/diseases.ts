@@ -1,7 +1,8 @@
 import axios from "axios";
 import type { Request, Response } from "express";
-import fs from "node:fs";
-import { loadImage, model } from "../utils/tfjs";
+import * as tf from "@tensorflow/tfjs-node";
+import { loadImage, model, predict, preprocessImage } from "../utils/tfjs";
+import { CLASS_LABELS } from "../constants";
 
 export const identifyDiseaseController = async (
   req: Request,
@@ -48,11 +49,20 @@ export const identifyDiseaseController = async (
 };
 
 export const predictDiseaseController = async (req: Request, res: Response) => {
-  if (!req.file) return res.status(400).json({ error: "No image uploaded" });
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: "No image uploaded" });
+    }
 
-  const image = loadImage(req.file.path);
-  const predictions = await model.classify(image as any);
-  fs.unlinkSync(req.file.path);
+    const { confidence, index } = await predict(req.file.path);
 
-  res.json({ predictions });
+    res.json({
+      confidence,
+      label: CLASS_LABELS[index],
+      index: index,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Prediction failed" });
+  }
 };
