@@ -4,8 +4,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "build": "tsc && npm run copy-model",
+    "build": "npm run postinstall && tsc && npm run copy-model",
     "copy-model": "cpx \"./src/models/**/*\" dist/models",
+    "postinstall": "npm rebuild @tensorflow/tfjs-node --build-from-source",
     "start": "node dist/server.js"
   },
   "keywords": [],
