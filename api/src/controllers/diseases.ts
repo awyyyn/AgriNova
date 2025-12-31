@@ -54,13 +54,9 @@ export const predictDiseaseController = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "No image uploaded" });
     }
 
-    const { confidence, index } = await predict(req.file.path);
+    const data = await predict(req.file.path);
 
-    res.json({
-      confidence,
-      label: CLASS_LABELS[index],
-      index: index,
-    });
+    res.json(data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Prediction failed" });

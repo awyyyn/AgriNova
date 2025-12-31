@@ -2,6 +2,8 @@ import * as tf from "@tensorflow/tfjs-node";
 import fs from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
+import { DISEASE_INFO, DiseaseInfo } from "../data/diseaseInfo";
+import { CLASS_LABELS } from "../constants";
 
 // let model: mobilenet.Se;
 
@@ -30,6 +32,8 @@ export async function preprocessImage(imagePath: string) {
 export async function predict(file: string): Promise<{
   index: number;
   confidence: number;
+  diseaseInfo: DiseaseInfo | null;
+  className: string;
 }> {
   const input = await preprocessImage(file);
   const output = model.predict(input) as tf.Tensor;
@@ -41,8 +45,10 @@ export async function predict(file: string): Promise<{
 
   const confidence = Math.max(...predictions);
   const index = predictions.indexOf(confidence);
+  const className = CLASS_LABELS[index];
+  const diseaseInfo = DISEASE_INFO[className] ?? null;
 
-  return { index, confidence };
+  return { index, confidence, diseaseInfo, className };
 }
 
 export function loadImage(path: string) {
