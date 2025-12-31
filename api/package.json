@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon src/server.ts",
-    "build": "tsc",
+    "build": "tsc && npm run copy-model",
+    "copy-model": "cpx \"./src/models/**/*\" dist/models",
     "start": "node dist/server.js"
   },
   "keywords": [],
@@ -23,6 +24,7 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "cpx": "^1.5.0",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/multer": "^2.0.0",
