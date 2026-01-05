@@ -1,26 +1,27 @@
 {
 	"compilerOptions": {
-		"target": "ES2020", // Use modern JS features
-		"module": "nodenext", // Node.js module system
-		"rootDir": "src", // Your source folder
-		"outDir": "dist", // Compiled JS output folder
-		"strict": true, // Enable all strict checks
+		"target": "ES2020", // Modern JavaScript
+		"module": "nodenext", // Node.js ESM support
+		"moduleResolution": "nodenext", // Correct resolution for ESM
+		"rootDir": "src", // Source folder
+		"outDir": "dist", // Compiled JS output
+		"strict": true, // Enable all strict type checks
 		"esModuleInterop": true, // Allow default imports from CommonJS
-		"forceConsistentCasingInFileNames": true, // Prevent case mismatches
-		"skipLibCheck": true, // Skip type checks for dependencies
-		"moduleResolution": "nodenext", // Resolve modules like Node.js
-		"resolveJsonModule": true, // Allow importing JSON files
+		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true, // Allow importing JSON
 		"allowJs": true, // Allow JS files if needed
-		"noImplicitAny": true, // Prevent implicit any types
-		"strictNullChecks": true, // Ensure null/undefined safety
+		"noImplicitAny": true,
+		"strictNullChecks": true,
 		"strictFunctionTypes": true,
 		"strictBindCallApply": true,
-		"lib": ["ES2020", "ESNext"], // Include all JS built-ins
-		"types": ["node"], // Include Node.js types
+		"lib": ["ES2020", "ESNext"], // Include modern JS built-ins
+		"types": ["node"], // Node.js types
 		"paths": {
+			// Optional: aliasing
 			"@src/*": ["./src/*"]
 		}
 	},
-	"include": ["src"], // Include all source files
-	"exclude": ["node_modules", "dist"]
+	"include": ["src"], // Include source files
+	"exclude": ["node_modules", "dist"] // Exclude compiled files
 }
