@@ -33,6 +33,11 @@ export const loginController = async (req: Request, res: Response) => {
 			id: user.id,
 			role: user.role,
 		});
+		const refreshToken = generateAccessToken({
+			email: user.email,
+			id: user.id,
+			role: user.role,
+		});
 
 		// eslint-disable-next-line
 		const { password: _, ...data } = user;
@@ -41,9 +46,75 @@ export const loginController = async (req: Request, res: Response) => {
 			error: false,
 			data: {
 				accessToken,
+				refreshToken,
 				user: data,
 			},
 			message: "Success!",
+		});
+	} catch (error) {
+		console.error(`Error in loginController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const registerController = async (req: Request, res: Response) => {
+	try {
+		const { email, password, firstName, lastName } = req.body;
+
+		const existingUser = await prisma.user.findUnique({
+			where: { email: email.trim() },
+		});
+
+		if (existingUser) {
+			res
+				.status(400)
+				.json({ error: true, errorMessage: "User already exists!" });
+			return;
+		}
+
+		const newUser = await prisma.user.create({
+			data: {
+				email: email.trim(),
+				password,
+				firstName,
+				role: "USER",
+				lastName,
+			},
+		});
+
+		if (!newUser) {
+			res
+				.status(500)
+				.json({ error: true, errorMessage: "Failed to create user!" });
+			return;
+		}
+
+		// eslint-disable-next-line
+		const { password: _, ...data } = newUser;
+
+		const accessToken = generateAccessToken({
+			email: newUser.email,
+			id: newUser.id,
+			role: newUser.role,
+		});
+
+		const refreshToken = generateAccessToken({
+			email: newUser.email,
+			id: newUser.id,
+			role: newUser.role,
+		});
+
+		res.status(201).json({
+			error: false,
+			data: {
+				accessToken,
+				user: data,
+				refreshToken,
+			},
+			message: "User registered successfully!",
 		});
 	} catch (error) {
 		console.error(`Error in loginController:`);
