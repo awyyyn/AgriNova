@@ -1,6 +1,9 @@
 import { prisma } from "@src/configs/prisma.js";
 import { checkPassword } from "@src/utils/bcrypt.js";
-import { generateAccessToken } from "@src/utils/jsonwebtoken.js";
+import {
+	generateAccessToken,
+	verifyResetPasswordToken,
+} from "@src/utils/jsonwebtoken.js";
 import { Request, Response } from "express";
 
 export const loginController = async (req: Request, res: Response) => {
@@ -155,6 +158,46 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error(`Error in forgotPasswordController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const resetPasswordController = async (req: Request, res: Response) => {
+	try {
+		const { token, password, email } = req.body;
+
+		const decoded = verifyResetPasswordToken(token);
+
+		if (!decoded) {
+			res.status(400).json({
+				error: true,
+				message: "Invalid or expired token!",
+			});
+			return;
+		}
+
+		if (decoded.email !== email) {
+			res.status(400).json({
+				error: true,
+				message: "Invalid or expired token!",
+			});
+			return;
+		}
+
+		await prisma.user.update({
+			where: { email: email.trim() },
+			data: { password },
+		});
+
+		res.status(200).json({
+			error: false,
+			message: "Password has been reset successfully!",
+		});
+	} catch (error) {
+		console.error(`Error in resetPasswordController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
