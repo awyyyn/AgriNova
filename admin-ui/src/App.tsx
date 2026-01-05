@@ -1,5 +1,6 @@
 import { BrowserRouter } from "react-router";
 import Routes from "./routes";
+import { Toaster } from "sonner";
 
 export default function App() {
 	return (
@@ -7,6 +8,7 @@ export default function App() {
 			<BrowserRouter>
 				<Routes />
 			</BrowserRouter>
+			<Toaster />
 		</>
 	);
 }
