@@ -3,8 +3,6 @@ import type { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import Router from "./routes/index.js";
-import { AppError } from "./utils/appError.js";
-import { globalErrorHandler } from "./middlewares/errorHandler.js";
 
 const app = express();
 

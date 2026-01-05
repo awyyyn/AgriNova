@@ -2,6 +2,7 @@ import { prisma } from "@src/configs/prisma.js";
 import { checkPassword } from "@src/utils/bcrypt.js";
 import {
 	generateAccessToken,
+	generateRefreshToken,
 	verifyResetPasswordToken,
 } from "@src/utils/jsonwebtoken.js";
 import { Request, Response } from "express";
@@ -104,7 +105,7 @@ export const registerController = async (req: Request, res: Response) => {
 			role: newUser.role,
 		});
 
-		const refreshToken = generateAccessToken({
+		const refreshToken = generateRefreshToken({
 			email: newUser.email,
 			id: newUser.id,
 			role: newUser.role,
