@@ -2,3 +2,5 @@ src/uploads
 .env*
 !.env.sample
 dist/
+
+/src/generated/prisma
