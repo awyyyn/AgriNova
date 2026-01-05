@@ -32,3 +32,12 @@ enum Role {
   ADMIN
   SUPER_ADMIN
 }
+
+model Token {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  token     String   @unique
+  email     String
+  createdAt DateTime @default(now())
+
+  @@map("tokens")
+}
