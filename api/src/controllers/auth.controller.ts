@@ -52,7 +52,7 @@ export const loginController = async (req: Request, res: Response) => {
 			message: "Success!",
 		});
 	} catch (error) {
-		console.error(`Error in loginController:`);
+		console.error(`Error in registerController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
@@ -118,6 +118,43 @@ export const registerController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error(`Error in loginController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const forgotPasswordController = async (req: Request, res: Response) => {
+	try {
+		const { email } = req.body;
+
+		if (!email) {
+			res.status(400).json({
+				error: true,
+				message: "Email is required!",
+			});
+			return;
+		}
+
+		const alreadySentToken = await prisma.token.findFirst({
+			where: { email: email.trim() },
+		});
+
+		if (alreadySentToken) {
+			res.status(400).json({
+				error: true,
+				message: "A password reset token has already been sent to this email!",
+			});
+			return;
+		}
+
+		res.status(200).json({
+			error: false,
+			message: "Please check your email for password reset instructions!",
+		});
+	} catch (error) {
+		console.error(`Error in forgotPasswordController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
