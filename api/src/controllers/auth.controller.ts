@@ -1,8 +1,11 @@
 import { prisma } from "@src/configs/prisma.js";
+import { resend } from "@src/configs/resend.js";
 import { checkPassword } from "@src/utils/bcrypt.js";
+import { forgotPasswordEmail } from "@src/utils/emails.js";
 import {
 	generateAccessToken,
 	generateRefreshToken,
+	generateResetPasswordToken,
 	verifyResetPasswordToken,
 } from "@src/utils/jsonwebtoken.js";
 import { Request, Response } from "express";
@@ -153,9 +156,47 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 			return;
 		}
 
+		const user = await prisma.user.findFirst({
+			where: { email: email.trim() },
+		});
+
+		if (user) {
+			const resetToken = generateResetPasswordToken({
+				email: user.email.trim(),
+				id: user.id,
+				role: user.role,
+			});
+
+			const link = `${
+				process.env.FRONTEND_URL
+			}/auth/reset-password?token=${resetToken}&email=${user.email.trim()}`;
+
+			const response = await resend.emails.send({
+				to: user.email,
+				subject: "Password Reset Instructions",
+				from: process.env.EMAIL!,
+				html: forgotPasswordEmail(link, user.firstName),
+			});
+
+			if (response.error) {
+				res.status(400).json({
+					error: true,
+					message: "Failed to send password reset email!",
+				});
+				return;
+			}
+
+			await prisma.token.create({
+				data: {
+					email: user.email,
+					token: resetToken,
+				},
+			});
+		}
+
 		res.status(200).json({
 			error: false,
-			message: "Please check your email for password reset instructions!",
+			message: `If the email address ${email} is associated with an account, you’ll receive a password reset link shortly.`,
 		});
 	} catch (error) {
 		console.error(`Error in forgotPasswordController:`);
