@@ -34,6 +34,10 @@ export default function Routes() {
 					index: true,
 					element: <Navigate to="/admin/dashboard" replace />,
 				},
+				{
+					path: "dashboard",
+					element: <div>Admin Dashboard</div>,
+				},
 			],
 		},
 	];
