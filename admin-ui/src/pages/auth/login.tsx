@@ -15,9 +15,11 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function LoginPage() {
 	const [showPassword, setShowPassword] = useState(false);
+	const { login } = useAuth();
 	const form = useForm<LoginForm>({
 		resolver: zodResolver(loginForm),
 		defaultValues: {
@@ -51,7 +53,7 @@ export default function LoginPage() {
 				description: "Welcome back!",
 				richColors: true,
 			});
-			// Handle successful login (e.g., redirect, store token, etc.)
+			login(data.data.accessToken, data.data.user);
 		} catch (error) {
 			toast.error("Login failed. Please try again.", {
 				description:

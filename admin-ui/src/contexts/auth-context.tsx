@@ -15,7 +15,7 @@ interface AuthContextProps {
 	role: Role | null;
 	user: User | null;
 	loading: boolean;
-	login: (token: string, isAuthenticated?: boolean) => void;
+	login: (token: string, user: User | null, isAuthenticated?: boolean) => void;
 	logout: () => void;
 	setUser: Dispatch<SetStateAction<User | null>>;
 	isAuthenticated: boolean;
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 			try {
 				const response = await fetch(
-					`${import.meta.env.VITE_API_URL}/auth/me`,
+					`${import.meta.env.VITE_API_URL}/auth/verify-token`,
 					{
 						headers: {
 							Authorization: `Bearer ${token}`,
@@ -93,7 +93,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		})();
 	}, []);
 
-	const login = (token: string, isAuthenticated = true) => {
+	const login = (
+		token: string,
+		user: User | null = null,
+		isAuthenticated = true
+	) => {
 		localStorage.setItem("accessToken", token);
 
 		const decoded = jwtDecode<
@@ -102,8 +106,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
 		if (decoded.exp * 1000 > Date.now()) {
 			setRole(decoded.role as Role);
-			// createHttpLink(token);
 			setIsAuthenticated(isAuthenticated);
+			setUser(user);
 		} else {
 			localStorage.removeItem("accessToken");
 			setRole(null);
