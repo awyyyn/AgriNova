@@ -4,7 +4,7 @@
 	"main": "index.js",
 	"type": "module",
 	"scripts": {
-		"dev": "tsx watch src/server.ts",
+		"dev": "tsx watch --env-file .env src/server.ts",
 		"build": "tsc",
 		"copy-model": "cpx \"./src/models/**/*\" dist/models",
 		"start": "node dist/server.js"
@@ -23,6 +23,7 @@
 		"form-data": "^4.0.5",
 		"jsonwebtoken": "^9.0.3",
 		"multer": "^2.0.2",
+		"resend": "^6.6.0",
 		"sharp": "^0.34.5",
 		"tsconfig-paths": "^4.2.0"
 	},
