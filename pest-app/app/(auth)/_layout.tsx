@@ -26,7 +26,7 @@ export default function AuthLayout() {
 			source={require("../../assets/images/bg.png")}
 			contentFit="cover"
 			contentPosition="center"
-			imageStyle={{ opacity: 1 }}
+			imageStyle={{ opacity: 0.8 }}
 			style={{ flex: 1 }}>
 			<Slot />
 		</ImageBackground>
