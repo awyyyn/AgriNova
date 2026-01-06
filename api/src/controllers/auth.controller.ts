@@ -7,6 +7,7 @@ import {
 	generateRefreshToken,
 	generateResetPasswordToken,
 	verifyResetPasswordToken,
+	verifyToken,
 } from "@src/utils/jsonwebtoken.js";
 import { Request, Response } from "express";
 
@@ -236,6 +237,62 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 
 		res.status(200).json({
 			error: false,
+			message: "Password has been reset successfully!",
+		});
+	} catch (error) {
+		console.error(`Error in resetPasswordController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const verifyTokenController = async (req: Request, res: Response) => {
+	try {
+		const token = req.headers.authorization?.split(" ")[1] || "";
+
+		const decoded = verifyToken(token);
+
+		if (!decoded) {
+			res.status(400).json({
+				error: true,
+				message: "Invalid or expired token!",
+			});
+			return;
+		}
+
+		const user = await prisma.user.findFirst({ where: { id: decoded.id } });
+
+		if (!user) {
+			res.status(400).json({
+				error: true,
+				message: "Session invalidated.",
+			});
+			return;
+		}
+
+		const accessToken = generateAccessToken({
+			email: user.email,
+			id: user.id,
+			role: user.role,
+		});
+
+		const refreshToken = generateRefreshToken({
+			email: user.email,
+			id: user.id,
+			role: user.role,
+		});
+
+		const { password: _, ...data } = user;
+
+		res.status(200).json({
+			error: false,
+			data: {
+				accessToken,
+				refreshToken,
+				user: data,
+			},
 			message: "Password has been reset successfully!",
 		});
 	} catch (error) {
