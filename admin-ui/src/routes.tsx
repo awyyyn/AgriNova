@@ -3,6 +3,8 @@ import AuthLayout from "./layouts/auth-layout";
 import Login from "./pages/auth/login";
 import Home from "./pages/home";
 import AdminLayout from "./layouts/admin-layout";
+import ForgotPasswordPage from "./pages/auth/forgot-password";
+import ResetPasswordForm from "./pages/auth/reset-password";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [{ path: "/", element: <Home /> }];
@@ -17,6 +19,8 @@ export default function Routes() {
 					element: <Navigate to="/auth/login" replace />,
 				},
 				{ path: "login", element: <Login /> },
+				{ path: "forgot-password", element: <ForgotPasswordPage /> },
+				{ path: "reset-password", element: <ResetPasswordForm /> },
 			],
 		},
 	];

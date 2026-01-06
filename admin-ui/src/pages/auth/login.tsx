@@ -207,7 +207,7 @@ export default function LoginPage() {
 								</span>
 							</label>
 							<Link
-								to={form.formState.isSubmitting ? "#" : "/forgot-password"}
+								to={form.formState.isSubmitting ? "#" : "/auth/forgot-password"}
 								className="text-sm text-primary hover:text-primary/80 transition">
 								Forgot password?
 							</Link>

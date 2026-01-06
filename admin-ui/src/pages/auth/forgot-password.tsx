@@ -7,14 +7,53 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "react-router";
+import { toast } from "sonner";
 
 export default function ForgotPasswordPage() {
 	const [email, setEmail] = useState("");
 	const [submitted, setSubmitted] = useState(false);
+	const [loading, setLoading] = useState(false);
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		setSubmitted(true);
+		try {
+			setLoading(true);
+			const response = await fetch(
+				`${import.meta.env.VITE_API_URL}/auth/forgot-password`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email }),
+				}
+			);
+			const data = await response.json();
+
+			console.log("Forgot Password Response:", data);
+
+			if (response.status !== 200 || data.error) {
+				throw new Error(data.message);
+			}
+
+			setSubmitted(true);
+			toast.success("Reset link sent!", {
+				description: data.message,
+				richColors: true,
+			});
+		} catch (error) {
+			console.error("Error submitting forgot password request:", error);
+			toast.error(
+				(error as Error)?.message ||
+					"Failed to send reset link. Please try again later.",
+				{
+					richColors: true,
+					description: "An unexpected error occurred.",
+				}
+			);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -77,7 +116,7 @@ export default function ForgotPasswordPage() {
 				{/* Header */}
 				<div className="mb-8">
 					<Link
-						to="/login"
+						to="/auth/login"
 						className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition mb-6">
 						<ArrowLeft size={18} />
 						<span className="text-sm font-medium">Back to Login</span>
@@ -105,6 +144,7 @@ export default function ForgotPasswordPage() {
 								Email Address
 							</label>
 							<Input
+								readOnly={loading}
 								id="email"
 								type="email"
 								placeholder="you@example.com"
@@ -116,9 +156,10 @@ export default function ForgotPasswordPage() {
 						</div>
 
 						<Button
+							disabled={loading}
 							type="submit"
 							className="w-full bg-primary hover:bg-primary/90 text-primary-foreground rounded-full py-2 font-semibold">
-							Send Reset Link
+							{loading ? "Sending..." : "Send Reset Link"}
 						</Button>
 					</form>
 				) : (
@@ -144,12 +185,12 @@ export default function ForgotPasswordPage() {
 							We've sent a password reset link to {email}. Click the link in the
 							email to reset your password.
 						</p>
-						<Button
+						{/* <Button
 							onClick={() => setSubmitted(false)}
 							variant="outline"
 							className="w-full rounded-full">
 							Didn't receive it? Try again
-						</Button>
+						</Button> */}
 					</div>
 				)}
 			</div>
