@@ -1,20 +1,29 @@
-import { z } from "zod";
+import * as Yup from "yup";
 
-export const loginForm = z.object({
-	email: z
-		.email({ message: "Invalid email address" })
-		.min(1, { message: "Email is required" }),
-	password: z
-		.string()
-		.min(6, { message: "Password must be at least 6 characters" }),
+/* =========================
+   Login Form
+========================= */
+
+export const loginForm = Yup.object({
+	email: Yup.string()
+		.email("Invalid email address")
+		.required("Email is required"),
+
+	password: Yup.string()
+		.min(6, "Password must be at least 6 characters")
+		.required("Password is required"),
 });
 
-export type LoginForm = z.infer<typeof loginForm>;
+export type LoginForm = Yup.InferType<typeof loginForm>;
 
-export const emailForm = z.object({
-	email: z
-		.email({ message: "Invalid email address" })
-		.min(1, { message: "Email is required" }),
+/* =========================
+   Email Only Form
+========================= */
+
+export const emailForm = Yup.object({
+	email: Yup.string()
+		.email("Invalid email address")
+		.required("Email is required"),
 });
 
-export type EmailForm = z.infer<typeof emailForm>;
+export type EmailForm = Yup.InferType<typeof emailForm>;
