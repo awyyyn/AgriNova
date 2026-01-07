@@ -1,4 +1,5 @@
 /**/node_modules
 api/src/.DS_Store
 .DS_Store
-admin-ui/.env
+admin-ui/.env 
+pest-app/.env
