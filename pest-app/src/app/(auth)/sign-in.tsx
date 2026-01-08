@@ -4,6 +4,7 @@ import {
 	ScrollView,
 	Dimensions,
 	TouchableOpacity,
+	Pressable,
 } from "react-native";
 import React from "react";
 import AgriNova from "./__components/agri-nova";
@@ -27,13 +28,13 @@ import { Key, Mail } from "lucide-react-native";
 import { toast } from "sonner-native";
 import { VStack } from "@src/components/ui/vstack";
 import { Button, ButtonText } from "@src/components/ui/button";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { HStack } from "@src/components/ui/hstack";
 import { Center } from "@src/components/ui/center";
 
 export default function SignIn() {
 	const [showPassword, setShowPassword] = React.useState(false);
-
+	const router = useRouter();
 	const handleSignIn = async (
 		values: LoginForm,
 		helpers: FormikHelpers<LoginForm>
@@ -70,6 +71,7 @@ export default function SignIn() {
 
 	return (
 		<ScrollView
+			bounces={false}
 			contentContainerStyle={{
 				flexGrow: 1,
 				paddingTop: 16,
@@ -162,34 +164,47 @@ export default function SignIn() {
 									</FormControlError>
 								</FormControl>
 
-								<TouchableOpacity>
-									<Link
-										href={"/(auth)/forgot-password"}
-										className="ml-auto   mt-1  text-gray-600 font-medium">
+								<TouchableOpacity
+									onPress={() => router.push("/(auth)/forgot-password")}>
+									<Text className="ml-auto   mt-1  text-gray-600 font-medium">
 										Forgot Password?
-									</Link>
+									</Text>
 								</TouchableOpacity>
 							</VStack>
 
 							<Center>
-								<Button
-									size="lg"
-									className="rounded-full mt-5 min-w-[200px]   bg-[#52CE19]"
+								<TouchableOpacity
+									// size="lg"
+									activeOpacity={0.8}
+									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
+									// android_ripple={{
+									// 	borderless: false,
+									// 	color: "#52CE1940",
+									// 	foreground: true,
+									// 	radius: 100,
+									// }}
+									// style={({ pressed, hovered }) => ({
+									// 	backgroundColor: "#52CE19",
+									// })}
+
 									onPress={() => handleSubmit()}
 									disabled={isSubmitting}>
-									<ButtonText>Submit</ButtonText>
-								</Button>
+									<Text
+										className="disabled:text-gray-800/30 text-center text-xl"
+										disabled={isSubmitting}>
+										Submit
+									</Text>
+								</TouchableOpacity>
 							</Center>
 							<HStack space="sm" className="justify-center">
 								<Text className="text-gray-600">
 									Don&apos;t have an account?
 								</Text>
-								<TouchableOpacity>
-									<Link
-										href={"/(auth)/create-account"}
-										className="text-gray-600 font-medium">
+								<TouchableOpacity
+									onPress={() => router.push("/(auth)/create-account")}>
+									<Text className="text-gray-600 font-medium">
 										Create Account here
-									</Link>
+									</Text>
 								</TouchableOpacity>
 							</HStack>
 						</VStack>
