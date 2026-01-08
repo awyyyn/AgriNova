@@ -177,20 +177,10 @@ export default function SignIn() {
 									// size="lg"
 									activeOpacity={0.8}
 									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
-									// android_ripple={{
-									// 	borderless: false,
-									// 	color: "#52CE1940",
-									// 	foreground: true,
-									// 	radius: 100,
-									// }}
-									// style={({ pressed, hovered }) => ({
-									// 	backgroundColor: "#52CE19",
-									// })}
-
 									onPress={() => handleSubmit()}
 									disabled={isSubmitting}>
 									<Text
-										className="disabled:text-gray-800/30 text-center text-xl"
+										className="disabled:text-gray-800/30 text-white text-center text-xl"
 										disabled={isSubmitting}>
 										Submit
 									</Text>
