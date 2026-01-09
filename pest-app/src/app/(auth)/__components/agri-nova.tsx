@@ -5,24 +5,35 @@ import { useRouter } from "expo-router";
 interface AgriNovaProps {
 	showButton?: boolean;
 	centerElements?: boolean;
+	color?: "light";
+	description?: string;
 }
 
 export default function AgriNova({
 	showButton = false,
 	centerElements = false,
+	color = undefined,
+	description,
 }: AgriNovaProps) {
 	const router = useRouter();
 
 	return (
 		<View>
 			<Image
-				source={require("../../../assets/images/Union.png")}
+				source={
+					color === "light"
+						? require("../../../assets/images/light-brand.png")
+						: require("../../../assets/images/Union.png")
+				}
 				className={centerElements ? "mx-auto" : ""}
 			/>
-			<Text
-				className={`text-lg max-w-xs ${centerElements ? "text-center " : ""}`}>
-				From detection to actions - your smart farming partner.
-			</Text>
+			<View className={`${centerElements ? " items-center" : " "} `}>
+				<Text
+					className={`text-lg max-w-xs ${color === "light" ? "text-white" : "text-black"} ${centerElements ? "text-center " : ""}`}>
+					{description ||
+						"From detection to actions - your smart farming partner."}
+				</Text>
+			</View>
 			{showButton && (
 				<TouchableOpacity
 					onPress={() => router.replace("/(auth)/sign-in")}
