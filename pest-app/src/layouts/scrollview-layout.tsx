@@ -1,6 +1,5 @@
 import { View, ScrollView } from "react-native";
 import React from "react";
-import AgriNova from "@src/components/agri-nova";
 import { Header } from "@src/components/header";
 
 interface ScrollViewLayoutProps {

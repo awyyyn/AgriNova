@@ -1,12 +1,10 @@
-import { Slot, Tabs } from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
-
 import { HapticTab } from "@src/components/haptic-tab";
 import { IconSymbol } from "@src/components/ui/icon-symbol";
 import { Colors } from "@src/constants/theme";
 import { useColorScheme } from "@src/hooks/use-color-scheme";
-import { ScrollView, View } from "react-native";
-import AgriNova from "../../components/agri-nova";
+import { Aperture, Settings } from "lucide-react-native";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
@@ -25,6 +23,20 @@ export default function TabLayout() {
 					tabBarIcon: ({ color }) => (
 						<IconSymbol size={28} name="house.fill" color={color} />
 					),
+				}}
+			/>
+			<Tabs.Screen
+				name="scan"
+				options={{
+					title: "Scan",
+					tabBarIcon: ({ color }) => <Aperture color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="settings"
+				options={{
+					title: "Settings",
+					tabBarIcon: ({ color }) => <Settings color={color} />,
 				}}
 			/>
 		</Tabs>
