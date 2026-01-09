@@ -22,8 +22,8 @@ export default function AgriNova({
 			<Image
 				source={
 					color === "light"
-						? require("../../../assets/images/light-brand.png")
-						: require("../../../assets/images/Union.png")
+						? require("../assets/images/light-brand.png")
+						: require("../assets/images/Union.png")
 				}
 				className={centerElements ? "mx-auto" : ""}
 			/>
