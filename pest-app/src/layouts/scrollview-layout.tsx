@@ -1,6 +1,7 @@
 import { View, ScrollView } from "react-native";
 import React from "react";
 import AgriNova from "@src/components/agri-nova";
+import { Header } from "@src/components/header";
 
 interface ScrollViewLayoutProps {
 	children: React.ReactNode;
@@ -18,9 +19,8 @@ export default function ScrollViewLayout({
 			contentContainerStyle={{ flexGrow: 1 }}
 			stickyHeaderIndices={[0]}
 			showsVerticalScrollIndicator={false}>
-			<View className="bg-[#52CE19] w-full h-[18vh] rounded-b-3xl justify-center">
-				<AgriNova description={description} centerElements color="light" />
-			</View>
+			<Header description={description} centerElements color="light" />
+
 			<View className="p-[4vw]">{children}</View>
 		</ScrollView>
 	);
