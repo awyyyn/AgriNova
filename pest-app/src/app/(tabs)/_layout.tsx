@@ -1,10 +1,12 @@
-import { Tabs } from "expo-router";
+import { Slot, Tabs } from "expo-router";
 import React from "react";
 
 import { HapticTab } from "@src/components/haptic-tab";
 import { IconSymbol } from "@src/components/ui/icon-symbol";
 import { Colors } from "@src/constants/theme";
 import { useColorScheme } from "@src/hooks/use-color-scheme";
+import { ScrollView, View } from "react-native";
+import AgriNova from "../../components/agri-nova";
 
 export default function TabLayout() {
 	const colorScheme = useColorScheme();
