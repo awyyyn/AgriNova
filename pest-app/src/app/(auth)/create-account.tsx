@@ -4,16 +4,10 @@ import {
 	ScrollView,
 	Dimensions,
 	TouchableOpacity,
-	Pressable,
 } from "react-native";
 import React from "react";
 import AgriNova from "./__components/agri-nova";
-import {
-	loginForm,
-	LoginForm,
-	RegisterForm,
-	registerForm,
-} from "@src/validations";
+import { RegisterForm, registerForm } from "@src/validations";
 import {
 	FormControl,
 	FormControlError,
@@ -32,7 +26,6 @@ import { EyeIcon, EyeOffIcon } from "@src/components/ui/icon";
 import { Key, Mail } from "lucide-react-native";
 import { toast } from "sonner-native";
 import { VStack } from "@src/components/ui/vstack";
-import { Button, ButtonText } from "@src/components/ui/button";
 import { useRouter } from "expo-router";
 import { HStack } from "@src/components/ui/hstack";
 import { Center } from "@src/components/ui/center";
