@@ -36,7 +36,8 @@ export default function AgriNova({
 			</View>
 			{showButton && (
 				<TouchableOpacity
-					onPress={() => router.replace("/(auth)/sign-in")}
+					onPress={() => router.replace("/(tabs)")}
+					// onPress={() => router.replace("/(auth)/sign-in")}
 					activeOpacity={0.6}
 					style={{
 						backgroundColor: "#52CE19",
