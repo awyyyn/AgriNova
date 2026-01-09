@@ -4,7 +4,7 @@ import AgriNova from "@src/components/agri-nova";
 import { Header } from "@src/components/header";
 
 interface ScrollViewLayoutProps {
-	children: React.ReactNode;
+	children?: React.ReactNode;
 	description?: string;
 }
 
@@ -16,7 +16,7 @@ export default function ScrollViewLayout({
 		<ScrollView
 			bounces={false}
 			alwaysBounceVertical={false}
-			contentContainerStyle={{ flexGrow: 1 }}
+			contentContainerStyle={{ flexGrow: 1, backgroundColor: "#ECFDF0" }}
 			stickyHeaderIndices={[0]}
 			showsVerticalScrollIndicator={false}>
 			<Header description={description} centerElements color="light" />
