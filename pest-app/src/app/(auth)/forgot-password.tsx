@@ -1,6 +1,6 @@
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
-import AgriNova from "./__components/agri-nova";
+import AgriNova from "../../components/agri-nova";
 import { Formik } from "formik";
 import { emailForm } from "@src/validations";
 import { VStack } from "@src/components/ui/vstack";

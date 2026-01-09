@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import AgriNova from "./__components/agri-nova";
+import AgriNova from "../../components/agri-nova";
 
 export default function Auth() {
 	return (
