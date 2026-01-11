@@ -3,7 +3,7 @@ import {
 	DefaultTheme,
 	ThemeProvider,
 } from "@react-navigation/native";
-import { Stack } from "expo-router";
+import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
 
@@ -14,13 +14,31 @@ import "@src/global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
+import { useAuthStore } from "@src/store/useAuthStore";
+import { useEffect } from "react";
+import { Text } from "react-native";
 
 export const unstable_settings = {
-	anchor: "(tabs)",
+	anchor: "(protected)",
 };
 
+SplashScreen.preventAutoHideAsync();
+
 export default function RootLayout() {
+	const { isAuthenticated, restoreSession, isLoading, user } = useAuthStore();
 	const colorScheme = useColorScheme();
+
+	useEffect(() => {
+		restoreSession();
+	}, []);
+
+	console.log(user, "qqq");
+
+	useEffect(() => {
+		if (!isLoading) {
+			SplashScreen.hideAsync();
+		}
+	}, [isLoading]);
 
 	return (
 		<SafeAreaProvider>
@@ -29,16 +47,24 @@ export default function RootLayout() {
 					<ThemeProvider
 						value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
 						<Stack>
-							<Stack.Screen name="(auth)" options={{ headerShown: false }} />
-							<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-							<Stack.Screen
-								name="modal"
-								options={{ presentation: "modal", title: "Modal" }}
-							/>
-							<Stack.Protected guard={false}>
+							<Stack.Protected guard={!isAuthenticated}>
+								<Stack.Screen name="(auth)" options={{ headerShown: false }} />
+							</Stack.Protected>
+
+							<Stack.Protected guard={isAuthenticated}>
+								<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 								<Stack.Screen
 									name="onboarding"
 									options={{ headerShown: false }}
+								/>
+								<Stack.Screen
+									name="modal"
+									options={{
+										animation: "slide_from_bottom",
+										presentation: "containedModal",
+										sheetAllowedDetents: [0, 1],
+										headerShown: false,
+									}}
 								/>
 							</Stack.Protected>
 						</Stack>
