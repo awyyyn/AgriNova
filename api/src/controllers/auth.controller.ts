@@ -1,6 +1,6 @@
 import { prisma } from "@src/configs/prisma.js";
 import { resend } from "@src/configs/resend.js";
-import { checkPassword } from "@src/utils/bcrypt.js";
+import { checkPassword, hashPassword } from "@src/utils/bcrypt.js";
 import { forgotPasswordEmail } from "@src/utils/emails.js";
 import {
 	generateAccessToken,
@@ -86,10 +86,10 @@ export const registerController = async (req: Request, res: Response) => {
 		const newUser = await prisma.user.create({
 			data: {
 				email: email.trim(),
-				password,
+				password: await hashPassword(password),
 				firstName,
 				role: "USER",
-				lastName,
+				lastName: lastName || "",
 			},
 		});
 
