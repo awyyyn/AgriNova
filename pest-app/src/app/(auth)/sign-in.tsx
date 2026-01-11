@@ -29,9 +29,11 @@ import { VStack } from "@src/components/ui/vstack";
 import { useRouter } from "expo-router";
 import { HStack } from "@src/components/ui/hstack";
 import { Center } from "@src/components/ui/center";
+import { useAuthStore } from "@src/store/useAuthStore";
 
 export default function SignIn() {
 	const [showPassword, setShowPassword] = React.useState(false);
+	const { login } = useAuthStore();
 	const router = useRouter();
 	const handleSignIn = async (
 		values: LoginForm,
@@ -53,7 +55,7 @@ export default function SignIn() {
 			if (response.status !== 200) {
 				throw new Error(data.errorMessage || "Failed to sign in");
 			}
-
+			login(data.data.accessToken, data.data.user);
 			toast.success("Signed in successfully!", {
 				description: `Welcome back, ${data.data.user.firstName}!`,
 			});
