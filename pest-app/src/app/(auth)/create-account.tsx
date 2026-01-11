@@ -29,34 +29,42 @@ import { VStack } from "@src/components/ui/vstack";
 import { useRouter } from "expo-router";
 import { HStack } from "@src/components/ui/hstack";
 import { Center } from "@src/components/ui/center";
+import { getFirstNameFromEmail } from "@src/utils";
+import { useAuthStore } from "@src/store/useAuthStore";
 
 export default function CreateAccount() {
 	const [showPassword, setShowPassword] = React.useState(false);
 	const router = useRouter();
+	const { login } = useAuthStore();
 	const handleSignIn = async (
 		values: RegisterForm,
 		helpers: FormikHelpers<RegisterForm>
 	) => {
 		const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 		try {
-			const response = await fetch(`${apiUrl}/auth/login`, {
+			const response = await fetch(`${apiUrl}/auth/register`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(values),
+				body: JSON.stringify({
+					firstName: getFirstNameFromEmail(values.email),
+					...values,
+				}),
 			});
 
 			const data = await response.json();
 
 			console.log(data, "qqqqq");
-			if (response.status !== 200) {
+			if (response.status !== 201) {
 				throw new Error(data.errorMessage || "Failed to sign in");
 			}
 
-			toast.success("Signed in successfully!", {
-				description: `Welcome back, ${data.data.user.firstName}!`,
+			toast.success("Account created successfully!", {
+				description: `Welcome, ${data.data.user.firstName}!`,
 			});
+
+			login(data.data.accessToken, data.data.user);
 		} catch (error) {
 			console.log("Error signing in:", error);
 			toast.error("Error occurred!", {
