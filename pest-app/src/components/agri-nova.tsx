@@ -1,6 +1,7 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { useRouter } from "expo-router";
+import { useAuthStore } from "@src/store/useAuthStore";
 
 interface AgriNovaProps {
 	showButton?: boolean;
@@ -15,6 +16,7 @@ export default function AgriNova({
 	color = undefined,
 	description,
 }: AgriNovaProps) {
+	const setOnboarded = useAuthStore((s) => s.setOnboarded);
 	const router = useRouter();
 
 	return (
@@ -36,8 +38,11 @@ export default function AgriNova({
 			</View>
 			{showButton && (
 				<TouchableOpacity
-					onPress={() => router.replace("/(tabs)")}
-					// onPress={() => router.replace("/(auth)/sign-in")}
+					// onPress={() => router.replace("/(tabs)")}
+					onPress={() => {
+						router.replace("/(auth)/sign-in");
+						setOnboarded(true);
+					}}
 					activeOpacity={0.6}
 					style={{
 						backgroundColor: "#52CE19",
