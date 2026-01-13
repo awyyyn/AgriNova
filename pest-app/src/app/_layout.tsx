@@ -16,7 +16,7 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Toaster } from "sonner-native";
 import { useAuthStore } from "@src/store/useAuthStore";
 import { useEffect } from "react";
-import { Text } from "react-native";
+import { Platform } from "react-native";
 
 export const unstable_settings = {
 	anchor: "(protected)",
@@ -40,6 +40,17 @@ export default function RootLayout() {
 		}
 	}, [isLoading]);
 
+	const stackOptions = {
+		headerTintColor: "#FFFFFF",
+		headerBackTitle: "Back",
+		headerTitleStyle: {
+			fontWeight: Platform.OS === "ios" ? "600" : "bold",
+		},
+		headerStyle: {
+			backgroundColor: "#52CE19",
+		},
+	};
+
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView>
@@ -54,16 +65,40 @@ export default function RootLayout() {
 							<Stack.Protected guard={isAuthenticated}>
 								<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 								<Stack.Screen
-									name="onboarding"
-									options={{ headerShown: false }}
-								/>
-								<Stack.Screen
 									name="modal"
 									options={{
 										animation: "slide_from_bottom",
 										presentation: "containedModal",
 										sheetAllowedDetents: [0, 1],
 										headerShown: false,
+									}}
+								/>
+								<Stack.Screen
+									name="profile"
+									options={{
+										headerTintColor: "#FFFFFF",
+										headerBackTitle: "Back",
+										headerTitleStyle: {
+											fontWeight: Platform.OS === "ios" ? "600" : "bold",
+										},
+										headerStyle: {
+											backgroundColor: "#52CE19",
+										},
+										headerTitle: "Profile",
+									}}
+								/>
+								<Stack.Screen
+									name="change-password"
+									options={{
+										headerTintColor: "#FFFFFF",
+										headerBackTitle: "Back",
+										headerTitleStyle: {
+											fontWeight: Platform.OS === "ios" ? "600" : "bold",
+										},
+										headerStyle: {
+											backgroundColor: "#52CE19",
+										},
+										headerTitle: "Change Password",
 									}}
 								/>
 							</Stack.Protected>
