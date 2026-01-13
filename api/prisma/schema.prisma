@@ -22,7 +22,8 @@ model User {
   password  String
   role      Role
 
-  createdAt DateTime @default(now())
+  createdAt          DateTime @default(now())
+  lastChangePassword DateTime @default(now())
 
   @@map("users")
 }
