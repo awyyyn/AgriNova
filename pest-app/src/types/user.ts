@@ -6,6 +6,6 @@ export interface User {
 	firstName: string;
 	lastName: string;
 	role: Role;
-
+	lastChangePassword: string | null;
 	createdAt: string;
 }
