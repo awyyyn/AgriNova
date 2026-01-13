@@ -6,7 +6,8 @@ type AuthState = {
 	user: User | null;
 	isLoading: boolean;
 	isAuthenticated: boolean;
-
+	token: string;
+	setUser: (user: User) => void;
 	login: (token: string, user: User) => Promise<void>;
 	logout: () => Promise<void>;
 	restoreSession: () => Promise<void>;
@@ -22,8 +23,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 	onboarded: false,
 	user: null,
 	isLoading: true,
+	token: "",
 	isAuthenticated: false,
 
+	setUser: (user) => set({ user }),
 	setOnboarded: async (value: boolean) => {
 		await SecureStore.setItemAsync(ONBOARD_KEY, String(value));
 		set({ onboarded: value });
@@ -33,14 +36,14 @@ export const useAuthStore = create<AuthState>((set) => ({
 		await SecureStore.setItemAsync(TOKEN_KEY, token);
 		await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
 
-		set({ user, isAuthenticated: true });
+		set({ user, isAuthenticated: true, token });
 	},
 
 	logout: async () => {
 		await SecureStore.deleteItemAsync(TOKEN_KEY);
 		await SecureStore.deleteItemAsync(USER_KEY);
 
-		set({ user: null, isAuthenticated: false });
+		set({ user: null, isAuthenticated: false, token: "" });
 	},
 
 	restoreSession: async () => {
@@ -52,13 +55,20 @@ export const useAuthStore = create<AuthState>((set) => ({
 			if (token && user) {
 				set({
 					user: JSON.parse(user),
+					token,
 					isAuthenticated: true,
 				});
 			}
 
-			set({
-				onboarded: onboardedValue === "true",
-			});
+			if (!token && !user) {
+				set({
+					user: null,
+					token: "",
+					isAuthenticated: false,
+				});
+			}
+
+			set({ onboarded: onboardedValue === "true" });
 		} finally {
 			set({ isLoading: false });
 		}
