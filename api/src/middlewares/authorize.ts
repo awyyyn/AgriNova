@@ -1,5 +1,5 @@
-import { Role } from "@src/types/index.js";
-import { verifyToken } from "@src/utils/jsonwebtoken.js";
+import { Role } from "../types/index.js";
+import { verifyToken } from "../utils/jsonwebtoken.js";
 import { Request, Response } from "express";
 
 export function Authorize(allowedRoles: Role[] | "*") {

@@ -2,11 +2,11 @@ import {
 	loginController,
 	registerController,
 	verifyTokenController,
-} from "@src/controllers/index.js";
+} from "../controllers/index.js";
 import {
 	forgotPasswordController,
 	resetPasswordController,
-} from "@src/controllers/password.controller.js";
+} from "../controllers/password.controller.js";
 import { Router } from "express";
 
 const router = Router();

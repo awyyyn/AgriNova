@@ -1,5 +1,5 @@
-import { prisma } from "@src/configs/prisma.js";
-import { checkPassword } from "@src/utils/bcrypt.js";
+import { prisma } from "../configs/prisma.js";
+import { checkPassword } from "../utils/bcrypt.js";
 import { Request, Response } from "express";
 
 export const updateProfileController = async (req: Request, res: Response) => {

@@ -1,16 +1,13 @@
-import { prisma } from "@src/configs/prisma.js";
-import { resend } from "@src/configs/resend.js";
-import { checkPassword, hashPassword } from "@src/utils/bcrypt.js";
+import { prisma, resend } from "../configs/index.js";
 import {
+	checkPassword,
+	hashPassword,
 	canChangePassword,
 	daysRemainingToChangePassword,
-} from "@src/utils/date-fns.js";
-import { forgotPasswordEmail } from "@src/utils/emails.js";
-import {
+	forgotPasswordEmail,
 	generateResetPasswordToken,
 	verifyResetPasswordToken,
-	verifyToken,
-} from "@src/utils/jsonwebtoken.js";
+} from "../utils/index.js";
 import { Request, Response } from "express";
 
 export const changePasswordController = async (req: Request, res: Response) => {

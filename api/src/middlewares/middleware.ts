@@ -1,4 +1,4 @@
-import { verifyToken } from "@src/utils/jsonwebtoken.js";
+import { verifyToken } from "../utils/jsonwebtoken.js";
 import { Request, Response, NextFunction } from "express";
 
 export async function middleware(

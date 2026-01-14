@@ -1,12 +1,12 @@
-import { prisma } from "@src/configs/prisma.js";
-import { checkPassword, hashPassword } from "@src/utils/bcrypt.js";
+import { prisma } from "../configs/prisma.js";
+import { checkPassword, hashPassword } from "../utils/bcrypt.js";
 import {
 	generateAccessToken,
 	generateRefreshToken,
 	generateResetPasswordToken,
 	verifyResetPasswordToken,
 	verifyToken,
-} from "@src/utils/jsonwebtoken.js";
+} from "../utils/jsonwebtoken.js";
 import { Request, Response } from "express";
 
 export const loginController = async (req: Request, res: Response) => {

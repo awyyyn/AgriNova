@@ -1,9 +1,9 @@
-import { changePasswordController } from "@src/controllers/password.controller.js";
+import { changePasswordController } from "../controllers/password.controller.js";
 import {
 	deleteUserController,
 	updateProfileController,
-} from "@src/controllers/user.controller.js";
-import { middleware } from "@src/middlewares/middleware.js";
+} from "../controllers/user.controller.js";
+import { middleware } from "../middlewares/middleware.js";
 import { Router } from "express";
 
 const router = Router();

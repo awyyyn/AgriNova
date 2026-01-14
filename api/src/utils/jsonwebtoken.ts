@@ -1,4 +1,4 @@
-import { Role as UserRole } from "@src/types/index.js";
+import { Role as UserRole } from "../types/index.js";
 import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 export interface PayloadArgs {
 	id: string;
