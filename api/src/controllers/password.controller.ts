@@ -30,12 +30,12 @@ export const changePasswordController = async (req: Request, res: Response) => {
 		}
 
 		const isAllowedToChangePassword = canChangePassword(
-			user.lastChangePassword
+			user?.lastChangePassword
 		);
 
 		if (!isAllowedToChangePassword) {
 			const daysRemaining = daysRemainingToChangePassword(
-				user.lastChangePassword
+				user?.lastChangePassword
 			);
 
 			res.status(400).json({
@@ -46,10 +46,12 @@ export const changePasswordController = async (req: Request, res: Response) => {
 			return;
 		}
 
-		const isCurrentPasswordValid = checkPassword(
+		const isCurrentPasswordValid = await checkPassword(
 			currentPassword,
 			user.password
 		);
+
+		console.log(isCurrentPasswordValid, "qqq");
 
 		if (!isCurrentPasswordValid) {
 			res.status(400).json({
@@ -63,7 +65,7 @@ export const changePasswordController = async (req: Request, res: Response) => {
 
 		await prisma.user.update({
 			where: { id: user.id },
-			data: { password: hashedNewPassword },
+			data: { password: hashedNewPassword, lastChangePassword: new Date() },
 		});
 
 		res.status(200).json({
