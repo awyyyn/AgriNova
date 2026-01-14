@@ -1,3 +1,4 @@
+import { useLoadingStore } from "@src/store/useLoadingStore";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
@@ -10,6 +11,7 @@ export default function ModalScreen() {
 	const [cameraPermissions, requestCameraPermissions] = useCameraPermissions();
 	const cameraRef = useRef<CameraView>(null);
 	const router = useRouter();
+	const setLoading = useLoadingStore((state) => state.setLoading);
 
 	useEffect(() => {
 		if (!cameraPermissions?.granted) {
@@ -85,12 +87,22 @@ export default function ModalScreen() {
 			<View className="absolute bottom-10 w-full items-center">
 				<TouchableOpacity
 					onPress={async () => {
+						console.log("...");
 						if (!cameraRef.current) return;
 
 						const result = await cameraRef.current.takePictureAsync({
 							quality: 0.8,
 							skipProcessing: true,
 						});
+
+						try {
+							setLoading(true);
+							await cameraRef.current.pausePreview();
+							await new Promise((resolve) => setTimeout(resolve, 3000));
+						} catch (error) {
+						} finally {
+							setLoading(false);
+						}
 
 						console.log("Photo taken:", result.uri);
 
