@@ -58,13 +58,25 @@ export default function Settings() {
 							text="Change Password"
 						/>
 						<Divider />
-						<SettingsButton icon={<Leaf />} text="Analysis History" />
+						<SettingsButton
+							icon={<Leaf />}
+							text="Analysis History"
+							onPress={() => alert("Work in progress!")}
+						/>
 					</Card>
 
 					<Card size="lg" className="flex gap-y-5">
-						<SettingsButton text="Help" icon={<CircleQuestionMark />} />
+						<SettingsButton
+							text="Help"
+							icon={<CircleQuestionMark />}
+							onPress={() => alert("Work in progress!")}
+						/>
 						<Divider />
-						<SettingsButton icon={<Info />} text="About" />
+						<SettingsButton
+							icon={<Info />}
+							text="About"
+							onPress={() => alert("Work in progress!")}
+						/>
 						<Divider />
 						<SettingsButton
 							icon={<X />}
