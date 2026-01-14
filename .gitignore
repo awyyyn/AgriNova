@@ -3,3 +3,4 @@ api/src/.DS_Store
 .DS_Store
 admin-ui/.env 
 pest-app/.env
+api/.DS_Store
