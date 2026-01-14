@@ -94,7 +94,7 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 		}
 
 		const alreadySentToken = await prisma.token.findFirst({
-			where: { email: email.trim() },
+			where: { email: String(email).trim() },
 		});
 
 		if (alreadySentToken) {
@@ -106,19 +106,21 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 		}
 
 		const user = await prisma.user.findFirst({
-			where: { email: email.trim() },
+			where: { email: String(email).trim() },
 		});
 
 		if (user) {
 			const resetToken = generateResetPasswordToken({
-				email: user.email.trim(),
+				email: String(user.email).trim(),
 				id: user.id,
 				role: user.role,
 			});
 
 			const link = `${
 				process.env.FRONTEND_URL
-			}/auth/reset-password?token=${resetToken}&email=${user.email.trim()}`;
+			}/auth/reset-password?token=${resetToken}&email=${String(
+				user.email
+			).trim()}`;
 
 			const response = await resend.emails.send({
 				to: user.email,
@@ -179,7 +181,7 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 		}
 
 		await prisma.user.update({
-			where: { email: email.trim() },
+			where: { email: String(email).trim() },
 			data: { password },
 		});
 
