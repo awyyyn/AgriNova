@@ -71,17 +71,21 @@ export default function RootLayout() {
 
 								<Stack.Protected guard={isAuthenticated}>
 									<Stack.Screen
+										name="(tabs)"
+										options={{ headerShown: false }}
+									/>
+									<Stack.Screen
 										name="analyze"
 										options={{
 											animation: "slide_from_bottom",
 											presentation: "pageSheet",
 											// sheetAllowedDetents: [0.2, 0.5],
-
+											headerTitle: "Analyze Image",
 											headerTintColor: "#FFFFFF",
 											headerBackTitle: "Back",
 											headerBackButtonDisplayMode: "minimal",
 											headerTitleStyle: {
-												fontWeight: Platform.OS === "ios" ? "600" : "bold",
+												fontWeight: "600",
 											},
 											headerStyle: {
 												backgroundColor: "#52CE19",
@@ -90,10 +94,6 @@ export default function RootLayout() {
 											sheetCornerRadius: 16,
 											sheetElevation: 5,
 										}}
-									/>
-									<Stack.Screen
-										name="(tabs)"
-										options={{ headerShown: false }}
 									/>
 									<Stack.Screen
 										name="modal"

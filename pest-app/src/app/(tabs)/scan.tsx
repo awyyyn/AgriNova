@@ -2,37 +2,21 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import ScrollViewLayout from "@src/layouts/scrollview-layout";
 import { Card } from "@src/components/ui/card";
-import { CameraView, useCameraPermissions } from "expo-camera";
+import { useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { VStack } from "@src/components/ui/vstack";
 import { Camera } from "lucide-react-native";
 import { useRouter } from "expo-router";
+import { handleUploadToAppwrite } from "@src/services/appwrite";
+import { slugify } from "@src/utils";
+import { useLoadingStore } from "@src/store/useLoadingStore";
 
 export default function Scan() {
 	const [permission, requestPermission] = useCameraPermissions();
-	const [loading, setLoading] = useState(false);
+	const setLoading = useLoadingStore((state) => state.setLoading);
 	const router = useRouter();
 
-	const handleScan = async () => {
-		router.push("/modal");
-		// try {
-		// 	setLoading(true);
-
-		// 	const photo = await cameraRef.current.takePictureAsync({
-		// 		quality: 1,
-		// 		skipProcessing: false,
-		// 	});
-
-		// 	console.log("Scanned Image:", photo.uri);
-
-		// 	// 👉 Navigate to preview / processing screen
-		// 	// router.push({ pathname: "/scan/preview", params: { uri: photo.uri } });
-		// } catch (err) {
-		// 	console.error(err);
-		// } finally {
-		// 	setLoading(false);
-		// }
-	};
+	const handleScan = async () => router.push("/modal");
 
 	// 🖼 Upload from gallery
 	const handleUpload = async () => {
@@ -42,9 +26,25 @@ export default function Scan() {
 		});
 
 		if (!result.canceled) {
-			console.log("Uploaded Image:", result.assets[0].uri);
-
-			// 👉 Navigate to preview / processing screen
+			console.log("Uploaded Image:", result.assets[0]);
+			const file = result.assets[0];
+			setLoading(true);
+			try {
+				await new Promise((resolve) => setTimeout(resolve, 3000));
+				const data = await handleUploadToAppwrite({
+					fileName: slugify(file.fileName || "uploaded-image"),
+					size: file.fileSize || 0,
+					uri: file.uri,
+				});
+				router.push({
+					pathname: "/analyze",
+					params: { id: data.$id },
+				});
+			} catch (error) {
+				console.error("Error uploading image:", error);
+			} finally {
+				setLoading(false);
+			}
 		}
 	};
 
