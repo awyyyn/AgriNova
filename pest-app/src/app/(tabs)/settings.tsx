@@ -12,24 +12,13 @@ import {
 	Leaf,
 	Lock,
 	LogOut,
-	TrashIcon,
 	User2,
 	X,
 } from "lucide-react-native";
 import { Divider } from "@src/components/ui/divider";
 import { useAuthStore } from "@src/store/useAuthStore";
 import { useRouter } from "expo-router";
-import {
-	Modal,
-	ModalBackdrop,
-	ModalBody,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-} from "@src/components/ui/modal";
-import { Button, ButtonText } from "@src/components/ui/button";
-import { Box } from "@src/components/ui/box";
-import { Heading } from "@src/components/ui/heading";
+import DeleteAccountModal from "@src/components/delete-account-modal";
 
 export default function Settings() {
 	const router = useRouter();
@@ -87,51 +76,7 @@ export default function Settings() {
 					</Card>
 				</VStack>
 			</ScrollViewLayout>
-			<Modal
-				isOpen={showModal}
-				onClose={() => {
-					setShowModal(false);
-				}}
-				size="md">
-				<ModalBackdrop />
-				<ModalBackdrop />
-				<ModalContent className="max-w-[305px] items-center">
-					<ModalHeader>
-						<Box className="w-[56px] h-[56px] rounded-full bg-background-error items-center justify-center">
-							<TrashIcon className="stroke-error-600" />
-						</Box>
-					</ModalHeader>
-					<ModalBody className="mt-0 mb-4">
-						<Heading size="md" className="text-typography-950 mb-2 text-center">
-							Delete account
-						</Heading>
-						<Heading size="sm" className="text-typography-500 text-center">
-							Are you sure you want to delete this account? This action cannot
-							be undone.
-						</Heading>
-					</ModalBody>
-					<ModalFooter className="w-full">
-						<Button
-							variant="outline"
-							action="secondary"
-							size="sm"
-							onPress={() => {
-								setShowModal(false);
-							}}
-							className="flex-grow">
-							<ButtonText>Cancel</ButtonText>
-						</Button>
-						<Button
-							onPress={() => {
-								setShowModal(false);
-							}}
-							size="sm"
-							className="flex-grow bg-error-600 active:bg-error-700 pressed:bg-error-700">
-							<ButtonText>Delete</ButtonText>
-						</Button>
-					</ModalFooter>
-				</ModalContent>
-			</Modal>
+			<DeleteAccountModal showModal={showModal} setShowModal={setShowModal} />
 		</>
 	);
 }
