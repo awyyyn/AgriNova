@@ -23,7 +23,7 @@ model User {
   role      Role
 
   createdAt          DateTime @default(now())
-  lastChangePassword DateTime @default(now())
+  lastChangePassword DateTime?  
 
   @@map("users")
 }
