@@ -1,8 +1,8 @@
 import { View, Text, Dimensions, TouchableOpacity } from "react-native";
 import React from "react";
 import AgriNova from "../../components/agri-nova";
-import { Formik } from "formik";
-import { emailForm } from "@src/validations";
+import { Formik, FormikHelpers } from "formik";
+import { EmailForm, emailForm } from "@src/validations";
 import { VStack } from "@src/components/ui/vstack";
 import {
 	FormControl,
@@ -20,9 +20,50 @@ import {
 import { Mail } from "lucide-react-native";
 import { Button, ButtonText } from "@src/components/ui/button";
 import { useRouter } from "expo-router";
+import { toast } from "sonner-native";
 
 export default function ForgotPassword() {
 	const router = useRouter();
+
+	const handleForgotPassword = async (
+		values: EmailForm,
+		helpers: FormikHelpers<EmailForm>
+	) => {
+		try {
+			const response = await fetch(
+				`${process.env.CLIENT_URL}/auth/forgot-password`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(values),
+				}
+			);
+			const data = await response.json();
+
+			if (data.error || response.status !== 200) {
+				throw new Error(data.message);
+			}
+
+			toast.success("", {
+				description: data.message,
+				richColors: true,
+				duration: 5000,
+			});
+		} catch (error) {
+			console.error("Error submitting forgot password request:", error);
+			toast.error("Something went wrong!", {
+				description:
+					(error as Error).message ||
+					"Please contact support if error persist.",
+				richColors: true,
+				duration: 5000,
+			});
+		} finally {
+			helpers.setSubmitting(false);
+		}
+	};
 	return (
 		<View
 			style={{
@@ -34,7 +75,7 @@ export default function ForgotPassword() {
 
 			<Formik
 				initialValues={{ email: "" }}
-				onSubmit={() => {}}
+				onSubmit={handleForgotPassword}
 				enableReinitialize
 				validationSchema={emailForm}>
 				{({
@@ -50,7 +91,9 @@ export default function ForgotPassword() {
 					console.log(status);
 					return (
 						<VStack space="lg" className=" mt-10">
-							<FormControl isInvalid={!!(errors.email && touched.email)}>
+							<FormControl
+								isInvalid={!!(errors.email && touched.email)}
+								isReadOnly={isSubmitting}>
 								<FormControlLabel>
 									<FormControlLabelText>Email Address</FormControlLabelText>
 								</FormControlLabel>
@@ -83,7 +126,7 @@ export default function ForgotPassword() {
 									<Text
 										className="disabled:text-gray-800/30 text-center text-xl text-white"
 										disabled={isSubmitting}>
-										Submit
+										{isSubmitting ? "Submitting..." : "Submit"}
 									</Text>
 								</TouchableOpacity>
 								<Button
