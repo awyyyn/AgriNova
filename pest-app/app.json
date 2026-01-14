@@ -9,9 +9,12 @@
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+
+			"bundleIdentifier": "com.capstone.agrinova"
 		},
 		"android": {
+			"package": "com.capstone.agrinova",
 			"adaptiveIcon": {
 				"backgroundColor": "#E6F4FE",
 				"foregroundImage": "./src/assets/images/android-icon-foreground.png",
