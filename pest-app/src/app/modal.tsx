@@ -1,4 +1,6 @@
+import { handleUploadToAppwrite } from "@src/services/appwrite";
 import { useLoadingStore } from "@src/store/useLoadingStore";
+import { slugify } from "@src/utils";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
@@ -98,7 +100,15 @@ export default function ModalScreen() {
 						try {
 							setLoading(true);
 							await cameraRef.current.pausePreview();
-							await new Promise((resolve) => setTimeout(resolve, 3000));
+							const data = await handleUploadToAppwrite({
+								fileName: slugify(result.uri || "uploaded-image"),
+								size: 0,
+								uri: result.uri,
+							});
+							router.dismissTo({
+								pathname: "/analyze",
+								params: { id: data.$id },
+							});
 						} catch (error) {
 						} finally {
 							setLoading(false);
