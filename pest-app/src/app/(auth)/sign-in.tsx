@@ -108,7 +108,7 @@ export default function SignIn() {
 								</FormControlLabel>
 								<Input
 									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] "
-									size="lg"
+									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
 										<InputIcon color="#009951" as={Mail} />
@@ -137,7 +137,7 @@ export default function SignIn() {
 
 									<Input
 										className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19]"
-										size="lg"
+										size="xl"
 										isReadOnly={isSubmitting}>
 										<InputSlot className="pl-3">
 											<InputIcon color="#009951" as={Key} />
