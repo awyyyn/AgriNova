@@ -1,6 +1,10 @@
 import { addMonths, differenceInDays, isAfter, isEqual } from "date-fns";
 
-export const canChangePassword = (lastChangePassword: Date | string) => {
+export const canChangePassword = (
+	lastChangePassword?: Date | string | null
+) => {
+	if (!lastChangePassword) return true;
+
 	const lastChange = new Date(lastChangePassword);
 	const allowedDate = addMonths(lastChange, 3);
 	const now = new Date();
@@ -9,8 +13,10 @@ export const canChangePassword = (lastChangePassword: Date | string) => {
 };
 
 export const daysRemainingToChangePassword = (
-	lastChangePassword: Date | string
+	lastChangePassword?: Date | string | null
 ) => {
+	if (!lastChangePassword) return 0;
+
 	const allowedDate = addMonths(new Date(lastChangePassword), 3);
 	const now = new Date();
 
