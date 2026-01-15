@@ -24,6 +24,7 @@
 		"form-data": "^4.0.5",
 		"jsonwebtoken": "^9.0.3",
 		"multer": "^2.0.2",
+		"openai": "^6.16.0",
 		"resend": "^6.6.0",
 		"sharp": "^0.34.5",
 		"tsconfig-paths": "^4.2.0"
