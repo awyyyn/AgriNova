@@ -33,11 +33,6 @@ export default function LandingPage() {
 							className="text-foreground/70 hover:text-foreground transition">
 							Benefits
 						</a>
-						<a
-							href="#pricing"
-							className="text-foreground/70 hover:text-foreground transition">
-							Pricing
-						</a>
 					</div>
 					<div className="flex items-center gap-4">
 						<Link to="/login">
@@ -370,13 +365,6 @@ export default function LandingPage() {
 										href="#features"
 										className="hover:text-foreground transition">
 										Features
-									</a>
-								</li>
-								<li>
-									<a
-										href="#pricing"
-										className="hover:text-foreground transition">
-										Pricing
 									</a>
 								</li>
 								<li>
