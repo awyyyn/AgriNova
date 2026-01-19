@@ -35,10 +35,10 @@ export default function LandingPage() {
 						</a>
 					</div>
 					<div className="flex items-center gap-4">
-						<Link to="/login">
+						<Link to="/auth/login">
 							<Button variant="ghost">Sign In</Button>
 						</Link>
-						<Link to="/login">
+						<Link to="/auth/login">
 							<Button>Get Started</Button>
 						</Link>
 					</div>
@@ -63,7 +63,7 @@ export default function LandingPage() {
 								with AI-powered insights.
 							</p>
 							<div className="flex flex-col sm:flex-row gap-4">
-								<Link to="/login">
+								<Link to="/auth/login">
 									<Button size="lg" className="gap-2">
 										Get Started <ArrowRight className="w-4 h-4" />
 									</Button>
@@ -329,7 +329,7 @@ export default function LandingPage() {
 						farming can make.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center">
-						<Link to="/login">
+						<Link to="/auth/login">
 							<Button size="lg" variant="secondary" className="gap-2">
 								Start Free Today <ArrowRight className="w-4 h-4" />
 							</Button>
