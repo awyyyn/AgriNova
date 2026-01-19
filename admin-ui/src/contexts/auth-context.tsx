@@ -57,6 +57,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				setLoading(false);
 				setRole(null);
 
+				localStorage.removeItem("accessToken");
 				return;
 			}
 
@@ -85,6 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 					position: "top-center",
 					richColors: true,
 				});
+				localStorage.removeItem("accessToken");
 				setIsAuthenticated(false);
 				setRole(null);
 			} finally {
