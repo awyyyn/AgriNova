@@ -60,18 +60,6 @@ const data = {
 					title: "List",
 					url: "/admin/users",
 				},
-				{
-					title: "Get Started",
-					url: "#",
-				},
-				{
-					title: "Tutorials",
-					url: "#",
-				},
-				{
-					title: "Changelog",
-					url: "#",
-				},
 			],
 		},
 	],
