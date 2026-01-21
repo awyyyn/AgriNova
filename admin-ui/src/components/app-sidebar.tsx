@@ -7,6 +7,7 @@ import {
 	Send,
 	Settings2,
 	SquareTerminal,
+	Users,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -68,13 +69,13 @@ const data = {
 			],
 		},
 		{
-			title: "Documentation",
-			url: "#",
-			icon: BookOpen,
+			title: "Users",
+			url: "/admin/users#",
+			icon: Users,
 			items: [
 				{
-					title: "Introduction",
-					url: "#",
+					title: "List",
+					url: "/admin/users",
 				},
 				{
 					title: "Get Started",

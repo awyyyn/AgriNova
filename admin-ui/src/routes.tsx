@@ -5,6 +5,7 @@ import Home from "./pages/home";
 import AdminLayout from "./layouts/admin-layout";
 import ForgotPasswordPage from "./pages/auth/forgot-password";
 import ResetPasswordForm from "./pages/auth/reset-password";
+import UsersPage from "./pages/users/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [{ path: "/", element: <Home /> }];
@@ -37,6 +38,10 @@ export default function Routes() {
 				{
 					path: "dashboard",
 					element: <div>Admin Dashboard</div>,
+				},
+				{
+					path: "users",
+					element: <UsersPage />,
 				},
 			],
 		},
