@@ -6,9 +6,13 @@ import AdminLayout from "./layouts/admin-layout";
 import ForgotPasswordPage from "./pages/auth/forgot-password";
 import ResetPasswordForm from "./pages/auth/reset-password";
 import UsersPage from "./pages/users/page";
+import NotFound from "./pages/not-found/page";
 
 export default function Routes() {
-	const publicRoutes: RouteObject[] = [{ path: "/", element: <Home /> }];
+	const publicRoutes: RouteObject[] = [
+		{ path: "/", element: <Home /> },
+		{ path: "*", element: <NotFound /> },
+	];
 
 	const authRoutes: RouteObject[] = [
 		{
