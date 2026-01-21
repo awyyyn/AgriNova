@@ -7,10 +7,12 @@ import ForgotPasswordPage from "./pages/auth/forgot-password";
 import ResetPasswordForm from "./pages/auth/reset-password";
 import UsersPage from "./pages/users/page";
 import NotFound from "./pages/not-found/page";
+import Forbidden from "./pages/unauthorized/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
 		{ path: "/", element: <Home /> },
+		{ path: "/unauthorized", element: <Forbidden /> },
 		{ path: "*", element: <NotFound /> },
 	];
 
