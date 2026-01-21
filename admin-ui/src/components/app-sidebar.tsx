@@ -2,6 +2,7 @@ import * as React from "react";
 import {
 	BookOpen,
 	Bot,
+	LayoutDashboard,
 	Leaf,
 	LifeBuoy,
 	Send,
@@ -31,43 +32,25 @@ const data = {
 	},
 	navMain: [
 		{
-			title: "Playground",
-			url: "#",
-			icon: SquareTerminal,
-			items: [
-				{
-					title: "History",
-					url: "#",
-				},
-				{
-					title: "Starred",
-					url: "#",
-				},
-				{
-					title: "Settings",
-					url: "#",
-				},
-			],
+			title: "Dashboard",
+			url: "/admin/dashboard",
+			icon: LayoutDashboard,
+			// items: [
+			// 	{
+			// 		title: "History",
+			// 		url: "/admin/dashboard",
+			// 	},
+			// 	{
+			// 		title: "Starred",
+			// 		url: "#",
+			// 	},
+			// 	{
+			// 		title: "Settings",
+			// 		url: "#",
+			// 	},
+			// ],
 		},
-		{
-			title: "Models",
-			url: "#",
-			icon: Bot,
-			items: [
-				{
-					title: "Genesis",
-					url: "#",
-				},
-				{
-					title: "Explorer",
-					url: "#",
-				},
-				{
-					title: "Quantum",
-					url: "#",
-				},
-			],
-		},
+
 		{
 			title: "Users",
 			url: "/admin/users#",
@@ -91,39 +74,16 @@ const data = {
 				},
 			],
 		},
-		{
-			title: "Settings",
-			url: "#",
-			icon: Settings2,
-			items: [
-				{
-					title: "General",
-					url: "#",
-				},
-				{
-					title: "Team",
-					url: "#",
-				},
-				{
-					title: "Billing",
-					url: "#",
-				},
-				{
-					title: "Limits",
-					url: "#",
-				},
-			],
-		},
 	],
 	navSecondary: [
 		{
 			title: "Support",
-			url: "#support",
+			url: "/admin/support",
 			icon: LifeBuoy,
 		},
 		{
 			title: "Feedback",
-			url: "#feedback",
+			url: "/feedback",
 			icon: Send,
 		},
 	],
