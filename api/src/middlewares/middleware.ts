@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from "express";
 export async function middleware(
 	req: Request,
 	res: Response,
-	next: NextFunction
+	next: NextFunction,
 ) {
 	const token = req.headers.authorization?.split(" ")[1];
 	if (!token) {
@@ -18,8 +18,6 @@ export async function middleware(
 		res.status(401).json({ message: "Unauthorized" });
 		return;
 	}
-
-	req.body.userId = decoded.id;
 
 	next();
 }
