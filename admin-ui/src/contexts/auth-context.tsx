@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 							Authorization: `Bearer ${token}`,
 						},
 						method: "POST",
-					}
+					},
 				);
 
 				if (response.status !== 200) {
@@ -81,6 +81,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				setIsAuthenticated(true);
 				setRole(data.data.user.role as Role);
 				localStorage.setItem("accessToken", data.data.accessToken);
+				setUser(data.data.user);
 			} catch (err) {
 				toast.error((err as Error).message, {
 					position: "top-center",
@@ -98,7 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const login = (
 		token: string,
 		user: User | null = null,
-		isAuthenticated = true
+		isAuthenticated = true,
 	) => {
 		localStorage.setItem("accessToken", token);
 
