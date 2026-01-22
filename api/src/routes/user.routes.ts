@@ -1,6 +1,8 @@
+import { Authorize } from "@src/middlewares/authorize.js";
 import { changePasswordController } from "../controllers/password.controller.js";
 import {
 	deleteUserController,
+	readUsersController,
 	updateProfileController,
 } from "../controllers/user.controller.js";
 import { middleware } from "../middlewares/middleware.js";
@@ -8,6 +10,12 @@ import { Router } from "express";
 
 const router = Router();
 
+router.get(
+	"/list",
+	middleware,
+	Authorize(["ADMIN", "SUPER_ADMIN"]),
+	readUsersController,
+);
 router.post("/edit", middleware, updateProfileController);
 router.delete("/delete", middleware, deleteUserController);
 router.post("/change-password", middleware, changePasswordController);
