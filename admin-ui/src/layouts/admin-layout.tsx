@@ -13,9 +13,16 @@ import {
 	SidebarProvider,
 	SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet } from "react-router";
+import { useAuth } from "@/contexts/auth-context";
+import { Navigate, Outlet } from "react-router";
 
 export default function AdminLayout() {
+	const { isAuthenticated } = useAuth();
+
+	if (!isAuthenticated) {
+		return <Navigate to={"/auth/login"} />;
+	}
+
 	return (
 		<SidebarProvider>
 			<AppSidebar />
