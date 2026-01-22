@@ -8,13 +8,13 @@ interface ReadUsers {
 		limit: number;
 	};
 	query?: string;
-	role?: User["role"][];
+	roles?: User["role"][];
 }
 
 export const readUsers = async ({
 	pagination,
 	query,
-	role,
+	roles,
 }: ReadUsers = {}) => {
 	let where: Prisma.UserWhereInput = {};
 
@@ -28,7 +28,7 @@ export const readUsers = async ({
 		};
 	}
 
-	if (role) {
+	if (roles?.length) {
 		where.role = {
 			in: role,
 		};
