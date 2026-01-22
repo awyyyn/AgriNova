@@ -1,5 +1,6 @@
 import { Prisma, User } from "../types/index.js";
 import { prisma } from "../configs/prisma.js";
+import { endOfMinute } from "date-fns";
 
 interface ReadUsers {
 	pagination?: {
@@ -49,4 +50,18 @@ export const readUsers = async ({
 		hasNextPage: users.length === pagination?.limit,
 		total,
 	};
+};
+
+export const readUser = async (id: string) => {
+	let where: Prisma.UserWhereUniqueInput = {
+		id: id,
+	};
+
+	if (id.includes("@")) {
+		where = {
+			email: id,
+		};
+	}
+
+	return await prisma.user.findUnique({ where, omit: { password: true } });
 };
