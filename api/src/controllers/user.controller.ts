@@ -1,6 +1,8 @@
+import { readUsers } from "@src/services/user.service.js";
 import { prisma } from "../configs/prisma.js";
 import { checkPassword } from "../utils/bcrypt.js";
 import { Request, Response } from "express";
+import { User } from "@src/types/index.js";
 
 export const updateProfileController = async (req: Request, res: Response) => {
 	try {
@@ -69,6 +71,31 @@ export const deleteUserController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error(`Error in deleteUserController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const readUsersController = async (req: Request, res: Response) => {
+	try {
+		const {
+			page,
+			limit,
+			query,
+		}: { page?: number; limit?: number; query?: string } = req.query;
+		const roles: User["role"][] | undefined = req.body?.roles;
+
+		const response = await readUsers({
+			query,
+			pagination: page && limit ? { page, limit } : undefined,
+			roles: roles || [],
+		});
+
+		res.status(200).json(response);
+	} catch (error) {
+		console.error(`Error in readUsersController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
