@@ -1,4 +1,4 @@
-import { readUsers } from "@src/services/user.service.js";
+import { readUser, readUsers } from "@src/services/user.service.js";
 import { prisma } from "../configs/prisma.js";
 import { checkPassword } from "../utils/bcrypt.js";
 import { Request, Response } from "express";
@@ -96,6 +96,31 @@ export const readUsersController = async (req: Request, res: Response) => {
 		res.status(200).json(response);
 	} catch (error) {
 		console.error(`Error in readUsersController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const readUserController = async (req: Request, res: Response) => {
+	try {
+		const { id } = req.params;
+
+		if (!id) {
+			res.status(400).json({
+				message: "ID or email is required!",
+			});
+			return;
+		}
+
+		const data = await readUser(id);
+
+		res.status(200).json({
+			data,
+		});
+	} catch (error) {
+		console.error(`Error in readUserController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
