@@ -2,6 +2,7 @@ import { Authorize } from "@src/middlewares/authorize.js";
 import { changePasswordController } from "../controllers/password.controller.js";
 import {
 	deleteUserController,
+	readUserController,
 	readUsersController,
 	updateProfileController,
 } from "../controllers/user.controller.js";
@@ -10,6 +11,7 @@ import { Router } from "express";
 
 const router = Router();
 
+router.get("/:id", readUserController);
 router.get(
 	"/list",
 	middleware,
