@@ -1,8 +1,9 @@
+import { middleware } from "@src/middlewares/middleware.js";
 import { analyzePlantController } from "../controllers/plant.controller.js";
 import { Router } from "express";
 
 const router = Router();
 
-router.post("/analyze", analyzePlantController);
+router.post("/analyze", middleware, analyzePlantController);
 
 export default router;
