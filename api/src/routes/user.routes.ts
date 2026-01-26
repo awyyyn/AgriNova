@@ -1,4 +1,4 @@
-import { Authorize } from "@src/middlewares/authorize.js";
+import { Authorize } from "../middlewares/authorize.js";
 import { changePasswordController } from "../controllers/password.controller.js";
 import {
 	deleteUserController,

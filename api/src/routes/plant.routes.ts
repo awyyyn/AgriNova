@@ -1,4 +1,4 @@
-import { middleware } from "@src/middlewares/middleware.js";
+import { middleware } from "../middlewares/middleware.js";
 import { analyzePlantController } from "../controllers/plant.controller.js";
 import { Router } from "express";
 

@@ -1,8 +1,8 @@
-import { readUser, readUsers } from "@src/services/user.service.js";
+import { readUser, readUsers } from "../services/user.service.js";
 import { prisma } from "../configs/prisma.js";
 import { checkPassword } from "../utils/bcrypt.js";
 import { Request, Response } from "express";
-import { User } from "@src/types/index.js";
+import { User } from "../types/index.js";
 
 export const updateProfileController = async (req: Request, res: Response) => {
 	try {

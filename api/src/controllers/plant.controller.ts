@@ -1,8 +1,8 @@
-import { PlantAnalysisResponse } from "@src/types/plant-analysis.js";
+import { PlantAnalysisResponse } from "../types/plant-analysis.js";
 import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
-import { prisma } from "@src/configs/prisma.js";
-import { generatePlantAnalysisId } from "@src/utils/index.js";
+import { prisma } from "../configs/prisma.js";
+import { generatePlantAnalysisId } from "../utils/index.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
