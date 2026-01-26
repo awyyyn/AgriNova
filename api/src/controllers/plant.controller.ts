@@ -1,8 +1,61 @@
 import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
 
+const ANALYSIS_PROMPT = `
+You are an agricultural plant health expert.
+
+Analyze the image and respond ONLY with valid JSON.
+DO NOT include markdown, explanations, or extra text.
+
+If NO plant, fruit, or vegetable is detected, return:
+
+{
+  "imageValidation": "invalid",
+  "message": "No plant, fruit, or vegetable detected in this image. Please upload a clear photo of your plant for pest analysis."
+}
+
+If a plant IS detected, return this structure:
+
+{
+  "imageValidation": "valid",
+  "plantIdentification": {
+    "commonName": "string | null",
+    "scientificName": "string | null"
+  },
+  "healthStatus": "healthy | unhealthy",
+  "diagnosis": {
+    "name": "string",
+    "severity": "mild | moderate | severe",
+    "symptoms": ["string"]
+  } | null,
+  "treatment": {
+    "organic": ["string"],
+    "chemical": ["string"],
+    "notes": "string"
+  } | null,
+  "preventionTips": ["string"],
+  "recoveryTimeline": "string"
+}
+
+Rules:
+- diagnosis and treatment MUST be null if plant is healthy
+- preventionTips must contain 3–5 items
+- severity must be lowercase
+- Use "suspected" if unsure
+`;
+
 export const analyzePlantController = async (req: Request, res: Response) => {
 	try {
+		const { img } = req.body;
+
+		if (!img) {
+			res.status(400).json({
+				error: true,
+				message: "Image is required!",
+			});
+			return;
+		}
+
 		const response = await openAI.responses.create(
 			{
 				model: "gpt-4.1-mini",
@@ -12,23 +65,35 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 						content: [
 							{
 								type: "input_text",
-								text: "what's in this image?",
+								text: ANALYSIS_PROMPT,
 							},
 							{
 								type: "input_image",
-								image_url:
-									"https://camo.githubusercontent.com/5e45bc648dba68520ce949a53690af6bcef2880f84a1d46cbb1636649afd6d84/68747470733a2f2f796176757a63656c696b65722e6769746875622e696f2f73616d706c652d696d616765732f696d6167652d313032312e6a7067",
+								image_url: img,
 							},
 						],
 					},
 				],
 			},
-			{}
+			{},
 		);
 
 		console.log(response.output_text);
 
-		res;
+		// Safely extract JSON text
+		const outputText = response.output_text;
+
+		if (!outputText) {
+			res.status(500).json({
+				error: true,
+				message: "No response from AI",
+			});
+			return;
+		}
+
+		const parsed = JSON.parse(outputText);
+
+		res.status(200).json(parsed);
 	} catch (error) {
 		console.error(`Error in loginController:`);
 		console.error(error);
