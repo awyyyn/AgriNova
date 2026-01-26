@@ -19,5 +19,7 @@ export async function middleware(
 		return;
 	}
 
+	req.userId = decoded.id;
+
 	next();
 }
