@@ -71,6 +71,7 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			{
 				model: "gpt-4.1-mini",
 				input: [
+					// @ts-ignore
 					{
 						role: "user",
 						content: [

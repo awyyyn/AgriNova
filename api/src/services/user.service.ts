@@ -30,7 +30,7 @@ export const readUsers = async ({
 
 	if (roles?.length) {
 		where.role = {
-			in: role,
+			in: roles,
 		};
 	}
 
