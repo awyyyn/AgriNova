@@ -1,15 +1,5 @@
 import * as React from "react";
-import {
-	BookOpen,
-	Bot,
-	LayoutDashboard,
-	Leaf,
-	LifeBuoy,
-	Send,
-	Settings2,
-	SquareTerminal,
-	Users,
-} from "lucide-react";
+import { LayoutDashboard, Leaf, LifeBuoy, Send, Users } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
