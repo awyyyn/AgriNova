@@ -11,13 +11,13 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/:id", readUserController);
 router.get(
 	"/list",
 	middleware,
 	Authorize(["ADMIN", "SUPER_ADMIN"]),
 	readUsersController,
 );
+router.get("/:id", readUserController);
 router.post("/edit", middleware, updateProfileController);
 router.delete("/delete", middleware, deleteUserController);
 router.post("/change-password", middleware, changePasswordController);
