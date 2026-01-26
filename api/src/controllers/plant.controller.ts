@@ -1,5 +1,8 @@
+import { PlantAnalysisResponse } from "@src/types/plant-analysis.js";
 import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
+import { prisma } from "@src/configs/prisma.js";
+import { generatePlantAnalysisId } from "@src/utils/index.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -48,6 +51,14 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 	try {
 		const { img } = req.body;
 
+		if (!req.userId) {
+			res.status(400).json({
+				message: "UnAuthorized",
+				error: true,
+			});
+			return;
+		}
+
 		if (!img) {
 			res.status(400).json({
 				error: true,
@@ -91,7 +102,35 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			return;
 		}
 
-		const parsed = JSON.parse(outputText);
+		const parsed: PlantAnalysisResponse = JSON.parse(outputText);
+
+		const analysis = await prisma.plant.create({
+			data: {
+				img,
+				formattedId: generatePlantAnalysisId(),
+				confidence: parsed.confidence,
+				diagnosis: parsed.diagnosis,
+				healthStatus: parsed.healthStatus,
+				message: parsed.message,
+				plantIdentification: parsed.plantIdentification,
+				preventionTips: parsed.preventionTips,
+				recoveryTimeline: parsed.recoveryTimeline,
+				treatment: parsed.treatment,
+				user: {
+					connect: {
+						id: req.userId,
+					},
+				},
+			},
+		});
+
+		if (!analysis) {
+			res.status(400).json({
+				message: "Something went wrong while saving your analysis.",
+				error: true,
+			});
+			return;
+		}
 
 		res.status(200).json(parsed);
 	} catch (error) {
