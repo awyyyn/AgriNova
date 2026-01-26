@@ -14,8 +14,9 @@ export interface PlantAnalysisResponse {
 		name: string;
 		severity: "mild" | "moderate" | "severe";
 		symptoms: string[];
+		confidence?: number;
 	};
-
+	confidence?: number; // 0-100
 	treatment?: {
 		organic: string[];
 		chemical?: string[];
