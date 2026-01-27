@@ -20,6 +20,7 @@ export async function middleware(
 	}
 
 	req.userId = decoded.id;
+	req.role = decoded.role;
 
 	next();
 }
