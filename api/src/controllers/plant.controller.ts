@@ -3,6 +3,7 @@ import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
 import { prisma } from "../configs/prisma.js";
 import { generatePlantAnalysisId } from "../utils/index.js";
+import { readPlantAnalysis } from "@src/services/plant.service.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -135,7 +136,36 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 
 		res.status(200).json(parsed);
 	} catch (error) {
-		console.error(`Error in loginController:`);
+		console.error(`Error in analyzePlantController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const readPlantsController = async (req: Request, res: Response) => {
+	try {
+		let userId = undefined;
+		const {
+			page,
+			limit,
+			query,
+		}: { page?: number; limit?: number; query?: string } = req.query;
+
+		if (req.role === "USER") {
+			userId = req.userId;
+		}
+
+		const response = await readPlantAnalysis({
+			userId,
+			pagination: page && limit ? { page, limit } : undefined,
+			query,
+		});
+
+		res.status(200).json(response);
+	} catch (error) {
+		console.error(`Error in readPlantsController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
