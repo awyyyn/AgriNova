@@ -8,6 +8,6 @@ import { Router } from "express";
 const router = Router();
 
 router.post("/analyze", middleware, analyzePlantController);
-router.post("/list", middleware, readPlantsController);
+router.get("/list", middleware, readPlantsController);
 
 export default router;
