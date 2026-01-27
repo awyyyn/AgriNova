@@ -26,7 +26,6 @@ export const readPlantAnalysis = async ({
 			{ plantIdentification: { commonName: query } },
 			{ plantIdentification: { scientificName: query } },
 			{ formattedId: { equals: query } },
-			{},
 		];
 	}
 
