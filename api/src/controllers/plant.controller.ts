@@ -68,28 +68,25 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			return;
 		}
 
-		const response = await openAI.responses.create(
-			{
-				model: "gpt-4.1-mini",
-				input: [
-					// @ts-ignore
-					{
-						role: "user",
-						content: [
-							{
-								type: "input_text",
-								text: ANALYSIS_PROMPT,
-							},
-							{
-								type: "input_image",
-								image_url: img,
-							},
-						],
-					},
-				],
-			},
-			{},
-		);
+		const response = await openAI.responses.create({
+			model: "gpt-4.1-mini",
+			input: [
+				// @ts-ignore
+				{
+					role: "user",
+					content: [
+						{
+							type: "input_text",
+							text: ANALYSIS_PROMPT,
+						},
+						{
+							type: "input_image",
+							image_url: img,
+						},
+					],
+				},
+			],
+		});
 
 		console.log(response.output_text);
 
