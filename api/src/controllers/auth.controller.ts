@@ -34,16 +34,22 @@ export const loginController = async (req: Request, res: Response) => {
 			return;
 		}
 
-		const accessToken = generateAccessToken({
-			email: user.email,
-			id: user.id,
-			role: user.role,
-		});
-		const refreshToken = generateAccessToken({
-			email: user.email,
-			id: user.id,
-			role: user.role,
-		});
+		const accessToken = generateAccessToken(
+			{
+				email: user.email,
+				id: user.id,
+				role: user.role,
+			},
+			"7d",
+		);
+		const refreshToken = generateAccessToken(
+			{
+				email: user.email,
+				id: user.id,
+				role: user.role,
+			},
+			"7d",
+		);
 
 		// eslint-disable-next-line
 		const { password: _, ...data } = user;
