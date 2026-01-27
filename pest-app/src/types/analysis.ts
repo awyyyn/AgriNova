@@ -26,3 +26,10 @@ export interface PlantAnalysisResponse {
 	preventionTips?: string[];
 	recoveryTimeline?: string;
 }
+
+export interface PlantAnalysis extends PlantAnalysisResponse {
+	readonly id: string;
+	formattedId: string;
+	createdAt: string;
+	img: string;
+}
