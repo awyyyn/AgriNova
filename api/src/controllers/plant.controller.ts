@@ -38,7 +38,9 @@ If a plant IS detected, return this structure:
     "notes": "string"
   } | null,
   "preventionTips": ["string"],
-  "recoveryTimeline": "string"
+  "recoveryTimeline": "string",
+  "type": "plant" | "vegetable" | "fruit" | "unknown",
+  "hasPestFound": boolean,
 }
 
 Rules:
