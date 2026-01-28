@@ -25,6 +25,8 @@ export interface PlantAnalysisResponse {
 
 	preventionTips?: string[];
 	recoveryTimeline?: string;
+	type: "plant" | "vegetable" | "fruit" | "unknown";
+	hasPestFound: boolean;
 }
 
 export interface PlantAnalysis extends PlantAnalysisResponse {
