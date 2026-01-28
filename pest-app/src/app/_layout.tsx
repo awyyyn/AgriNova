@@ -100,8 +100,20 @@ export default function RootLayout() {
 										options={{
 											animation: "slide_from_bottom",
 											presentation: "containedModal",
-											sheetAllowedDetents: [0, 1],
 											headerShown: false,
+										}}
+									/>
+									<Stack.Screen
+										name="plant/[id]"
+										options={{
+											presentation: "formSheet",
+											headerShown: false,
+											sheetAllowedDetents: [0.8, 0.8, 0.9555],
+											sheetInitialDetentIndex: 1,
+											contentStyle: {
+												backgroundColor: "#ffffff60",
+											},
+											sheetCornerRadius: 30,
 										}}
 									/>
 									<Stack.Screen
@@ -131,6 +143,21 @@ export default function RootLayout() {
 												backgroundColor: "#52CE19",
 											},
 											headerTitle: "Change Password",
+										}}
+									/>
+									<Stack.Screen
+										name="history"
+										options={{
+											headerTintColor: "#FFFFFF",
+											headerBackTitle: "Back",
+											headerBackButtonDisplayMode: "minimal",
+											headerTitleStyle: {
+												fontWeight: Platform.OS === "ios" ? "600" : "bold",
+											},
+											headerStyle: {
+												backgroundColor: "#52CE19",
+											},
+											headerTitle: "Analysis History",
 										}}
 									/>
 								</Stack.Protected>
