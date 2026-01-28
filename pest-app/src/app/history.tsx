@@ -181,7 +181,7 @@ export default function PestAnalysisHistory() {
 	return (
 		<View className="flex-1 p-[4vw] bg-gray-50">
 			<FlatList
-				data={[]}
+				data={items}
 				keyExtractor={(item) => item.id}
 				renderItem={renderItem}
 				refreshing={refreshing}
