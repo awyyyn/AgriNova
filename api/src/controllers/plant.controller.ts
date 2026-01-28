@@ -103,6 +103,26 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			return;
 		}
 
+		const parsedInvalid: {
+			imageValidation: "valid" | "invalid";
+			message: string;
+		} = JSON.parse(outputText);
+
+		if (parsedInvalid.imageValidation === "invalid") {
+			res.status(200).json(parsedInvalid);
+
+			await prisma.plant.create({
+				data: {
+					formattedId: generatePlantAnalysisId(),
+					img,
+					hasPestFound: false,
+					type: "unknown",
+					message: parsedInvalid.message,
+				},
+			});
+			return;
+		}
+
 		const parsed: PlantAnalysisResponse = JSON.parse(outputText);
 
 		const analysis = await prisma.plant.create({
@@ -122,6 +142,8 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 						id: req.userId,
 					},
 				},
+				hasPestFound: parsed.hasPestFound,
+				type: parsed.type,
 			},
 		});
 
