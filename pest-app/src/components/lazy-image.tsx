@@ -6,15 +6,17 @@ export function LazyImage({
 	uri,
 	height = 200,
 	contentFit = "cover",
+	className,
 }: {
 	uri: string;
 	height?: number;
 	contentFit?: ImageContentFit;
+	className?: string;
 }) {
 	const [loading, setLoading] = useState(true);
 
 	return (
-		<View style={[styles.container, { height }]}>
+		<View style={[styles.container, { height }]} className={className}>
 			{loading && <ActivityIndicator style={StyleSheet.absoluteFill} />}
 
 			<Image
