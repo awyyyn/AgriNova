@@ -1,10 +1,10 @@
 {
 	"expo": {
-		"name": "pest-app",
+		"name": "AgriNova",
 		"slug": "pest-app",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./src/assets/images/icon.png",
+		"icon": "./src/assets/icon.png",
 		"scheme": "pestapp",
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
@@ -36,7 +36,7 @@
 			[
 				"expo-splash-screen",
 				{
-					"image": "./src/assets/images/splash-icon.png",
+					"image": "./src/assets/icon.png",
 					"imageWidth": 200,
 					"resizeMode": "contain",
 					"backgroundColor": "#ffffff",
