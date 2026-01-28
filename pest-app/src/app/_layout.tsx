@@ -117,6 +117,19 @@ export default function RootLayout() {
 										}}
 									/>
 									<Stack.Screen
+										name="about"
+										options={{
+											presentation: "formSheet",
+											headerShown: false,
+											sheetAllowedDetents: [0.6, 0.6, 0.7],
+											sheetInitialDetentIndex: 0,
+											contentStyle: {
+												backgroundColor: "#ffffff60",
+											},
+											sheetCornerRadius: 30,
+										}}
+									/>
+									<Stack.Screen
 										name="profile"
 										options={{
 											headerTintColor: "#FFFFFF",
