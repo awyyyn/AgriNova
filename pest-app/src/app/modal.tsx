@@ -4,46 +4,47 @@ import { slugify } from "@src/utils";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import { useRouter } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
-import { useEffect, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Linking, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function ModalScreen() {
 	const insets = useSafeAreaInsets();
 	const [cameraPermissions, requestCameraPermissions] = useCameraPermissions();
+
 	const cameraRef = useRef<CameraView>(null);
 	const router = useRouter();
-	const setLoading = useLoadingStore((state) => state.setLoading);
 
-	useEffect(() => {
-		if (!cameraPermissions?.granted) {
-			requestCameraPermissions();
-		}
-	}, []);
+	// 🔥 Prevent re-renders from Zustand
+	const setLoading = useLoadingStore.getState().setLoading;
 
 	const handleEnableCamera = async () => {
-		// cameraPermissions not determined yet
 		if (!cameraPermissions) {
 			await requestCameraPermissions();
 			return;
 		}
 
-		// cameraPermissions denied but can ask again
 		if (!cameraPermissions.granted && cameraPermissions.canAskAgain) {
 			await requestCameraPermissions();
 			return;
 		}
 
-		// cameraPermissions permanently denied → open settings
 		if (!cameraPermissions.granted && !cameraPermissions.canAskAgain) {
 			Linking.openSettings();
 		}
 	};
 
+	// 🔥 Memoized camera preview (never re-renders)
+	const CameraPreview = useMemo(() => {
+		if (!cameraPermissions?.granted) return null;
+
+		return <CameraView ref={cameraRef} style={{ flex: 1 }} facing="back" />;
+	}, [cameraPermissions?.granted]);
+
+	// 🔒 Permission screen
 	if (!cameraPermissions?.granted) {
 		return (
 			<View className="flex-1 items-center justify-center px-6 bg-white">
-				{/* Icon Placeholder */}
 				<View className="w-20 h-20 rounded-full bg-blue-100 items-center justify-center mb-6">
 					<Text className="text-3xl">📷</Text>
 				</View>
@@ -58,17 +59,14 @@ export default function ModalScreen() {
 				</Text>
 
 				<TouchableOpacity
-					onPress={() => {
-						handleEnableCamera();
-						console.log("cameraPermissions requested");
-					}}
+					onPress={handleEnableCamera}
 					className="bg-[#44DF3E] px-8 py-3 rounded-xl w-full mb-3">
 					<Text className="text-white font-semibold text-center text-base">
 						Allow Camera Access
 					</Text>
 				</TouchableOpacity>
 
-				<TouchableOpacity onPress={() => router.back()} className="py-2 ">
+				<TouchableOpacity onPress={() => router.back()} className="py-2">
 					<Text className="text-[#109b0b] font-medium text-sm">Back</Text>
 				</TouchableOpacity>
 			</View>
@@ -77,46 +75,50 @@ export default function ModalScreen() {
 
 	return (
 		<View style={{ flex: 1 }}>
-			<CameraView ref={cameraRef} style={{ flex: 1 }} facing="back" />
-			<View className={`absolute  left-5`} style={{ top: insets.top }}>
+			{CameraPreview}
+
+			{/* Back Button */}
+			<View className="absolute left-5" style={{ top: insets.top }}>
 				<TouchableOpacity
 					onPress={() => router.back()}
 					className="bg-white flex flex-row items-center gap-2 px-4 py-2 rounded-lg">
 					<ChevronLeft color="#16a34a" />
-					<Text className=" text-green-600 font-medium text-sm">Back</Text>
+					<Text className="text-green-600 font-medium text-sm">Back</Text>
 				</TouchableOpacity>
 			</View>
+
+			{/* Capture Button */}
 			<View className="absolute bottom-10 w-full items-center">
 				<TouchableOpacity
 					onPress={async () => {
-						console.log("...");
 						if (!cameraRef.current) return;
-
-						const result = await cameraRef.current.takePictureAsync({
-							quality: 0.8,
-							skipProcessing: true,
-						});
 
 						try {
 							setLoading(true);
+
+							const result = await cameraRef.current.takePictureAsync({
+								quality: 0.8,
+								skipProcessing: false, // 🔥 smoother on Android
+							});
+
 							await cameraRef.current.pausePreview();
+
 							const data = await handleUploadToAppwrite({
 								fileName: slugify(result.uri || "uploaded-image"),
 								size: 0,
 								uri: result.uri,
 							});
+
 							router.dismissTo({
 								pathname: "/analyze",
 								params: { id: data.$id },
 							});
 						} catch (error) {
+							console.error("Camera error:", error);
 						} finally {
+							await cameraRef.current?.resumePreview();
 							setLoading(false);
 						}
-
-						console.log("Photo taken:", result.uri);
-
-						// setPhoto(result);
 					}}
 					className="h-20 w-20 rounded-full bg-white items-center justify-center">
 					<View className="h-16 w-16 rounded-full bg-green-600" />
