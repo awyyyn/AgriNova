@@ -61,7 +61,7 @@ export default function Settings() {
 						<SettingsButton
 							icon={<Leaf />}
 							text="Analysis History"
-							onPress={() => alert("Work in progress!")}
+							onPress={() => router.push("/history")}
 						/>
 					</Card>
 
