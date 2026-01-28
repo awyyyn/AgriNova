@@ -6,13 +6,23 @@ import { User } from "../types/index.js";
 
 export const updateProfileController = async (req: Request, res: Response) => {
 	try {
-		const { firstName, lastName, userId } = req.body;
+		const { firstName, lastName, photo } = req.body;
+		const userId: string = req.userId || "";
+
+		if (!userId) {
+			res.status(400).json({
+				error: true,
+				message: "UnAuthorized",
+			});
+			return;
+		}
 
 		const updatedUser = await prisma.user.update({
 			where: { id: userId },
 			data: {
 				firstName,
 				lastName,
+				photo,
 			},
 			omit: {
 				password: true,
