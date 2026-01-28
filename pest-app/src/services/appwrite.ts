@@ -10,10 +10,12 @@ export const handleUploadToAppwrite = async (file: {
 	uri: string;
 	fileName: string;
 	size: number;
+	// upgrade appwrite subscriptiong to use avatars bucket
+	bucketId?: "plant-images" | "avatars";
 }) => {
 	try {
 		const response = await storage.createFile({
-			bucketId: "plant-images",
+			bucketId: file?.bucketId || "plant-images",
 			fileId: ID.unique(),
 			file: {
 				uri: file.uri,
