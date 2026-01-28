@@ -75,7 +75,7 @@ export default function Settings() {
 						<SettingsButton
 							icon={<Info />}
 							text="About"
-							onPress={() => alert("Work in progress!")}
+							onPress={() => router.push("/about")}
 						/>
 						<Divider />
 						<SettingsButton
