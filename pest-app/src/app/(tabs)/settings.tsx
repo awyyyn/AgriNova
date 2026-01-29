@@ -4,9 +4,14 @@ import { Card } from "@src/components/ui/card";
 import { HStack } from "@src/components/ui/hstack";
 import { VStack } from "@src/components/ui/vstack";
 import { Text } from "react-native";
-import { Avatar, AvatarFallbackText } from "@src/components/ui/avatar";
+import {
+	Avatar,
+	AvatarFallbackText,
+	AvatarImage,
+} from "@src/components/ui/avatar";
 import SettingsButton from "@src/components/settings-button";
 import {
+	BadgeQuestionMark,
 	CircleQuestionMark,
 	Info,
 	Leaf,
@@ -33,9 +38,12 @@ export default function Settings() {
 					<Card size="lg">
 						<HStack space="lg" className="items-center">
 							<Avatar size="lg" className="bg-[#DAFFD7]">
-								<AvatarFallbackText className="text-black">
-									{name}
-								</AvatarFallbackText>
+								<AvatarImage source={{ uri: user?.photo }} />
+								{!user?.photo && (
+									<AvatarFallbackText className="text-black">
+										{name}
+									</AvatarFallbackText>
+								)}
 							</Avatar>
 							<VStack>
 								<Text className="text-2xl font-semibold">{name}</Text>
@@ -67,15 +75,21 @@ export default function Settings() {
 
 					<Card size="lg" className="flex gap-y-5">
 						<SettingsButton
-							text="Help"
+							text="Help & Support"
 							icon={<CircleQuestionMark />}
-							onPress={() => alert("Work in progress!")}
+							onPress={() => router.push("/help")}
 						/>
 						<Divider />
 						<SettingsButton
 							icon={<Info />}
 							text="About"
 							onPress={() => router.push("/about")}
+						/>
+						<Divider />
+						<SettingsButton
+							icon={<BadgeQuestionMark />}
+							text="FAQ's"
+							onPress={() => router.push("/faqs")}
 						/>
 						<Divider />
 						<SettingsButton
