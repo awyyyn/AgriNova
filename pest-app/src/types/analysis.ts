@@ -20,6 +20,7 @@ export interface PlantAnalysisResponse {
 	treatment?: {
 		organic: string[];
 		chemical?: string[];
+		diy?: string[];
 		notes?: string;
 	};
 

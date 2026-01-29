@@ -20,6 +20,7 @@ export interface PlantAnalysisResponse {
 		organic: string[];
 		chemical?: string[];
 		notes?: string;
+		diy?: string[];
 	};
 
 	preventionTips?: string[];
