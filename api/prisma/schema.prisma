@@ -52,7 +52,6 @@ model Plant {
   formattedId         String               @unique
   message             String?
   plantIdentification PlantIdentification?
-  confidence          Int?
   healthStatus        String?
   diagnosis           Diagnosis?
   treatment           Treatment?
@@ -63,6 +62,7 @@ model Plant {
   userId              String?              @db.ObjectId
   type                String
   hasPestFound        Boolean
+  confidence          Float                @default(0)
 
   @@map("plants")
 }
