@@ -1,212 +1,340 @@
-// app/plant/[id].tsx
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
-	ScrollView,
-	Image,
-	TouchableOpacity,
-	Animated,
-	Dimensions,
-	PanResponder,
-	Text,
 	View,
+	Text,
+	TouchableOpacity,
+	ActivityIndicator,
+	ScrollView,
+	useColorScheme,
+	Pressable,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { usePestHistoryStore } from "@src/store/usePestHistoryStore";
-import { Leaf, X } from "lucide-react-native";
-import { PlantAnalysis } from "@src/types";
+import * as Haptics from "expo-haptics";
 
-const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+import { LazyImage } from "@src/components/lazy-image";
+import { Center } from "@src/components/ui/center";
+import { useAuthStore } from "@src/store/useAuthStore";
+import { PlantAnalysisResponse } from "@src/types";
+import { AlertTriangle } from "lucide-react-native";
 
-export default function Plant() {
-	const { id } = useLocalSearchParams<{ id: string }>();
+export default function Analyze() {
+	const { id } = useLocalSearchParams();
 	const router = useRouter();
-	const pest: PlantAnalysis | undefined = usePestHistoryStore
-		.getState()
-		.getItemById(id);
+	const { token } = useAuthStore();
+	const scheme = useColorScheme();
 
-	const slideAnim = useRef(new Animated.Value(SCREEN_HEIGHT)).current;
+	const [loading, setLoading] = useState(false);
+	const [analyzed, setAnalyzed] = useState(false);
+	const [error, setError] = useState("");
+	const [data, setData] = useState<PlantAnalysisResponse | null>(null);
 
-	useEffect(() => {
-		// Slide up animation on mount
-		Animated.timing(slideAnim, {
-			toValue: 0,
-			duration: 300,
-			useNativeDriver: true,
-		}).start();
-	}, []);
+	const imageUrl = `https://fra.cloud.appwrite.io/v1/storage/buckets/plant-images/files/${id}/view?project=${process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID}`;
 
-	const handleClose = () => {
-		Animated.timing(slideAnim, {
-			toValue: SCREEN_HEIGHT,
-			duration: 250,
-			useNativeDriver: true,
-		}).start(() => router.back());
-	};
+	// Load cached result if exists
+	// useEffect(() => {
+	// 	const loadCache = async () => {
+	// 		try {
+	// 			const cached = await AsyncStorage.getItem(`plant-analysis-${id}`);
+	// 			if (cached) {
+	// 				setData(JSON.parse(cached));
+	// 				setAnalyzed(true);
+	// 			}
+	// 		} catch {}
+	// 	};
+	// 	loadCache();
+	// }, [id]);
 
-	// PanResponder for swipe-down
-	const pan = useRef(new Animated.ValueXY()).current;
-	const panResponder = useRef(
-		PanResponder.create({
-			onMoveShouldSetPanResponder: (_, gesture) => {
-				return Math.abs(gesture.dy) > 5;
-			},
-			onPanResponderMove: (_, gesture) => {
-				if (gesture.dy > 0) {
-					pan.setValue({ x: 0, y: gesture.dy });
-				}
-			},
-			onPanResponderRelease: (_, gesture) => {
-				if (gesture.dy > 120) {
-					handleClose(); // close if swiped enough
-				} else {
-					Animated.spring(pan, {
-						toValue: { x: 0, y: 0 },
-						useNativeDriver: true,
-					}).start();
-				}
-			},
-		}),
-	).current;
+	if (!id) return router.dismiss();
 
-	if (!pest) {
-		router.replace("/history");
-		return null;
+	async function handleAnalyze() {
+		try {
+			setError("");
+			setLoading(true);
+			setAnalyzed(false);
+
+			Haptics.selectionAsync();
+
+			const response = await fetch(
+				`${process.env.EXPO_PUBLIC_API_URL}/plant/analyze`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify({ img: imageUrl }),
+				},
+			);
+
+			const result = await response.json();
+
+			if (!response.ok) {
+				Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+				throw new Error(result.message || "Failed to analyze image");
+			}
+
+			setData(result);
+			setAnalyzed(true);
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+
+			// Cache result
+			// await AsyncStorage.setItem(
+			// 	`plant-analysis-${id}`,
+			// 	JSON.stringify(result),
+			// );
+		} catch (err) {
+			setError((err as Error).message || "Something went wrong");
+			Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
+		} finally {
+			setLoading(false);
+		}
 	}
 
-	const getSeverityColor = (severity: string) => {
-		switch (severity) {
-			case "mild":
-				return "bg-yellow-300";
-			case "moderate":
-				return "bg-orange-400";
-			case "severe":
-				return "bg-red-500";
-			default:
-				return "bg-gray-400";
-		}
-	};
+	const isDark = scheme === "dark";
 
 	return (
-		<Animated.View
-			style={{
-				flex: 1,
-				transform: [{ translateY: Animated.add(slideAnim, pan.y) }],
-			}}
-			className="absolute inset-0 bg-gray-100"
-			{...panResponder.panHandlers}>
-			{/* Close Button */}
-			<TouchableOpacity
-				onPress={handleClose}
-				className="absolute top-12 right-4 z-50 bg-white p-2 rounded-full shadow">
-				<X size={24} color="#000" />
-			</TouchableOpacity>
+		<ScrollView
+			className={`flex-1 p-[4vw]`}
+			contentContainerStyle={{ gap: 20, paddingBottom: 50 }}
+			style={{ backgroundColor: isDark ? "#1A1A1A" : "#F8FAFC" }}>
+			<LazyImage height={380} contentFit="contain" uri={imageUrl} />
 
-			<ScrollView className="flex-1 p-4 mt-16">
-				{/* Header */}
-				<View className="flex-row items-center mb-4">
-					<Image
-						source={{ uri: pest.img }}
-						className="w-32 h-32 rounded-xl bg-gray-300"
-					/>
-					<View className="flex-1 ml-3">
-						<Text className="text-2xl font-bold">
-							{pest.plantIdentification?.commonName || "Unknown Plant"}
+			{!loading && !analyzed && (
+				<TouchableOpacity
+					onPress={handleAnalyze}
+					className="bg-[#44DF3E] p-4 rounded-xl">
+					<Text className="text-center text-lg font-semibold text-white">
+						Analyze Plant
+					</Text>
+				</TouchableOpacity>
+			)}
+
+			{/* Skeleton loader */}
+			{loading && (
+				<View className="gap-4 mt-10">
+					<View className="h-20 bg-gray-300 rounded-xl animate-pulse" />
+					<View className="h-20 bg-gray-300 rounded-xl animate-pulse" />
+					<View className="h-20 bg-gray-300 rounded-xl animate-pulse" />
+				</View>
+			)}
+
+			{/* Error */}
+			{error !== "" && !loading && (
+				<View
+					className={`p-4 rounded-xl border gap-2 ${
+						isDark ? "border-red-400 bg-red-900" : "border-red-200 bg-red-50"
+					}`}>
+					<Text
+						className={`${isDark ? "text-red-200" : "text-red-600"} font-semibold`}>
+						Analysis Failed
+					</Text>
+					<Text
+						className={`${isDark ? "text-red-300" : "text-red-500"} text-sm`}>
+						{error}
+					</Text>
+
+					<TouchableOpacity
+						onPress={handleAnalyze}
+						className="mt-2 bg-red-500 rounded-lg py-2">
+						<Text className="text-white text-center font-medium">
+							Try Again
 						</Text>
-						{pest.plantIdentification?.scientificName && (
-							<Text className="text-gray-500 italic">
-								({pest.plantIdentification.scientificName})
+					</TouchableOpacity>
+				</View>
+			)}
+
+			{/* Invalid Image */}
+			{analyzed && data?.imageValidation === "invalid" && (
+				<View className="flex-1 bg-white px-6 justify-center">
+					{/* Icon */}
+					<View className="items-center mb-6">
+						<AlertTriangle size={64} color="#16a34a" />
+					</View>
+
+					{/* Title */}
+					<Text className="text-2xl font-semibold text-center mb-2">
+						We couldn’t analyze this image
+					</Text>
+
+					{/* Description */}
+					<Text className="text-center text-gray-600 mb-6">
+						The image doesn&apos;t appear to contain a plant, fruit, or
+						vegetable. Please upload a clear photo of a plant leaf, fruit, or
+						crop for accurate analysis.
+					</Text>
+
+					{/* Tips */}
+					<View className="bg-green-50 rounded-2xl p-4 mb-8">
+						<Text className="font-semibold mb-2 text-green-700">
+							For best results:
+						</Text>
+						<Text className="text-green-700">• Good lighting</Text>
+						<Text className="text-green-700">• Plant fills the frame</Text>
+						<Text className="text-green-700">• One plant per photo</Text>
+					</View>
+
+					{/* Actions */}
+					<Pressable
+						onPress={() => router.dismissTo("/modal")}
+						className="bg-green-600 py-4 rounded-2xl mb-3">
+						<Text className="text-white text-center font-semibold">
+							Retake Photo
+						</Text>
+					</Pressable>
+
+					<Pressable onPress={() => router.dismissTo("/(tabs)/scan")}>
+						<Text className="text-center text-green-700">
+							Upload another image
+						</Text>
+					</Pressable>
+				</View>
+			)}
+
+			{/* Valid Results */}
+			{analyzed && data?.imageValidation === "valid" && (
+				<>
+					{/* Overview */}
+					<View
+						className={`rounded-2xl p-4 shadow-sm gap-2 ${
+							isDark ? "bg-gray-800" : "bg-white"
+						}`}>
+						<Text
+							className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+							Plant Overview
+						</Text>
+						<Text className={`${isDark ? "text-gray-300" : "text-gray-700"}`}>
+							Status:{" "}
+							<Text
+								className={
+									data.healthStatus === "healthy"
+										? "text-green-400 font-semibold"
+										: "text-red-400 font-semibold"
+								}>
+								{data.healthStatus}{" "}
+								{data.confidence && `(Confidence: ${data.confidence}%)`}
+							</Text>
+						</Text>
+
+						{data.plantIdentification?.commonName && (
+							<Text className={`${isDark ? "text-gray-300" : "text-gray-600"}`}>
+								Plant: {data.plantIdentification.commonName}
 							</Text>
 						)}
-						{pest.healthStatus && (
-							<View
-								className={`mt-2 px-2 py-1 rounded-lg ${
-									pest.healthStatus === "healthy"
-										? "bg-green-500"
-										: "bg-red-500"
-								}`}>
-								<Text className="text-white font-bold capitalize">
-									{pest.healthStatus}
-								</Text>
+					</View>
+
+					{/* Diagnosis */}
+					{data.diagnosis && (
+						<View
+							className={`rounded-2xl p-4 shadow-sm gap-2 ${
+								isDark ? "bg-gray-800" : "bg-white"
+							}`}>
+							<Text
+								className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+								Diagnosis
+							</Text>
+
+							<View className="flex-row items-center gap-2">
+								<Text className="font-medium">{data.diagnosis.name}</Text>
+								<View
+									className={`px-2 py-1 rounded-full ${
+										data.diagnosis.severity === "mild"
+											? "bg-yellow-100"
+											: data.diagnosis.severity === "moderate"
+												? "bg-orange-100"
+												: "bg-red-100"
+									}`}>
+									<Text className="text-xs capitalize">
+										{data.diagnosis.severity}
+									</Text>
+								</View>
+								{data.diagnosis.confidence && (
+									<Text className="text-xs text-gray-500">
+										({data.diagnosis.confidence}% confidence)
+									</Text>
+								)}
 							</View>
-						)}
-					</View>
-				</View>
 
-				{/* Diagnosis Card */}
-				{pest.diagnosis && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Diagnosis</Text>
-						<Text>Name: {pest.diagnosis.name}</Text>
-						<Text
-							className={`${getSeverityColor(
-								pest.diagnosis.severity,
-							)} px-2 py-1 rounded mt-1`}>
-							Severity: {pest.diagnosis.severity}
-						</Text>
-						{pest.diagnosis.symptoms.length > 0 && (
-							<Text>Symptoms: {pest.diagnosis.symptoms.join(", ")}</Text>
-						)}
-						{pest.diagnosis.confidence !== undefined && (
-							<Text>Confidence: {pest.diagnosis.confidence}%</Text>
-						)}
-					</View>
-				)}
-
-				{/* Treatment Card */}
-				{pest.treatment && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Treatment</Text>
-
-						{pest.treatment.organic.length > 0 && (
-							<View className="flex-row items-center my-1">
-								<Leaf size={16} color="#4caf50" />
-								<Text className="ml-2">
-									Organic: {pest.treatment.organic.join(", ")}
+							{data.diagnosis.symptoms.map((s, i) => (
+								<Text
+									key={i}
+									className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+									• {s}
 								</Text>
-							</View>
-						)}
+							))}
+						</View>
+					)}
 
-						{pest.treatment.chemical && pest.treatment.chemical.length > 0 && (
-							<View className="flex-row items-center my-1">
-								{/* <Flask size={16} color="#ff9800" /> */}
-								<Text className="ml-2">
-									Chemical: {pest.treatment.chemical.join(", ")}
+					{/* Treatment */}
+					{data.treatment && (
+						<View
+							className={`rounded-2xl p-4 shadow-sm gap-2 ${
+								isDark ? "bg-gray-800" : "bg-white"
+							}`}>
+							<Text
+								className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+								Treatment
+							</Text>
+
+							<Text className="font-medium">Organic</Text>
+							{data.treatment.organic.map((t, i) => (
+								<Text
+									key={i}
+									className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+									• {t}
 								</Text>
-							</View>
-						)}
+							))}
 
-						{pest.treatment.notes && (
-							<Text className="mt-1">Notes: {pest.treatment.notes}</Text>
-						)}
-					</View>
-				)}
+							{data.treatment.chemical?.length ? (
+								<>
+									<Text className="font-medium mt-2">Chemical</Text>
+									{data.treatment.chemical.map((t, i) => (
+										<Text
+											key={i}
+											className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+											• {t}
+										</Text>
+									))}
+								</>
+							) : null}
 
-				{/* Prevention Tips */}
-				{pest.preventionTips && pest.preventionTips.length > 0 && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Prevention Tips</Text>
-						{pest.preventionTips.map((tip, index) => (
-							<Text key={index}>• {tip}</Text>
-						))}
-					</View>
-				)}
+							{data.treatment.notes && (
+								<Text className="text-xs text-gray-400 mt-1">
+									{data.treatment.notes}
+								</Text>
+							)}
+						</View>
+					)}
 
-				{/* Recovery Timeline */}
-				{pest.recoveryTimeline && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Recovery Timeline</Text>
-						<Text>{pest.recoveryTimeline}</Text>
-					</View>
-				)}
+					{/* Prevention */}
+					{data.preventionTips && (
+						<View
+							className={`p-4 rounded-2xl border gap-2 ${
+								isDark
+									? "bg-green-900 border-green-700"
+									: "bg-green-50 border-green-200"
+							}`}>
+							<Text
+								className={`text-lg font-semibold ${isDark ? "text-green-200" : "text-green-700"}`}>
+								Prevention Tips
+							</Text>
 
-				{/* Overall Confidence */}
-				{pest.confidence !== undefined && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Overall Confidence</Text>
-						<Text>{pest.confidence}%</Text>
-					</View>
-				)}
-			</ScrollView>
-		</Animated.View>
+							{data.preventionTips.map((tip, i) => (
+								<Text
+									key={i}
+									className={`${isDark ? "text-green-300" : "text-green-600"} text-sm`}>
+									• {tip}
+								</Text>
+							))}
+
+							{data.recoveryTimeline && (
+								<Text className="text-xs text-green-500 mt-2">
+									Expected recovery: {data.recoveryTimeline}
+								</Text>
+							)}
+						</View>
+					)}
+				</>
+			)}
+		</ScrollView>
 	);
 }
