@@ -8,10 +8,11 @@ import { Box } from "@src/components/ui/box";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { ImageZoom } from "@likashefqet/react-native-image-zoom";
-import { FlaskRound, Leaf } from "lucide-react-native";
+import { FlaskRound, Info, Leaf } from "lucide-react-native";
 import { HealthBadge } from "@src/components/health-badge";
 import { Card } from "@src/components/ui/card";
 import { HStack } from "@src/components/ui/hstack";
+import { Badge, BadgeText } from "@src/components/ui/badge";
 
 export default function Plant() {
 	const [previewImg, setPreviewImg] = useState(false);
@@ -51,10 +52,74 @@ export default function Plant() {
 				</Box>
 				<Card className="  rounded-xl p-4 mb-4 shadow">
 					<View className="flex-1  ">
-						<Text className="text-sm text-gray-400">Common Name:</Text>
-						<Text className="text-2xl font-bold">
-							{pest.plantIdentification?.commonName || "Unknown Plant"}
-						</Text>
+						<View className="mb-2">
+							<HStack className="items-center gap-2">
+								<Text className="text-sm text-gray-400">Type:</Text>
+								<Badge className="">
+									<BadgeText className="font-medium">{pest.type}</BadgeText>
+								</Badge>
+							</HStack>
+							{pest.type !== "unknown" && (
+								<HStack className="items-center gap-2">
+									<Text className="text-sm text-gray-400">Pest Found:</Text>
+									<Text className=" ">
+										{pest.hasPestFound ? "Yes" : "None"}
+									</Text>
+								</HStack>
+							)}
+						</View>
+						{pest.plantIdentification?.commonName ? (
+							<>
+								<Text className="text-sm text-gray-400">Common Name:</Text>
+								<Text className="text-2xl font-bold">
+									{pest.plantIdentification?.commonName || "Unknown Plant"}
+								</Text>
+							</>
+						) : (
+							<>
+								{/* Status badge */}
+								<View className="self-start bg-amber-100 px-3 py-1 rounded-full mb-3">
+									<Text className="text-amber-700 text-xs font-medium">
+										Analysis Inconclusive
+									</Text>
+								</View>
+
+								{/* Title */}
+								<Text className="text-xl font-semibold mb-2">
+									No plant detected in this image
+								</Text>
+
+								{/* Explanation */}
+								<Text className="text-gray-600 mb-4">
+									During analysis, the system could not detect a plant, fruit,
+									or vegetable in this image. As a result, pest detection and
+									treatment recommendations were not generated.
+								</Text>
+
+								{/* Reasons */}
+								<View className="bg-gray-50 rounded-2xl p-4 mb-4">
+									<Text className="font-semibold mb-2">Possible reasons:</Text>
+									<Text className="text-gray-600">
+										• Plant is too small or unclear
+									</Text>
+									<Text className="text-gray-600">
+										• Image contains non-plant objects
+									</Text>
+									<Text className="text-gray-600">
+										• Poor lighting or angle
+									</Text>
+								</View>
+
+								{/* Info note */}
+								<View className="flex-row gap-3 bg-blue-50 rounded-2xl p-4 mb-6">
+									<Info size={20} color="#2563eb" />
+									<Text className="text-blue-700 flex-1">
+										This analysis was saved for history purposes, but no
+										insights are available for this image.
+									</Text>
+								</View>
+							</>
+						)}
 						{pest.plantIdentification?.scientificName && (
 							<>
 								<Text className="text-sm text-gray-400">Scientific Name:</Text>
