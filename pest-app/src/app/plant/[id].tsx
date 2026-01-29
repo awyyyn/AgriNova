@@ -59,6 +59,15 @@ export default function Plant() {
 									<BadgeText className="font-medium">{pest.type}</BadgeText>
 								</Badge>
 							</HStack>
+							<HStack className="items-center gap-2 mt-1">
+								<Text className="text-sm text-gray-400">Confidence:</Text>
+								<Badge
+									className={`${pest.confidence < 50 ? "bg-red-500" : pest.confidence < 75 ? "bg-orange-500" : "bg-green-500"}`}>
+									<BadgeText className="font-medium text-white">
+										{pest.confidence}%
+									</BadgeText>
+								</Badge>
+							</HStack>
 							{pest.type !== "unknown" && (
 								<HStack className="items-center gap-2">
 									<Text className="text-sm text-gray-400">Pest Found:</Text>
@@ -179,6 +188,17 @@ export default function Plant() {
 							</View>
 						)}
 
+						{pest.treatment?.diy && (
+							<View className="mt-2">
+								<Text className="font-bold text-lg mb-2">DIY Treatments</Text>
+								{pest.treatment?.diy.map((diy, index) => (
+									<Text key={index} className="pl-4">
+										- {diy}
+									</Text>
+								))}
+							</View>
+						)}
+
 						{pest.treatment.notes && (
 							<Text className="mt-1">Notes: {pest.treatment.notes}</Text>
 						)}
@@ -200,14 +220,6 @@ export default function Plant() {
 					<View className="bg-white rounded-xl p-4 mb-4 shadow">
 						<Text className="font-bold text-lg mb-2">Recovery Timeline</Text>
 						<Text>{pest.recoveryTimeline}</Text>
-					</View>
-				)}
-
-				{/* Overall Confidence */}
-				{pest.confidence && (
-					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Overall Confidence</Text>
-						<Text>{pest.confidence}%</Text>
 					</View>
 				)}
 			</ScrollView>
