@@ -16,7 +16,6 @@ export interface PlantAnalysisResponse {
 		symptoms: string[];
 		confidence?: number;
 	};
-	confidence?: number; // 0-100
 	treatment?: {
 		organic: string[];
 		chemical?: string[];
@@ -28,6 +27,7 @@ export interface PlantAnalysisResponse {
 	recoveryTimeline?: string;
 	type: "plant" | "vegetable" | "fruit" | "unknown";
 	hasPestFound: boolean;
+	confidence: number;
 }
 
 export interface PlantAnalysis extends PlantAnalysisResponse {

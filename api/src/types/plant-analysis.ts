@@ -15,7 +15,7 @@ export interface PlantAnalysisResponse {
 		symptoms: string[];
 		confidence?: number;
 	};
-	confidence?: number; // 0-100
+	confidence: number; // 0-100
 	treatment?: {
 		organic: string[];
 		chemical?: string[];
