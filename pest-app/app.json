@@ -16,9 +16,9 @@
 			"package": "com.capstone.agrinova",
 			"adaptiveIcon": {
 				"backgroundColor": "#E6F4FE",
-				"foregroundImage": "./src/assets/images/android-icon-foreground.png",
-				"backgroundImage": "./src/assets/images/android-icon-background.png",
-				"monochromeImage": "./src/assets/images/android-icon-monochrome.png"
+				"foregroundImage": "./src/assets/icon.png",
+				"backgroundImage": "./src/assets/icon.png",
+				"monochromeImage": "./src/assets/icon.png"
 			},
 			"edgeToEdgeEnabled": true,
 			"predictiveBackGestureEnabled": false,
@@ -29,7 +29,7 @@
 		},
 		"web": {
 			"output": "static",
-			"favicon": "./src/assets/images/favicon.png"
+			"favicon": "./src/assets/icon.png"
 		},
 		"plugins": [
 			"expo-router",
