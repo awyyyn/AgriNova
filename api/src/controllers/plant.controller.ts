@@ -35,13 +35,42 @@ If a plant IS detected, return this structure:
   "treatment": {
     "organic": ["string"],
     "chemical": ["string"],
-    "notes": "string"
+    "notes": "string",
+    "diy": ["string"],
   } | null,
   "preventionTips": ["string"],
   "recoveryTimeline": "string",
   "type": "plant" | "vegetable" | "fruit" | "unknown",
   "hasPestFound": boolean,
 }
+
+
+--------------------------------
+DIY TREATMENT RULES (STRICT)
+--------------------------------
+- "diy" MUST contain ONLY homemade pesticide or chemical SPRAYS
+- DIY sprays should use commonly available farm or household materials
+- Prefer locally known or Filipino-friendly terms when applicable
+- Examples:
+  • Soap spray (sabon na may tubig)
+  • Garlic spray (bawang spray)
+  • Chili spray (siling pangspray)
+  • Neem leaf extract spray (katas ng neem)
+  • Oil-based insect spray
+- Do NOT include fertilizers, soil treatments, or non-spray remedies
+- Do NOT include exact mixing ratios or dangerous instructions
+- If no safe DIY spray exists, return an empty array []
+
+--------------------------------
+SAFETY & TIMING RULES
+--------------------------------
+- Treatment notes may include basic safety reminders:
+  • Wear gloves if possible
+  • Avoid spraying under strong sunlight
+  • Keep away from children and animals
+- Prefer spray timing suggestions:
+  • Early morning or late afternoon
+  • Avoid rainy or windy conditions
 
 Rules:
 - diagnosis and treatment MUST be null if plant is healthy
