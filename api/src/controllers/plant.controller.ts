@@ -3,7 +3,7 @@ import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
 import { prisma } from "../configs/prisma.js";
 import { generatePlantAnalysisId } from "../utils/index.js";
-import { readPlantAnalysis } from "@src/services/plant.service.js";
+import { readPlantAnalysis } from "../services/plant.service.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.

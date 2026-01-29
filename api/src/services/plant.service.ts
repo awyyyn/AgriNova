@@ -1,5 +1,5 @@
-import { prisma } from "@src/configs/prisma.js";
-import { Prisma } from "@src/types/index.js";
+import { prisma } from "../configs/prisma.js";
+import { Prisma } from "../types/index.js";
 
 interface ReadPlants {
 	pagination?: {
