@@ -33,6 +33,9 @@ export const readPlantAnalysis = async ({
 		where,
 		skip: pagination ? pagination.limit * Number(pagination?.page) : undefined,
 		take: pagination ? Number(pagination.limit) : undefined,
+		orderBy: {
+			createdAt: "desc",
+		},
 	});
 
 	const total = await prisma.plant.count({ where });

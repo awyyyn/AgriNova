@@ -42,8 +42,20 @@ If a plant IS detected, return this structure:
   "recoveryTimeline": "string",
   "type": "plant" | "vegetable" | "fruit" | "unknown",
   "hasPestFound": boolean,
+  "confidence": number 
 }
 
+--------------------------------
+CONFIDENCE RULES (MANDATORY)
+--------------------------------
+- "confidence" MUST always be present
+- Value must be an integer from 0 to 100
+- Reflect certainty of the overall analysis (plant identification + diagnosis)
+- Use lower confidence if:
+  • Image quality is poor
+  • Plant type is unclear
+  • Diagnosis is marked as "suspected"
+- Healthy plants may still have high confidence
 
 --------------------------------
 DIY TREATMENT RULES (STRICT)
@@ -77,6 +89,7 @@ Rules:
 - preventionTips must contain 3–5 items
 - severity must be lowercase
 - Use "suspected" if unsure
+- Keep output concise, practical, and farmer-friendly
 `;
 
 export const analyzePlantController = async (req: Request, res: Response) => {
@@ -147,6 +160,7 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 					hasPestFound: false,
 					type: "unknown",
 					message: parsedInvalid.message,
+					confidence: 0,
 				},
 			});
 			return;
