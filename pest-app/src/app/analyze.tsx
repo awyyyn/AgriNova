@@ -153,7 +153,7 @@ export default function Analyze() {
 
 					{/* Title */}
 					<Text className="text-2xl font-semibold text-center mb-2">
-						We couldn’t analyze this image
+						We couldn&apos;t analyze this image
 					</Text>
 
 					{/* Description */}
@@ -296,6 +296,18 @@ export default function Analyze() {
 									))}
 								</>
 							) : null}
+
+							{data.treatment?.diy && (
+								<View
+									className={`rounded-2xl p-4 shadow-sm gap-2 ${
+										isDark ? "bg-gray-800" : "bg-white"
+									}`}>
+									<Text className="font-bold text-lg mb-2">DIY Treatments</Text>
+									{data.treatment?.diy.map((diy, index) => (
+										<Text key={index}>{diy}</Text>
+									))}
+								</View>
+							)}
 
 							{data.treatment.notes && (
 								<Text className="text-xs text-gray-400 mt-1">
