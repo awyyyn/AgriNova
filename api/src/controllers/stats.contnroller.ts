@@ -6,7 +6,7 @@ import {
 	computeTotalAnalyses,
 	computeUnhealthyPlantsCount,
 	computeWeightedSuccessRate,
-} from "@src/services/stat.service.js";
+} from "../services/stat.service.js";
 import { Request, Response } from "express";
 
 export const readStatsController = async (req: Request, res: Response) => {

@@ -8,7 +8,7 @@ import {
 } from "../controllers/user.controller.js";
 import { middleware } from "../middlewares/middleware.js";
 import { Router } from "express";
-import { readStatsController } from "@src/controllers/stats.contnroller.js";
+import { readStatsController } from "../controllers/stats.contnroller.js";
 
 const router = Router();
 

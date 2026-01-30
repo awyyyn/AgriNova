@@ -1,4 +1,4 @@
-import { prisma } from "@src/configs/prisma.js";
+import { prisma } from "../configs/prisma.js";
 
 export async function computeWeightedSuccessRate(userId?: string) {
 	// Fetch relevant fields
