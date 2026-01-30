@@ -1,15 +1,17 @@
 import { View, ScrollView } from "react-native";
-import React from "react";
+import React, { JSX } from "react";
 import { Header } from "@src/components/header";
 
 interface ScrollViewLayoutProps {
 	children?: React.ReactNode;
 	description?: string;
+	refreshControl?: JSX.Element;
 }
 
 export default function ScrollViewLayout({
 	children,
 	description,
+	refreshControl,
 }: ScrollViewLayoutProps) {
 	return (
 		<ScrollView
@@ -17,6 +19,7 @@ export default function ScrollViewLayout({
 			alwaysBounceVertical={false}
 			contentContainerStyle={{ flexGrow: 1, backgroundColor: "#ECFDF0" }}
 			stickyHeaderIndices={[0]}
+			refreshControl={refreshControl}
 			showsVerticalScrollIndicator={false}>
 			<Header description={description} centerElements color="light" />
 
