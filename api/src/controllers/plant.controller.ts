@@ -161,6 +161,11 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 					type: "unknown",
 					message: parsedInvalid.message,
 					confidence: 0,
+					user: {
+						connect: {
+							id: req.userId,
+						},
+					},
 				},
 			});
 			return;
