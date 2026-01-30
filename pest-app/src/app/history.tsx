@@ -158,21 +158,21 @@ export default function PestAnalysisHistory() {
 
 					<VStack className="items-end">
 						<Text className="text-xs text-gray-500">
-							{format(new Date(item.createdAt), "hh:mm a")}
+							{format(new Date(item.createdAt), "hh:mm a").toString()}
 						</Text>
 						<Text className="text-xs text-gray-400">
-							{format(new Date(item.createdAt), "MMM dd, yyyy")}
+							{format(new Date(item.createdAt), "MMM dd, yyyy").toString()}
 						</Text>
 					</VStack>
 				</HStack>
 
 				<View className="flex-row items-center gap-2 mt-2">
 					<HealthBadge status={item.healthStatus || "unknown"} />
-					{item.confidence && (
+					{item.confidence ? (
 						<Text className="text-xs text-gray-500">
 							Confidence: {item.confidence}%
 						</Text>
-					)}
+					) : null}
 				</View>
 			</View>
 		</TouchableOpacity>
