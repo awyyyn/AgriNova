@@ -1,5 +1,12 @@
 import * as React from "react";
-import { LayoutDashboard, Leaf, LifeBuoy, Send, Users } from "lucide-react";
+import {
+	CircleQuestionMark,
+	LayoutDashboard,
+	Leaf,
+	LifeBuoy,
+	Send,
+	Users,
+} from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavSecondary } from "@/components/nav-secondary";
@@ -56,14 +63,14 @@ const data = {
 	],
 	navSecondary: [
 		{
-			title: "Support",
-			url: "/admin/support",
+			title: "About",
+			url: "/admin/about",
 			icon: LifeBuoy,
 		},
 		{
-			title: "Feedback",
-			url: "/feedback",
-			icon: Send,
+			title: "FAQs",
+			url: "/faqs",
+			icon: CircleQuestionMark,
 		},
 	],
 };
