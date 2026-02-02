@@ -4,7 +4,6 @@ import {
 	LayoutDashboard,
 	Leaf,
 	LifeBuoy,
-	Send,
 	Users,
 } from "lucide-react";
 
