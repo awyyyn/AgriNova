@@ -8,6 +8,7 @@ import ResetPasswordForm from "./pages/auth/reset-password";
 import UsersPage from "./pages/users/page";
 import NotFound from "./pages/not-found/page";
 import Forbidden from "./pages/unauthorized/page";
+import Analysis from "./pages/analysis/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
@@ -48,6 +49,10 @@ export default function Routes() {
 				{
 					path: "users",
 					element: <UsersPage />,
+				},
+				{
+					path: "analysis",
+					element: <Analysis />,
 				},
 			],
 		},
