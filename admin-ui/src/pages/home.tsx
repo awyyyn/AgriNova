@@ -45,21 +45,6 @@ export default function LandingPage() {
 					content="https://agri-nova.xyz/og-image.png"
 				/>
 
-				{/* Twitter */}
-				<meta name="twitter:card" content="summary_large_image" />
-				<meta
-					name="twitter:title"
-					content="AgriNova | Smart Farming Powered by AI"
-				/>
-				<meta
-					name="twitter:description"
-					content="AI-powered crop monitoring and pest detection for modern farmers."
-				/>
-				<meta
-					name="twitter:image"
-					content="https://agri-nova.xyz/og-image.png"
-				/>
-
 				{/* Mobile */}
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 
