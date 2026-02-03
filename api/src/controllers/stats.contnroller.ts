@@ -21,15 +21,6 @@ export const readStatsController = async (req: Request, res: Response) => {
 		const averageConfidence = await computeAverageConfidence(userId);
 		const successRate = await computeWeightedSuccessRate(userId);
 
-		console.log({
-			totalAnalyses,
-			healthyPlantsCount,
-			unhealthyPlantsCount,
-			plantsWithNoPestsCount,
-			plantsWithPestsCount,
-			averageConfidence,
-			successRate,
-		});
 		res.status(200).json({
 			totalAnalyses,
 			healthyPlantsCount,
