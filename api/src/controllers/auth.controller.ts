@@ -182,7 +182,6 @@ export const verifyTokenController = async (req: Request, res: Response) => {
 				refreshToken,
 				user: data,
 			},
-			message: "Password has been reset successfully!",
 		});
 	} catch (error) {
 		console.error(`Error in resetPasswordController:`);

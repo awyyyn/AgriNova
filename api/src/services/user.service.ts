@@ -39,16 +39,23 @@ export const readUsers = async ({
 			password: true,
 		},
 		where,
-		skip: pagination ? pagination.limit * pagination?.page : undefined,
-		take: pagination ? pagination.limit : undefined,
+		skip: pagination
+			? Number(pagination.limit) * Number(pagination?.page || 0)
+			: undefined,
+		take: pagination ? Number(pagination.limit) : undefined,
 	});
 
 	const total = await prisma.user.count({ where });
+	const totalPages = pagination
+		? Math.ceil(total / Number(pagination.limit))
+		: 1;
 
 	return {
 		data: users,
-		hasNextPage: users.length === pagination?.limit,
 		total,
+		page: pagination?.page || 0,
+		limit: pagination?.limit || 10,
+		totalPages,
 	};
 };
 
