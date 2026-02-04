@@ -1,5 +1,6 @@
 export * from "./enums";
 export * from "./user";
+export * from "./analysis";
 
 export interface Pagination {
 	page: number;
