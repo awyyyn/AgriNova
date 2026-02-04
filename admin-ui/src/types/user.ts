@@ -1,3 +1,4 @@
+import { Pagination } from ".";
 import { Role } from "./enums";
 
 export interface User {
@@ -20,5 +21,7 @@ export interface UsersTableProps {
 	isLoading?: boolean;
 	onView?: (user: UserTableData) => void;
 	onEdit?: (user: UserTableData) => void;
+	pagination?: Pagination;
 	onDelete?: (userId: string) => void;
+	onPageChange?: (page: number) => void;
 }
