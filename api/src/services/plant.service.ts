@@ -31,7 +31,9 @@ export const readPlantAnalysis = async ({
 
 	const plants = await prisma.plant.findMany({
 		where,
-		skip: pagination ? pagination.limit * Number(pagination?.page) : undefined,
+		skip: pagination
+			? Number(pagination.limit) * Number(pagination?.page)
+			: undefined,
 		take: pagination ? Number(pagination.limit) : undefined,
 		orderBy: {
 			createdAt: "desc",
@@ -39,10 +41,15 @@ export const readPlantAnalysis = async ({
 	});
 
 	const total = await prisma.plant.count({ where });
+	const totalPages = pagination
+		? Math.ceil(total / Number(pagination.limit))
+		: 1;
 
 	return {
 		data: plants,
-		hasNextPage: plants.length === Number(pagination?.limit),
+		totalPages,
+		page: pagination?.page || 0,
+		limit: pagination?.limit || 10,
 		total,
 	};
 };
