@@ -19,26 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Eye, Edit2, Trash2 } from "lucide-react";
 import { format } from "date-fns";
-import { User as UserT } from "@/types";
-
-export type User = Omit<UserT, "lastChangePassword">;
-//     {
-// 	id: string;
-// 	firstName: string;
-// 	lastName?: string;
-// 	email: string;
-// 	photo?: string;
-// 	role: string;
-// 	createdAt: Date | string;
-// }
-
-interface UsersTableProps {
-	users: User[];
-	isLoading?: boolean;
-	onView?: (user: User) => void;
-	onEdit?: (user: User) => void;
-	onDelete?: (userId: string) => void;
-}
+import { UsersTableProps } from "@/types";
 
 export function UsersTable({
 	users,
