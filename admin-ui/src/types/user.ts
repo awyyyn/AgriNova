@@ -8,5 +8,7 @@ export interface User {
 	photo?: string;
 	role: Role;
 
+	lastChangePassword?: string;
+
 	createdAt: string;
 }
