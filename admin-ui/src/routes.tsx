@@ -9,10 +9,14 @@ import UsersPage from "./pages/users/page";
 import NotFound from "./pages/not-found/page";
 import Forbidden from "./pages/unauthorized/page";
 import Analysis from "./pages/analysis/page";
+import FAQsPage from "./pages/faqs/page";
+import HelpPage from "./pages/help/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
 		{ path: "/", element: <Home /> },
+		{ path: "/faqs", element: <FAQsPage /> },
+		{ path: "/help", element: <HelpPage /> },
 		{ path: "/unauthorized", element: <Forbidden /> },
 		{ path: "*", element: <NotFound /> },
 	];
