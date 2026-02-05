@@ -6,17 +6,18 @@ import { PaginatedResponse } from "@/types";
 
 interface UseUsersOptions {
 	initialLimit?: number;
+	loading?: boolean;
 }
 
 export function useUsers(options: UseUsersOptions = {}) {
-	const { initialLimit = 1 } = options;
+	const { initialLimit = 1, loading = true } = options;
 
 	const [data, setData] = useState<User[]>([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(0);
 	const [limit, setLimit] = useState(initialLimit);
 	const [query, setQuery] = useState("");
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(loading);
 	const [error, setError] = useState<Error | null>(null);
 
 	// Consolidated fetch effect
