@@ -3,6 +3,14 @@ import { User } from "@/types/user";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router";
+import { Eye } from "lucide-react";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const getRoleColor = (role: User["role"]) => {
 	switch (role) {
@@ -94,5 +102,28 @@ export const usersColumns: ColumnDef<User>[] = [
 				</span>
 			);
 		},
+	},
+	{
+		accessorKey: "id",
+		header: "Actions",
+		cell: ({ row }) => {
+			const userId = row.getValue("id") as string;
+			return (
+				<Tooltip>
+					<TooltipTrigger>
+						<Button asChild size="icon-sm" variant="outline">
+							<Link to={`/admin/users/${userId}`}>
+								<Eye />
+							</Link>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						<span>View User Details</span>
+					</TooltipContent>
+				</Tooltip>
+			);
+		},
+		enableSorting: false,
+		enableHiding: false,
 	},
 ];
