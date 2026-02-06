@@ -3,7 +3,10 @@ import { openAI } from "../configs/openai.js";
 import { Request, Response } from "express";
 import { prisma } from "../configs/prisma.js";
 import { generatePlantAnalysisId } from "../utils/index.js";
-import { readPlantAnalysis } from "../services/plant.service.js";
+import {
+	readPlantAnalysis,
+	readPlantAnalysisById,
+} from "../services/plant.service.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -235,6 +238,34 @@ export const readPlantsController = async (req: Request, res: Response) => {
 		res.status(200).json(response);
 	} catch (error) {
 		console.error(`Error in readPlantsController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const readPlantController = async (req: Request, res: Response) => {
+	try {
+		let id = req.params?.id;
+
+		if (!id) {
+			res.status(400).json({
+				message: "Plant analysis ID is required!",
+			});
+			return;
+		}
+
+		const data = await readPlantAnalysisById(id);
+
+		res.status(200).json({
+			data,
+			message: data
+				? "Plant analysis retrieved successfully!"
+				: "Plant analysis not found!",
+		});
+	} catch (error) {
+		console.error(`Error in readPlantController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
