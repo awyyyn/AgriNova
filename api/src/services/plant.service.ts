@@ -53,3 +53,13 @@ export const readPlantAnalysis = async ({
 		total,
 	};
 };
+
+export const readPlantAnalysisById = async (id: string) => {
+	const plant = await prisma.plant.findUnique({
+		where: {
+			id,
+		},
+	});
+
+	return plant;
+};
