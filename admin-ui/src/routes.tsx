@@ -11,6 +11,9 @@ import Forbidden from "./pages/unauthorized/page";
 import Analysis from "./pages/analysis/page";
 import FAQsPage from "./pages/faqs/page";
 import HelpPage from "./pages/help/page";
+import Dashboard from "./pages/dashboard/page";
+import UserDetailPage from "./pages/users/details/page";
+import AnalysisDetailPage from "./pages/analysis/details/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
@@ -48,15 +51,29 @@ export default function Routes() {
 				},
 				{
 					path: "dashboard",
-					element: <div>Admin Dashboard</div>,
+					element: <Dashboard />,
 				},
 				{
 					path: "users",
-					element: <UsersPage />,
+					children: [
+						{
+							index: true,
+
+							element: <UsersPage />,
+						},
+						{
+							path: ":id",
+							element: <UserDetailPage />,
+						},
+					],
 				},
 				{
 					path: "analysis",
-					element: <Analysis />,
+
+					children: [
+						{ index: true, element: <Analysis /> },
+						{ path: ":id", element: <AnalysisDetailPage /> },
+					],
 				},
 			],
 		},
