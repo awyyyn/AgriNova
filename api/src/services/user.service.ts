@@ -72,3 +72,23 @@ export const readUser = async (id: string) => {
 
 	return await prisma.user.findUnique({ where, omit: { password: true } });
 };
+
+export async function getUsersByRole() {
+	const usersByRole = await prisma.user.groupBy({
+		by: ["role"],
+		_count: true,
+	});
+
+	// Convert to object format
+	const distribution = {
+		USER: 0,
+		ADMIN: 0,
+		SUPER_ADMIN: 0,
+	};
+
+	usersByRole.forEach((item) => {
+		distribution[item.role] = item._count;
+	});
+
+	return distribution;
+}
