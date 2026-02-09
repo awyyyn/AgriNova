@@ -7,6 +7,7 @@ import {
 	readPlantAnalysis,
 	readPlantAnalysisById,
 } from "../services/plant.service.js";
+import { Plant } from "@src/types/index.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -223,16 +224,25 @@ export const readPlantsController = async (req: Request, res: Response) => {
 			page,
 			limit,
 			query,
-		}: { page?: number; limit?: number; query?: string } = req.query;
+			type,
+		}: {
+			page?: number;
+			limit?: number;
+			query?: string;
+			type?: Plant["type"];
+		} = req.query;
 
 		if (req.role === "USER") {
 			userId = req.userId;
 		}
 
+		console.log(req);
+
 		const response = await readPlantAnalysis({
 			userId,
 			pagination: page && limit ? { page, limit } : undefined,
 			query,
+			type,
 		});
 
 		res.status(200).json(response);

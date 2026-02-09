@@ -1,5 +1,5 @@
 import { prisma } from "../configs/prisma.js";
-import { Prisma } from "../types/index.js";
+import { Plant, Prisma } from "../types/index.js";
 
 interface ReadPlants {
 	pagination?: {
@@ -8,18 +8,26 @@ interface ReadPlants {
 	};
 	query?: string;
 	userId?: string;
+	type?: Plant["type"];
 }
 
 export const readPlantAnalysis = async ({
 	pagination,
 	query,
 	userId,
+	type,
 }: ReadPlants = {}) => {
 	let where: Prisma.PlantWhereInput = {};
 
 	if (userId) {
 		where.userId = userId;
 	}
+
+	if (type) {
+		where.type = type;
+	}
+
+	console.log("Querying plants with where clause:", where);
 
 	if (query) {
 		where.OR = [
