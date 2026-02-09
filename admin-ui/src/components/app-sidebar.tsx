@@ -52,12 +52,12 @@ const data = {
 			title: "Users",
 			url: "/admin/users#",
 			icon: Users,
-			items: [
-				{
-					title: "List",
-					url: "/admin/users",
-				},
-			],
+			// items: [
+			// 	{
+			// 		title: "List",
+			// 		url: "/admin/users",
+			// 	},
+			// ],
 		},
 	],
 	navSecondary: [
