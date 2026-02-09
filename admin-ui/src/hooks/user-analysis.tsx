@@ -10,7 +10,7 @@ interface AnalysisOptions {
 
 export function useAnalysis(options: AnalysisOptions = {}) {
 	const { initialLimit = 1, loading = true } = options;
-
+	const [type, setType] = useState<PlantAnalysis["type"] | "all">("all");
 	const [data, setData] = useState<PlantAnalysis[]>([]);
 	const [total, setTotal] = useState(0);
 	const [page, setPage] = useState(0);
@@ -18,6 +18,8 @@ export function useAnalysis(options: AnalysisOptions = {}) {
 	const [query, setQuery] = useState("");
 	const [isLoading, setIsLoading] = useState(loading);
 	const [error, setError] = useState<Error | null>(null);
+
+	console.log("Fetching analysis with:", { page, limit, query, type });
 
 	// Consolidated fetch effect
 	useEffect(() => {
@@ -32,6 +34,7 @@ export function useAnalysis(options: AnalysisOptions = {}) {
 					page: page.toString(),
 					limit: limit.toString(),
 					...(query && { query }),
+					...(type !== "all" && { type }),
 				});
 
 				const response = await fetch(
@@ -61,7 +64,7 @@ export function useAnalysis(options: AnalysisOptions = {}) {
 		fetchUsers();
 
 		return () => controller.abort();
-	}, [page, limit, query]);
+	}, [page, limit, query, type]);
 
 	const handleSearch = useCallback((searchQuery: string) => {
 		setQuery(searchQuery);
@@ -97,5 +100,7 @@ export function useAnalysis(options: AnalysisOptions = {}) {
 		handleClearSearch,
 		handlePageChange,
 		handleLimitChange,
+		setType,
+		type,
 	};
 }

@@ -21,6 +21,7 @@ import { ColumnToggle } from "@/components/tables/column-toggle";
 import { PaginationControls } from "@/components/tables/pagination-control";
 import { useAnalysis } from "@/hooks/user-analysis";
 import { analysisColumns } from "@/components/tables/columns/analysis-columns";
+import TypeDropdown from "./__components/type-dropdown";
 
 export default function Analysis() {
 	const {
@@ -33,6 +34,8 @@ export default function Analysis() {
 		totalPages,
 		handlePageChange,
 		handleLimitChange,
+		type,
+		setType,
 	} = useAnalysis({ initialLimit: 10, loading: true });
 
 	const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -63,7 +66,10 @@ export default function Analysis() {
 								Manage all the analysis data
 							</p>
 						</div>
-						<ColumnToggle table={table} />
+						<div className="flex gap-2">
+							<TypeDropdown setType={setType} type={type} />
+							<ColumnToggle table={table} />
+						</div>
 					</div>
 
 					{/* Table */}
