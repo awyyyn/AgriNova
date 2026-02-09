@@ -1,8 +1,3 @@
-// ============================================================================
-// DASHBOARD PAGE
-// File: src/pages/Dashboard.tsx
-// ============================================================================
-
 import { useState, useEffect, useRef } from "react";
 import { format, parseISO } from "date-fns";
 import {
@@ -19,10 +14,9 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { AlertCircle, Printer } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { getRangeName } from "@/lib/utils";
 import { DashboardStats } from "@/components/custom/dashboard-stats";
 import { AnalysisChart } from "@/components/custom/analysis-chart";
@@ -32,7 +26,6 @@ import { ActiveUsers } from "@/components/custom/active-users";
 import { RecentActivity } from "@/components/custom/recent-activity";
 import { useReactToPrint } from "react-to-print";
 import { ExportDropdown } from "@/components/custom/export-dropdown";
-import { printHTMLReport } from "@/lib/exportDataUtil";
 
 // Types
 interface DashboardData {
