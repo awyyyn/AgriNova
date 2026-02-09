@@ -12,10 +12,10 @@ import { Request, Response } from "express";
 
 export const changePasswordController = async (req: Request, res: Response) => {
 	try {
-		const { currentPassword, newPassword, userId } = req.body;
+		const { currentPassword, newPassword } = req.body;
 
 		const user = await prisma.user.findUnique({
-			where: { id: userId },
+			where: { id: req.userId },
 		});
 
 		if (!user) {
@@ -27,12 +27,12 @@ export const changePasswordController = async (req: Request, res: Response) => {
 		}
 
 		const isAllowedToChangePassword = canChangePassword(
-			user?.lastChangePassword
+			user?.lastChangePassword,
 		);
 
 		if (!isAllowedToChangePassword) {
 			const daysRemaining = daysRemainingToChangePassword(
-				user?.lastChangePassword
+				user?.lastChangePassword,
 			);
 
 			res.status(400).json({
@@ -45,7 +45,7 @@ export const changePasswordController = async (req: Request, res: Response) => {
 
 		const isCurrentPasswordValid = await checkPassword(
 			currentPassword,
-			user.password
+			user.password,
 		);
 
 		console.log(isCurrentPasswordValid, "qqq");
@@ -116,7 +116,7 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 			const link = `${
 				process.env.FRONTEND_URL
 			}/auth/reset-password?token=${resetToken}&email=${String(
-				user.email
+				user.email,
 			).trim()}`;
 
 			const response = await resend.emails.send({
