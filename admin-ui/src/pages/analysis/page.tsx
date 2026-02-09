@@ -17,7 +17,6 @@ import {
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import { usersColumns } from "@/components/tables/columns/users-columns";
-import { SearchBar } from "@/components/tables/search-bar";
 import { ColumnToggle } from "@/components/tables/column-toggle";
 import { PaginationControls } from "@/components/tables/pagination-control";
 import { useAnalysis } from "@/hooks/user-analysis";
@@ -32,8 +31,6 @@ export default function Analysis() {
 		query,
 		isLoading,
 		totalPages,
-		handleSearch,
-		handleClearSearch,
 		handlePageChange,
 		handleLimitChange,
 	} = useAnalysis({ initialLimit: 10, loading: true });
@@ -57,21 +54,15 @@ export default function Analysis() {
 			<div className="container mx-auto  p-2">
 				<div className="space-y-6">
 					{/* Header */}
-					<div>
-						<h1 className="text-3xl font-bold tracking-tight">Users</h1>
-						<p className="text-muted-foreground mt-1">
-							Manage and search through your users
-						</p>
-					</div>
 
 					{/* Search and Controls */}
 					<div className="  flex gap-2 items-center justify-between">
-						<SearchBar
-							query={query}
-							isLoading={isLoading}
-							onSearch={handleSearch}
-							onClear={handleClearSearch}
-						/>
+						<div>
+							<h1 className="text-3xl font-bold tracking-tight">Analysis</h1>
+							<p className="text-muted-foreground mt-1">
+								Manage all the analysis data
+							</p>
+						</div>
 						<ColumnToggle table={table} />
 					</div>
 
