@@ -1,5 +1,13 @@
+import { Button } from "@/components/ui/button";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { PlantAnalysisTableData } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
+import { Eye } from "lucide-react";
+import { Link } from "react-router";
 
 export const analysisColumns: ColumnDef<PlantAnalysisTableData>[] = [
 	{
@@ -23,5 +31,28 @@ export const analysisColumns: ColumnDef<PlantAnalysisTableData>[] = [
 	{
 		accessorKey: "type",
 		header: "Type",
+	},
+	{
+		accessorKey: "id",
+		header: "Actions",
+		cell: ({ row }) => {
+			const userId = row.getValue("id") as string;
+			return (
+				<Tooltip>
+					<TooltipTrigger>
+						<Button asChild size="icon-sm" variant="outline">
+							<Link to={`/admin/analysis/${userId}`}>
+								<Eye />
+							</Link>
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent>
+						<span>View User Details</span>
+					</TooltipContent>
+				</Tooltip>
+			);
+		},
+		enableSorting: false,
+		enableHiding: false,
 	},
 ];
