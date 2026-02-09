@@ -8,13 +8,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import {
-	Download,
-	FileText,
-	FileSpreadsheet,
-	Printer,
-	File,
-} from "lucide-react";
+import { Download, FileText, FileSpreadsheet, Printer } from "lucide-react";
 import {
 	exportToExcel,
 	exportToCSV,

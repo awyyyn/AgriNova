@@ -80,7 +80,7 @@ export function DistributionCharts({ data }: DistributionChartsProps) {
 							outerRadius={80}
 							fill="#8884d8"
 							dataKey="value">
-							{typeData.map((entry, index) => (
+							{typeData.map((_, index) => (
 								<Cell
 									key={`cell-${index}`}
 									fill={COLORS.primary[index % COLORS.primary.length]}
@@ -140,7 +140,7 @@ export function DistributionCharts({ data }: DistributionChartsProps) {
 								outerRadius={80}
 								fill="#8884d8"
 								dataKey="value">
-								{severityData.map((entry, index) => (
+								{severityData.map((_, index) => (
 									<Cell
 										key={`cell-${index}`}
 										fill={COLORS.primary[index % COLORS.primary.length]}
