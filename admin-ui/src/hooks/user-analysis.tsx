@@ -76,9 +76,12 @@ export function useAnalysis(options: AnalysisOptions = {}) {
 		setPage(0); // Reset to first page
 	}, []);
 
-	const handlePageChange = useCallback((newPage: number) => {
-		setPage(newPage);
-	}, []);
+	const handlePageChange = useCallback(
+		(newPage: number) => {
+			setPage(newPage);
+		},
+		[type],
+	);
 
 	const handleLimitChange = useCallback((newLimit: number) => {
 		setLimit(newLimit);
