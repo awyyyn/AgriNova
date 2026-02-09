@@ -14,6 +14,8 @@ import HelpPage from "./pages/help/page";
 import Dashboard from "./pages/dashboard/page";
 import UserDetailPage from "./pages/users/details/page";
 import AnalysisDetailPage from "./pages/analysis/details/page";
+import ProfilePage from "./pages/profile/page";
+import PasswordPage from "./pages/profile/change-password/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
@@ -73,6 +75,19 @@ export default function Routes() {
 					children: [
 						{ index: true, element: <Analysis /> },
 						{ path: ":id", element: <AnalysisDetailPage /> },
+					],
+				},
+				{
+					path: "profile",
+					children: [
+						{
+							index: true,
+							element: <ProfilePage />,
+						},
+						{
+							path: "change-password",
+							element: <PasswordPage />,
+						},
 					],
 				},
 			],
