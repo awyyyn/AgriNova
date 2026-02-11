@@ -8,6 +8,7 @@ import {
 	readPlantAnalysisById,
 } from "../services/plant.service.js";
 import { Plant } from "@src/types/index.js";
+import { createPlantAnalyzedNotification } from "./notification.controller.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -157,7 +158,7 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 		if (parsedInvalid.imageValidation === "invalid") {
 			res.status(200).json(parsedInvalid);
 
-			await prisma.plant.create({
+			const plantData = await prisma.plant.create({
 				data: {
 					formattedId: generatePlantAnalysisId(),
 					img,
@@ -172,6 +173,8 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 					},
 				},
 			});
+
+			await createPlantAnalyzedNotification(plantData, req.userId);
 			return;
 		}
 
@@ -198,6 +201,8 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 				type: parsed.type,
 			},
 		});
+
+		await createPlantAnalyzedNotification(analysis, req.userId);
 
 		if (!analysis) {
 			res.status(400).json({
