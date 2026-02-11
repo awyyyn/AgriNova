@@ -19,3 +19,28 @@ export interface PaginatedResponse<T> {
 	limit: number;
 	totalPages: number;
 }
+
+export interface PublicStats {
+	overview: {
+		totalPlants: number;
+		totalVegetables: number;
+		totalFruits: number;
+		totalPlantsType: number;
+		totalDiseasesFound: number;
+		healthyPlants: number;
+		unhealthyPlants: number;
+	};
+	recentAnalyses: Array<{
+		id: string;
+		type: string;
+		commonName: string;
+		status: string;
+		confidence: number;
+		analyzedAt: string;
+	}>;
+	monthlyGrowth: Array<{
+		month: string;
+		year: number;
+		count: number;
+	}>;
+}
