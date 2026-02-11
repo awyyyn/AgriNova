@@ -151,6 +151,10 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 				return;
 			}
 
+			await prisma.token.deleteMany({
+				where: { email: String(user.email).trim() },
+			});
+
 			await prisma.token.create({
 				data: {
 					email: user.email,
