@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useSearchParams } from "react-router";
+import { toast } from "sonner";
 
 export default function ResetPasswordForm() {
 	const [searchParams] = useSearchParams();
@@ -19,7 +20,7 @@ export default function ResetPasswordForm() {
 	const [isSuccess, setIsSuccess] = useState(false);
 	const [error, setError] = useState("");
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		setError("");
 
@@ -33,8 +34,48 @@ export default function ResetPasswordForm() {
 			return;
 		}
 
-		// Handle password reset logic here
-		setIsSuccess(true);
+		try {
+			const link = `${import.meta.env.VITE_API_URL}/auth/reset-password`;
+
+			// setParams(new URLSearchParams());
+			const response = await fetch(link, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
+					token,
+					password,
+					email: searchParams.get("email"),
+				}),
+			});
+
+			const data = await response.json();
+
+			if (response.status !== 200 || !!data.error) {
+				throw new Error(
+					data.message ||
+						"Failed to reset password. Please try again later or contact support if the issue persists.",
+				);
+			}
+
+			toast.success("Password reset successfully", {
+				description: "You can now log in with your new password.",
+				duration: 5000,
+				richColors: true,
+			});
+
+			setIsSuccess(true);
+		} catch (error) {
+			toast.error("Failed to reset password. Please try again.", {
+				description:
+					error instanceof Error
+						? error.message
+						: "An unexpected error occurred.",
+				richColors: true,
+				duration: 5000,
+			});
+		}
 	};
 
 	if (!token) {
