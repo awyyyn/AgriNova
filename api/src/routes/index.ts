@@ -3,6 +3,7 @@ import AuthRoutes from "./auth.routes.js";
 import UserRoutes from "./user.routes.js";
 import AnalyticsRoutes from "./analytics.routes.js";
 import PlantRoutes from "./plant.routes.js";
+import NotificationRoutes from "./notification.routes.js";
 import { middleware } from "@src/middlewares/middleware.js";
 import { Authorize } from "@src/middlewares/authorize.js";
 
@@ -16,6 +17,12 @@ Router.use(
 	middleware,
 	Authorize(["ADMIN", "SUPER_ADMIN"]),
 	AnalyticsRoutes,
+);
+Router.use(
+	"/notifications",
+	middleware,
+	Authorize(["ADMIN", "SUPER_ADMIN"]),
+	NotificationRoutes,
 );
 
 export default Router;
