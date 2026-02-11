@@ -1,3 +1,4 @@
+import { addMinutes, format, isBefore } from "date-fns";
 import { prisma, resend } from "../configs/index.js";
 import {
 	checkPassword,
@@ -92,14 +93,30 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 
 		const alreadySentToken = await prisma.token.findFirst({
 			where: { email: String(email).trim() },
+			orderBy: { createdAt: "desc" },
 		});
 
 		if (alreadySentToken) {
-			res.status(400).json({
-				error: true,
-				message: "A password reset token has already been sent to this email!",
+			const expiresAt = addMinutes(new Date(alreadySentToken.createdAt), 5);
+
+			const now = new Date();
+			const isExpired = isBefore(expiresAt, now);
+
+			console.log({
+				expiresAt: format(expiresAt, "HH:mm"),
+				now: format(now, "HH:mm"),
+				isExpired,
 			});
-			return;
+
+			// ❌ Token still valid → block resend
+			if (!isExpired) {
+				res.status(400).json({
+					error: true,
+					message:
+						"A password reset token has already been sent to this email. Please wait 5 minutes.",
+				});
+				return;
+			}
 		}
 
 		const user = await prisma.user.findFirst({
@@ -114,7 +131,7 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 			});
 
 			const link = `${
-				process.env.FRONTEND_URL
+				process.env.CLIENT_URL
 			}/auth/reset-password?token=${resetToken}&email=${String(
 				user.email,
 			).trim()}`;
@@ -164,7 +181,8 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 		if (!decoded) {
 			res.status(400).json({
 				error: true,
-				message: "Invalid or expired token!",
+				message:
+					"Your link is expired, please request a new password reset link.",
 			});
 			return;
 		}
@@ -172,14 +190,16 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 		if (decoded.email !== email) {
 			res.status(400).json({
 				error: true,
-				message: "Invalid or expired token!",
+				message: "Unauthorized!",
 			});
 			return;
 		}
 
+		const hashedPassword = await hashPassword(password);
+
 		await prisma.user.update({
 			where: { email: String(email).trim() },
-			data: { password },
+			data: { password: hashedPassword, lastChangePassword: new Date() },
 		});
 
 		res.status(200).json({
