@@ -8,6 +8,7 @@ import {
 	verifyToken,
 } from "../utils/jsonwebtoken.js";
 import { Request, Response } from "express";
+import { createUserRegisteredNotification } from "./notification.controller.js";
 
 export const loginController = async (req: Request, res: Response) => {
 	try {
@@ -106,6 +107,8 @@ export const registerController = async (req: Request, res: Response) => {
 
 		// eslint-disable-next-line
 		const { password: _, ...data } = newUser;
+
+		await createUserRegisteredNotification(data);
 
 		const accessToken = generateAccessToken({
 			email: newUser.email,
