@@ -85,3 +85,16 @@ type Diagnosis {
   symptoms   String[]
   confidence Int?
 }
+
+model Notification {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  type          String // 'user_registered' | 'plant_analyzed' | 'system'
+  title         String
+  message       String
+  data          Json? // Additional data as JSON
+  recipientRole String[] // ['ADMIN', 'SUPER_ADMIN']
+  read          Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  @@map("notifications")
+}
