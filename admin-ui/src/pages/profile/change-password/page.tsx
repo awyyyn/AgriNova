@@ -19,9 +19,7 @@ export default function ChangePasswordPage() {
 	const [newPassword, setNewPassword] = useState("");
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
-	const [lastChangePasswordDate, setLastChangePasswordDate] = useState<
-		string | null
-	>(null);
+	const [lastChangePasswordDate] = useState<string | null>(null);
 	const [showCurrentPassword, setShowCurrentPassword] = useState(false);
 	const [showNewPassword, setShowNewPassword] = useState(false);
 	const [showConfirmPassword, setShowConfirmPassword] = useState(false);
