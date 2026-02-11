@@ -102,12 +102,6 @@ export const forgotPasswordController = async (req: Request, res: Response) => {
 			const now = new Date();
 			const isExpired = isBefore(expiresAt, now);
 
-			console.log({
-				expiresAt: format(expiresAt, "HH:mm"),
-				now: format(now, "HH:mm"),
-				isExpired,
-			});
-
 			// ❌ Token still valid → block resend
 			if (!isExpired) {
 				res.status(400).json({
@@ -199,7 +193,36 @@ export const resetPasswordController = async (req: Request, res: Response) => {
 			return;
 		}
 
+		const isTokenExists = await prisma.token.findFirst({
+			where: { email: String(email).trim(), token },
+			orderBy: { createdAt: "desc" },
+		});
+
+		if (!isTokenExists) {
+			res.status(400).json({
+				error: true,
+				message:
+					"Your link is expired, please request a new password reset link.",
+			});
+			return;
+		}
+
+		const isExpired = addMinutes(new Date(isTokenExists.createdAt), 5);
+
+		if (isBefore(isExpired, new Date())) {
+			res.status(400).json({
+				error: true,
+				message:
+					"Your link is expired, please request a new password reset link.",
+			});
+			return;
+		}
+
 		const hashedPassword = await hashPassword(password);
+
+		await prisma.token.deleteMany({
+			where: { email: String(email).trim() },
+		});
 
 		await prisma.user.update({
 			where: { email: String(email).trim() },
