@@ -16,12 +16,20 @@ import UserDetailPage from "./pages/users/details/page";
 import AnalysisDetailPage from "./pages/analysis/details/page";
 import ProfilePage from "./pages/profile/page";
 import PasswordPage from "./pages/profile/change-password/page";
+import { NotificationsPage } from "./pages/notifications/page";
+import CommonLayout from "./layouts/common-layout";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
-		{ path: "/", element: <Home /> },
-		{ path: "/faqs", element: <FAQsPage /> },
-		{ path: "/help", element: <HelpPage /> },
+		{
+			path: "/",
+			element: <CommonLayout />,
+			children: [
+				{ index: true, element: <Home /> },
+				{ path: "/faqs", element: <FAQsPage /> },
+				{ path: "/help", element: <HelpPage /> },
+			],
+		},
 		{ path: "/unauthorized", element: <Forbidden /> },
 		{ path: "*", element: <NotFound /> },
 	];
@@ -76,6 +84,10 @@ export default function Routes() {
 						{ index: true, element: <Analysis /> },
 						{ path: ":id", element: <AnalysisDetailPage /> },
 					],
+				},
+				{
+					path: "notifications",
+					element: <NotificationsPage />,
 				},
 				{
 					path: "profile",
