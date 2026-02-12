@@ -1,4 +1,4 @@
-import { verifyToken } from "@src/utils/jsonwebtoken.js";
+import { verifyToken } from "../utils/jsonwebtoken.js";
 import { ExtendedError, Socket } from "socket.io";
 
 export async function SocketIOMiddleware(
