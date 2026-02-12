@@ -1,4 +1,5 @@
 import { AppSidebar } from "@/components/app-sidebar";
+import { NotificationBell } from "@/components/custom/notification-dropdown";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -24,13 +25,11 @@ export default function AdminLayout() {
 		return <Navigate to={"/auth/login"} />;
 	}
 
-	console.log("Current Path:", paths.pathname);
-
 	return (
 		<SidebarProvider>
 			<AppSidebar />
 			<SidebarInset>
-				<header className="flex h-16 shrink-0 items-center gap-2">
+				<header className="flex h-16 shrink-0 items-center gap-2 flex justify-between">
 					<div className="flex items-center gap-2 px-4">
 						<SidebarTrigger className="-ml-1" />
 						<Separator
@@ -53,17 +52,20 @@ export default function AdminLayout() {
 									return (
 										<>
 											<BreadcrumbSeparator
-												key={`${path}-separator`}
+												key={`${path}-separator-${index}`}
 												className="hidden md:block"
 											/>
-											<BreadcrumbItem key={path}>
+											<BreadcrumbItem key={path + index}>
 												{isLast ? (
-													<BreadcrumbPage>
+													<BreadcrumbPage
+														key={`breadcrumbpage-${path}-${index}`}>
 														{segment.charAt(0).toUpperCase() + segment.slice(1)}
 													</BreadcrumbPage>
 												) : (
 													<>
-														<BreadcrumbLink asChild>
+														<BreadcrumbLink
+															key={`breadcrumblink-${path}-${index}`}
+															asChild>
 															<Link to={path}>
 																{segment.charAt(0).toUpperCase() +
 																	segment.slice(1)}
@@ -77,6 +79,9 @@ export default function AdminLayout() {
 								})}
 							</BreadcrumbList>
 						</Breadcrumb>
+					</div>
+					<div className="pr-5">
+						<NotificationBell />
 					</div>
 				</header>
 				<div className="  p-4 pt-0">
