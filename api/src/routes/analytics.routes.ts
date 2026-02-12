@@ -9,10 +9,13 @@ import {
 	getDashboardReport,
 	getDashboardTopDiseases,
 } from "@src/controllers/analytics.controller.js";
+import { getPublicStats } from "@src/services/stat.service.js";
 import { Router } from "express";
 
 const router = Router();
+
 router.get("/", getDashboardReport);
+// router.get("/stats", getPublicStats);
 router.get("/overview", getDashboardOverview);
 router.get("/metrics", getDashboardMetrics);
 router.get("/daily", getDashboardDailyBreakdown);
