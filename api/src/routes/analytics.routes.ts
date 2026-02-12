@@ -8,8 +8,7 @@ import {
 	getDashboardRecentAnalyses,
 	getDashboardReport,
 	getDashboardTopDiseases,
-} from "@src/controllers/analytics.controller.js";
-import { getPublicStats } from "@src/services/stat.service.js";
+} from "../controllers/analytics.controller.js";
 import { Router } from "express";
 
 const router = Router();

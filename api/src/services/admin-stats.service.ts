@@ -8,7 +8,7 @@ import {
 } from "date-fns";
 import { prisma } from "../configs/prisma.js";
 import { getUsersByRole } from "./user.service.js";
-import { getRelativeTime } from "@src/utils/date-fns.js";
+import { getRelativeTime } from "../utils/date-fns.js";
 
 export async function getOverviewMetrics() {
 	const [

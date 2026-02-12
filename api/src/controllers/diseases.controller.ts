@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "@src/configs/prisma.js";
+import { prisma } from "../configs/prisma.js";
 
 export async function getCommonDiseases(_: Request, res: Response) {
 	try {

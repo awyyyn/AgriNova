@@ -7,7 +7,7 @@ import {
 	readPlantAnalysis,
 	readPlantAnalysisById,
 } from "../services/plant.service.js";
-import { Plant } from "@src/types/index.js";
+import { Plant } from "../types/index.js";
 import { createPlantAnalyzedNotification } from "./notification.controller.js";
 
 const ANALYSIS_PROMPT = `

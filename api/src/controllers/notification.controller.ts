@@ -1,4 +1,4 @@
-import { prisma } from "@src/configs/prisma.js";
+import { prisma } from "../configs/prisma.js";
 import { Server } from "socket.io";
 import { Request, Response } from "express";
 

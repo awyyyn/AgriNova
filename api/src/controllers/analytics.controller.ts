@@ -14,9 +14,9 @@ import {
 	getRecentAnalyses,
 	getCompleteDashboardReport,
 } from "../services/admin-stats.service.js";
-import { DateRanges } from "@src/utils/date-fns.js";
-import { getUsersByRole } from "@src/services/user.service.js";
-import { getPublicStats } from "@src/services/stat.service.js";
+import { DateRanges } from "../utils/date-fns.js";
+import { getUsersByRole } from "../services/user.service.js";
+import { getPublicStats } from "../services/stat.service.js";
 
 // ============================================================================
 // MAIN DASHBOARD
