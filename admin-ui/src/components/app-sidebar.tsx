@@ -1,5 +1,6 @@
 import * as React from "react";
 import {
+	Bell,
 	CircleQuestionMark,
 	LayoutDashboard,
 	Leaf,
@@ -52,6 +53,17 @@ const data = {
 			title: "Users",
 			url: "/admin/users#",
 			icon: Users,
+			// items: [
+			// 	{
+			// 		title: "List",
+			// 		url: "/admin/users",
+			// 	},
+			// ],
+		},
+		{
+			title: "Notifications",
+			url: "/admin/notifications",
+			icon: Bell,
 			// items: [
 			// 	{
 			// 		title: "List",
