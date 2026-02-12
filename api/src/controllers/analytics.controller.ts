@@ -16,6 +16,7 @@ import {
 } from "../services/admin-stats.service.js";
 import { DateRanges } from "@src/utils/date-fns.js";
 import { getUsersByRole } from "@src/services/user.service.js";
+import { getPublicStats } from "@src/services/stat.service.js";
 
 // ============================================================================
 // MAIN DASHBOARD
@@ -304,3 +305,26 @@ export const getDashboardRecentAnalyses = async (
 		});
 	}
 };
+
+/**
+ * GET /api/public/stats
+ * Get public statistics for landing page
+ */
+export async function getPublicStatsController(req: Request, res: Response) {
+	try {
+		// Get overall statistics
+		const data = await getPublicStats();
+
+		return res.json({
+			success: true,
+			data,
+		});
+	} catch (error) {
+		console.error("Error fetching public stats:", error);
+		return res.status(500).json({
+			success: false,
+			message: "Failed to fetch statistics",
+			error: error instanceof Error ? error.message : "Unknown error",
+		});
+	}
+}
