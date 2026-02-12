@@ -66,8 +66,6 @@ export function AnalysisChart({ startDate, endDate }: AnalysisChartProps) {
 		return <Skeleton className="h-[300px] w-full" />;
 	}
 
-	console.log("Chart data:", data); // Debug log to check data structure
-
 	return (
 		<ResponsiveContainer width="100%" height={300}>
 			<AreaChart data={data}>
