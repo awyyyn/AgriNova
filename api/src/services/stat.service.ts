@@ -1,3 +1,4 @@
+import { endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { prisma } from "../configs/prisma.js";
 
 export async function computeWeightedSuccessRate(userId?: string) {
@@ -92,3 +93,112 @@ export const computeAverageConfidence = async (userId?: string) => {
 
 	return averageConfidence;
 };
+export async function getPublicStats() {
+	const [
+		totalPlants,
+		totalVegetables,
+		totalFruits,
+		totalPlantsType,
+		totalDiseasesFound,
+		recentAnalyses,
+	] = await Promise.all([
+		// Total plants (all types)
+		prisma.plant.count(),
+
+		// Total vegetables
+		prisma.plant.count({
+			where: { type: "vegetable" },
+		}),
+
+		// Total fruits
+		prisma.plant.count({
+			where: { type: "fruit" },
+		}),
+
+		// Total plants (only 'plant' type)
+		prisma.plant.count({
+			where: { type: "plant" },
+		}),
+
+		// Total diseases found (plants with diagnosis)
+		prisma.plant.count({
+			where: {
+				diagnosis: {
+					isNot: null,
+				},
+			},
+		}),
+
+		// Recent analyses for showcase (last 6, anonymized)
+		prisma.plant.findMany({
+			take: 6,
+			orderBy: { createdAt: "desc" },
+			select: {
+				id: true,
+				type: true,
+				hasPestFound: true,
+				confidence: true,
+				plantIdentification: true,
+				healthStatus: true,
+				createdAt: true,
+			},
+		}),
+	]);
+
+	// Get monthly growth data (last 6 months)
+	const monthlyData = await getMonthlyGrowth();
+
+	// Calculate healthy plants
+	const healthyPlants = await prisma.plant.count({
+		where: { healthStatus: "healthy" },
+	});
+
+	return {
+		overview: {
+			totalPlants,
+			totalVegetables,
+			totalFruits,
+			totalPlantsType,
+			totalDiseasesFound,
+			healthyPlants,
+			unhealthyPlants: totalPlants - healthyPlants,
+		},
+		recentAnalyses: recentAnalyses.map((analysis: any) => ({
+			id: analysis.id,
+			type: analysis.type,
+			commonName: analysis.plantIdentification?.commonName || "Unknown",
+			status: analysis.healthStatus === "healthy" ? "Healthy" : "Diseased",
+			confidence: analysis.confidence,
+			analyzedAt: analysis.createdAt,
+		})),
+		monthlyGrowth: monthlyData,
+	};
+}
+
+export async function getMonthlyGrowth() {
+	const months = [];
+	const now = new Date();
+
+	for (let i = 5; i >= 0; i--) {
+		const date = subMonths(now, i);
+		const start = startOfMonth(date);
+		const end = endOfMonth(date);
+
+		const count = await prisma.plant.count({
+			where: {
+				createdAt: {
+					gte: start,
+					lte: end,
+				},
+			},
+		});
+
+		months.push({
+			month: date.toLocaleString("default", { month: "short" }),
+			year: date.getFullYear(),
+			count,
+		});
+	}
+
+	return months;
+}
