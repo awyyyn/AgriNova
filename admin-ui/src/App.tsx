@@ -4,15 +4,18 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "./contexts/auth-context";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "./components/ui/tooltip";
+import { NotificationProvider } from "./contexts/notification-context";
 
 export default function App() {
 	return (
 		<HelmetProvider>
 			<TooltipProvider>
 				<AuthProvider>
-					<BrowserRouter>
-						<Routes />
-					</BrowserRouter>
+					<NotificationProvider>
+						<BrowserRouter>
+							<Routes />
+						</BrowserRouter>
+					</NotificationProvider>
 				</AuthProvider>
 				<Toaster />
 			</TooltipProvider>
