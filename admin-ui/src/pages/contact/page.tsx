@@ -1,6 +1,4 @@
-import { FAQS } from "@/constants";
-import { Database, HelpCircle, Shield } from "lucide-react";
-import { Link } from "react-router";
+import { Mail, MessageSquare } from "lucide-react";
 
 export const metadata = {
 	title: "Contact Us | AgriNova",
@@ -10,9 +8,7 @@ export const metadata = {
 
 export default function FAQsPage() {
 	return (
-		<main
-			className="min-h-screen bg-gradient-to-b from-white to-emerald-50"
-			id="home">
+		<main className="min-h-screen bg-gradient-to-b from-white to-emerald-50">
 			{/* FAQ Section */}
 			<section className="py-20 md:py-32 bg-gradient-to-b from-white to-emerald-50">
 				<div className="max-w-4xl mx-auto px-4">
@@ -26,7 +22,38 @@ export default function FAQsPage() {
 					</div>
 
 					<div className="space-y-6">
-						{FAQS.map((item, idx) => (
+						{[
+							{
+								question: "How accurate is the pest detection?",
+								answer:
+									"Our AI-powered detection system has 98% accuracy across 50+ pest species. However, accuracy depends on image quality and clarity. For best results, capture clear photos of affected plant areas in good lighting.",
+							},
+							{
+								question: "Can I use AgriNova offline?",
+								answer:
+									"Currently, AgriNova requires an internet connection to process images through our AI models. We are working on an offline version for future releases.",
+							},
+							{
+								question: "What image formats are supported?",
+								answer:
+									"We support JPG, PNG, WebP, and GIF formats. Images should be at least 480x480 pixels for optimal detection accuracy.",
+							},
+							{
+								question: "Are my plant images stored permanently?",
+								answer:
+									"Images are processed through our AI and temporarily cached for analysis. They are automatically deleted after 30 days. You can manually delete images from your account anytime.",
+							},
+							{
+								question: "How do I upgrade my account?",
+								answer:
+									"Visit your account settings to choose a plan that fits your needs. You can upgrade anytime and switch between plans monthly.",
+							},
+							{
+								question: "What if I have a problem with a detection result?",
+								answer:
+									"If you believe a detection was inaccurate, please contact our support team with the image and details. Our agronomists review feedback to improve accuracy.",
+							},
+						].map((item, idx) => (
 							<details
 								key={idx}
 								className="group border border-gray-200 rounded-lg">
@@ -55,41 +82,41 @@ export default function FAQsPage() {
 			</section>
 
 			{/* Help Resources */}
-			<section className="py-20 md:py-32 bg-white" id="help">
+			<section className="py-20 md:py-32 bg-white">
 				<div className="max-w-6xl mx-auto px-4">
 					<div className="text-center mb-16">
 						<h2 className="text-4xl font-bold text-gray-900">
-							Admin Help Resources
+							Help Center Resources
 						</h2>
 						<p className="text-gray-600 mt-4">
-							Tools and references for managing the system
+							Explore our knowledge base and documentation
 						</p>
 					</div>
 
 					<div className="grid md:grid-cols-3 gap-8">
 						{[
 							{
-								icon: HelpCircle,
-								title: "Dashboard Overview",
+								icon: MessageSquare,
+								title: "Getting Started",
 								description:
-									"Understand admin metrics, charts, and system monitoring tools.",
+									"Learn how to set up your account and take your first pest detection.",
 							},
 							{
-								icon: Database,
-								title: "Data Management",
+								icon: Mail,
+								title: "User Guide",
 								description:
-									"Manage plant records, reports, and detection results.",
+									"Comprehensive guide on all features and how to use them effectively.",
 							},
 							{
-								icon: Shield,
-								title: "System Controls",
+								icon: MessageSquare,
+								title: "API Documentation",
 								description:
-									"Configure thresholds, models, and detection settings.",
+									"Integrate AgriNova into your own applications with our API.",
 							},
 						].map((item, idx) => (
-							<Link
+							<a
 								key={idx}
-								to="/auth/login"
+								href="#"
 								className="group p-8 rounded-xl border border-green-200 bg-gradient-to-br from-white to-emerald-50 hover:shadow-lg hover:border-green-400 transition-all">
 								<div className="flex items-center justify-center h-12 w-12 rounded-lg bg-green-100 group-hover:bg-green-200 transition-colors mb-4">
 									<item.icon className="h-6 w-6 text-green-600" />
@@ -99,9 +126,9 @@ export default function FAQsPage() {
 								</h3>
 								<p className="text-gray-600">{item.description}</p>
 								<p className="text-green-600 font-semibold mt-4 group-hover:translate-x-1 transition-transform">
-									Open →
+									Learn more →
 								</p>
-							</Link>
+							</a>
 						))}
 					</div>
 				</div>
