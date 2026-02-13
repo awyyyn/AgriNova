@@ -2,9 +2,10 @@ import * as React from "react";
 import {
 	Bell,
 	CircleQuestionMark,
+	FileCheckCorner,
 	LayoutDashboard,
 	Leaf,
-	LifeBuoy,
+	Shield,
 	Users,
 } from "lucide-react";
 
@@ -74,9 +75,14 @@ const data = {
 	],
 	navSecondary: [
 		{
-			title: "About",
-			url: "/admin/about",
-			icon: LifeBuoy,
+			title: "Terms",
+			url: "/terms",
+			icon: FileCheckCorner,
+		},
+		{
+			title: "Privacy",
+			url: "/privacy",
+			icon: Shield,
 		},
 		{
 			title: "FAQs",

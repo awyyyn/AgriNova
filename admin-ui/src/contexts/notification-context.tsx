@@ -7,6 +7,7 @@ import {
 	ReactNode,
 } from "react";
 import { io, Socket } from "socket.io-client";
+import { useAuth } from "./auth-context";
 
 interface NotificationContextType {
 	notifications: NotificationType[];
@@ -25,6 +26,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(
 export function NotificationProvider({ children }: { children: ReactNode }) {
 	const [notifications, setNotifications] = useState<NotificationType[]>([]);
 	const [unreadCount, setUnreadCount] = useState(0);
+	const { isAuthenticated } = useAuth();
 	const [loading, setLoading] = useState(false);
 	const [, setSocket] = useState<Socket | null>(null);
 
@@ -40,6 +42,8 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
 		socketInstance.on("connect", () => {
 			console.log("Notification socket connected");
+
+			fetchNotifications();
 		});
 
 		// Listen for new notifications
@@ -70,18 +74,13 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 		return () => {
 			socketInstance.disconnect();
 		};
-	}, []);
+	}, [isAuthenticated]);
 
 	// Request browser notification permission
 	useEffect(() => {
 		if ("Notification" in window && Notification.permission === "default") {
 			Notification.requestPermission();
 		}
-	}, []);
-
-	// Fetch notifications on mount
-	useEffect(() => {
-		fetchNotifications();
 	}, []);
 
 	const fetchNotifications = async () => {
