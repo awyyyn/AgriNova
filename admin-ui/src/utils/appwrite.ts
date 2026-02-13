@@ -6,23 +6,18 @@ const client = new Client()
 
 export const storage = new Storage(client);
 
-export const handleUploadToAppwrite = async (file: {
-	uri: string;
-	fileName: string;
-	size: number;
-	// upgrade appwrite subscriptiong to use avatars bucket
-	bucketId?: "plant-images" | "avatars";
+export const handleUploadToAppwrite = async ({
+	file,
+	bucketId,
+}: {
+	bucketId?: string;
+	file: File;
 }) => {
 	try {
 		const response = await storage.createFile({
-			bucketId: file?.bucketId || "plant-images",
+			bucketId: bucketId || "plant-images",
 			fileId: ID.unique(),
-			file: {
-				uri: file.uri,
-				type: "image/jpeg",
-				name: file.fileName,
-				size: file.size,
-			},
+			file,
 		});
 		console.log("File uploaded successfully:", response);
 		return response;
