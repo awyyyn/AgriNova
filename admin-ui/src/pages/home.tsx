@@ -9,22 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import {
-	Leaf,
-	Bug,
-	TrendingUp,
-	Microscope,
-	Shield,
-	ChevronRight,
-	BarChart3,
-	Sparkles,
-	ArrowRight,
-	AlertCircle,
-	AlertTriangle,
-} from "lucide-react";
+import { Leaf, Bug, ArrowRight, AlertTriangle } from "lucide-react";
 import { PublicStats } from "@/types";
 import { Helmet } from "react-helmet-async";
 import { Progress } from "@/components/ui/progress";
+import { Hero } from "@/components/custom/hero";
+import { Mission } from "@/components/custom/mission";
+import { Features } from "@/components/custom/features";
 
 interface Disease {
 	name: string;
@@ -105,149 +96,29 @@ export default function LandingPage() {
 				{/* Canonical */}
 				<link rel="canonical" href="https://agri-nova.xyz/" />
 			</Helmet>
-			<div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
-				{/* Hero Section */}
-				<section className="relative overflow-hidden py-20 lg:py-32">
-					<div className="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]" />
+			<div
+				className="min-h-screen bg-gradient-to-b from-background to-muted/20 "
+				id="home">
+				<Hero
+					stats={{
+						totalFruits: stats?.overview.totalFruits || 0,
+						totalPlantsType: stats?.overview.totalPlantsType || 0,
+						totalVegetables: stats?.overview.totalVegetables || 0,
+						totalPestFound: stats?.overview.totalDiseasesFound || 0,
+					}}
+				/>
 
-					<div className="container mx-auto px-4 max-w-6xl">
-						<div className="text-center">
-							<Badge variant="outline" className="mb-4">
-								<Sparkles className="h-3 w-3 mr-1" />
-								AI-Powered Plant Analysis
-							</Badge>
+				<Mission />
 
-							<h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-emerald-600">
-								Keep Your Plants Healthy
-							</h1>
-
-							<p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-								Detect diseases, identify pests, and get instant treatment
-								recommendations powered by AI
-							</p>
-
-							<div className="flex flex-wrap items-center justify-center gap-4">
-								{/* <Button
-									size="lg"
-									onClick={() => navigate("/auth/register")}
-									className="gap-2">
-									Get Started Free
-									<ChevronRight className="h-4 w-4" />
-								</Button> */}
-								<Button
-									size="lg"
-									variant="outline"
-									onClick={() => navigate("/auth/login")}>
-									Sign In
-								</Button>
-							</div>
-
-							{/* Stats Preview */}
-							{stats && (
-								<div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto">
-									<StatsCard
-										icon={<Microscope className="h-5 w-5" />}
-										value={String(stats.overview?.totalPlants)}
-										label="Total Plants"
-									/>
-									<StatsCard
-										icon={<Leaf className="h-5 w-5 text-green-600" />}
-										value={String(stats.overview?.healthyPlants)}
-										label="Healthy"
-									/>
-									<StatsCard
-										icon={<AlertCircle className="h-5 w-5 text-red-600" />}
-										value={String(stats.overview?.totalDiseasesFound)}
-										label="Diseases Found"
-									/>
-									<StatsCard
-										icon={<TrendingUp className="h-5 w-5 text-blue-600" />}
-										value={`${((stats.overview?.healthyPlants / stats.overview?.totalPlants) * 100).toFixed(0)}%`}
-										label="Success Rate"
-									/>
-								</div>
-							)}
-						</div>
-					</div>
-				</section>
-
-				{/* Plant Types Breakdown */}
-				{stats && (
-					<section className="py-20 bg-muted/30">
-						<div className="container mx-auto px-4 max-w-6xl">
-							<div className="text-center mb-12">
-								<h2 className="text-3xl md:text-4xl font-bold mb-4">
-									Analysis Breakdown
-								</h2>
-								<p className="text-muted-foreground">
-									Plants analyzed by category
-								</p>
-							</div>
-
-							<div className="grid md:grid-cols-3 gap-6">
-								<TypeCard
-									icon="🥬"
-									label="Vegetables"
-									count={stats.overview?.totalVegetables}
-									color="text-green-600"
-								/>
-								<TypeCard
-									icon="🍎"
-									label="Fruits"
-									count={stats.overview?.totalFruits}
-									color="text-red-600"
-								/>
-								<TypeCard
-									icon="🌿"
-									label="Plants"
-									count={stats.overview?.totalPlantsType}
-									color="text-emerald-600"
-								/>
-							</div>
-						</div>
-					</section>
-				)}
-
-				{/* Features Section */}
-				<section className="py-20">
-					<div className="container mx-auto px-4 max-w-6xl">
-						<div className="text-center mb-12">
-							<h2 className="text-3xl md:text-4xl font-bold mb-4">
-								Why Choose AgriNova?
-							</h2>
-							<p className="text-muted-foreground max-w-2xl mx-auto">
-								Advanced AI technology to help you maintain healthy, thriving
-								plants
-							</p>
-						</div>
-
-						<div className="grid md:grid-cols-3 gap-8">
-							<FeatureCard
-								icon={<Microscope className="h-10 w-10 text-blue-600" />}
-								title="AI Disease Detection"
-								description="Upload a photo and get instant diagnosis with high accuracy rate"
-							/>
-							<FeatureCard
-								icon={<Bug className="h-10 w-10 text-red-600" />}
-								title="Pest Identification"
-								description="Identify harmful pests and get targeted treatment recommendations"
-							/>
-							<FeatureCard
-								icon={<Shield className="h-10 w-10 text-green-600" />}
-								title="Prevention Tips"
-								description="Proactive care advice to keep your plants healthy year-round"
-							/>
-						</div>
-					</div>
-				</section>
+				<Features />
 
 				{/* Top Diseases Section */}
 				{diseases.length > 0 && (
-					<section className="py-20 bg-muted/30">
+					<section className="py-20 bg-gradient-to-b from-white to-emerald-50  ">
 						<div className="container mx-auto px-4 max-w-6xl">
 							<div className="text-center mb-12">
 								<h2 className="text-3xl md:text-4xl font-bold mb-4 flex items-center justify-center gap-2">
-									<AlertTriangle className="h-8 w-8 text-amber-600" />
+									<AlertTriangle className="h-8 w-8 text-green-600" />
 									Most Common Diseases
 								</h2>
 								<p className="text-muted-foreground">
@@ -255,7 +126,7 @@ export default function LandingPage() {
 								</p>
 							</div>
 
-							<Card className="max-w-4xl mx-auto">
+							<Card className="max-w-4xl mx-auto border-green-200 dark:border-green-900">
 								<CardHeader>
 									<CardTitle>Disease Detection Statistics</CardTitle>
 									<CardDescription>
@@ -264,6 +135,7 @@ export default function LandingPage() {
 										detected cases
 									</CardDescription>
 								</CardHeader>
+
 								<CardContent>
 									<div className="space-y-6">
 										{diseases.slice(0, 10).map((disease, index) => {
@@ -278,76 +150,37 @@ export default function LandingPage() {
 														<div className="flex items-center gap-3">
 															<div
 																className={`
-                              flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm
-                              ${
-																index === 0
-																	? "bg-amber-100 text-amber-600 dark:bg-amber-950"
-																	: index === 1
-																		? "bg-orange-100 text-orange-600 dark:bg-orange-950"
-																		: index === 2
-																			? "bg-red-100 text-red-600 dark:bg-red-950"
-																			: "bg-muted text-muted-foreground"
-															}
-                            `}>
+                          flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm
+                          ${
+														index === 0
+															? "bg-green-200 text-green-700 "
+															: index === 1
+																? "bg-green-100 text-green-600  "
+																: index === 2
+																	? "bg-emerald-100 text-emerald-600  "
+																	: "bg-muted text-muted-foreground"
+													}
+                        `}>
 																{index + 1}
 															</div>
+
 															<span className="font-medium">
 																{disease.name}
 															</span>
 														</div>
-														<Badge variant="secondary" className="gap-1">
+
+														<Badge
+															variant="secondary"
+															className="gap-1 bg-green-100 text-green-700">
 															<Bug className="h-3 w-3" />
 															{disease.count.toLocaleString()} cases
 														</Badge>
 													</div>
-													<Progress value={percentage} className="h-2" />
-												</div>
-											);
-										})}
-									</div>
-								</CardContent>
-							</Card>
-						</div>
-					</section>
-				)}
 
-				{/* Growth Chart Section */}
-				{stats && (stats?.monthlyGrowth || []).length > 0 && (
-					<section className="py-20 bg-muted/30">
-						<div className="container mx-auto px-4 max-w-6xl">
-							<Card>
-								<CardHeader>
-									<CardTitle className="flex items-center gap-2">
-										<BarChart3 className="h-5 w-5" />
-										Growing Community
-									</CardTitle>
-									<CardDescription>
-										Monthly plant analyses over the past 6 months
-									</CardDescription>
-								</CardHeader>
-								<CardContent>
-									<div className="flex items-end justify-between h-64 gap-2">
-										{stats.monthlyGrowth.map((month, index) => {
-											const maxCount = Math.max(
-												...stats.monthlyGrowth.map((m) => m.count),
-											);
-											const height =
-												maxCount > 0 ? (month.count / maxCount) * 100 : 20;
-
-											return (
-												<div
-													key={index}
-													className="flex flex-col items-center flex-1 gap-2">
-													<div className="text-xs font-medium text-muted-foreground">
-														{month.count}
-													</div>
-													<div
-														className="w-full bg-primary rounded-t-lg transition-all hover:bg-primary/80"
-														style={{ height: `${height}%`, minHeight: "20px" }}
+													<Progress
+														value={percentage}
+														className="h-2 bg-white"
 													/>
-													<div className="text-xs font-medium">
-														{month.month}
-													</div>
 												</div>
 											);
 										})}
@@ -365,174 +198,22 @@ export default function LandingPage() {
 							Ready to Start Protecting Your Plants?
 						</h2>
 						<p className="text-lg mb-8 text-green-50">
-							Join thousands of users already using AgriNova
+							Identify pests in seconds. Get solutions immediately.
 						</p>
 						<Button
 							size="lg"
 							variant="secondary"
-							onClick={() => navigate("/auth/register")}
+							onClick={() => navigate("/auth/login")}
 							className="gap-2">
 							Get Started Now
 							<ArrowRight className="h-4 w-4" />
 						</Button>
 					</div>
 				</section>
-
-				{/* Footer */}
-				<footer className="py-12 border-t">
-					<div className="container mx-auto px-4 max-w-6xl">
-						<div className="grid md:grid-cols-4 gap-8">
-							<div>
-								<h3 className="font-bold mb-4 flex items-center gap-2">
-									<Leaf className="h-5 w-5 text-green-600" />
-									AgriNova
-								</h3>
-								<p className="text-sm text-muted-foreground">
-									AI-powered plant disease detection and care platform
-								</p>
-							</div>
-
-							<div>
-								<h4 className="font-semibold mb-3">Product</h4>
-								<ul className="space-y-2 text-sm text-muted-foreground">
-									<li>
-										<a href="#features" className="hover:text-foreground">
-											Features
-										</a>
-									</li>
-									<li>
-										<a href="#pricing" className="hover:text-foreground">
-											Pricing
-										</a>
-									</li>
-									<li>
-										<a href="#about" className="hover:text-foreground">
-											About
-										</a>
-									</li>
-								</ul>
-							</div>
-
-							<div>
-								<h4 className="font-semibold mb-3">Support</h4>
-								<ul className="space-y-2 text-sm text-muted-foreground">
-									<li>
-										<a href="#help" className="hover:text-foreground">
-											Help Center
-										</a>
-									</li>
-									<li>
-										<a href="#contact" className="hover:text-foreground">
-											Contact
-										</a>
-									</li>
-									<li>
-										<a href="#faq" className="hover:text-foreground">
-											FAQ
-										</a>
-									</li>
-								</ul>
-							</div>
-
-							<div>
-								<h4 className="font-semibold mb-3">Legal</h4>
-								<ul className="space-y-2 text-sm text-muted-foreground">
-									<li>
-										<a href="#privacy" className="hover:text-foreground">
-											Privacy
-										</a>
-									</li>
-									<li>
-										<a href="#terms" className="hover:text-foreground">
-											Terms
-										</a>
-									</li>
-									<li>
-										<a href="#cookies" className="hover:text-foreground">
-											Cookies
-										</a>
-									</li>
-								</ul>
-							</div>
-						</div>
-
-						<div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-							© 2026 AgriNova. All rights reserved.
-						</div>
-					</div>
-				</footer>
 			</div>
 		</>
 	);
 }
-
-function StatsCard({
-	icon,
-	value,
-	label,
-}: {
-	icon: React.ReactNode;
-	value: string;
-	label: string;
-}) {
-	return (
-		<div className="flex flex-col items-center gap-2 p-4 rounded-lg bg-card border">
-			<div className="text-muted-foreground">{icon}</div>
-			<div className="text-2xl font-bold">{value}</div>
-			<div className="text-sm text-muted-foreground">{label}</div>
-		</div>
-	);
-}
-
-function TypeCard({
-	icon,
-	label,
-	count,
-	color,
-}: {
-	icon: string;
-	label: string;
-	count: number;
-	color: string;
-}) {
-	return (
-		<Card className="hover:shadow-lg transition-shadow">
-			<CardHeader>
-				<div className="text-5xl mb-4 text-center">{icon}</div>
-				<CardTitle className="text-center">{label}</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<div className="text-center">
-					<div className={`text-4xl font-bold mb-2 ${color}`}>{count}</div>
-					<p className="text-sm text-muted-foreground">Analyzed</p>
-				</div>
-			</CardContent>
-		</Card>
-	);
-}
-
-function FeatureCard({
-	icon,
-	title,
-	description,
-}: {
-	icon: React.ReactNode;
-	title: string;
-	description: string;
-}) {
-	return (
-		<Card>
-			<CardHeader>
-				<div className="mb-4">{icon}</div>
-				<CardTitle>{title}</CardTitle>
-			</CardHeader>
-			<CardContent>
-				<p className="text-muted-foreground">{description}</p>
-			</CardContent>
-		</Card>
-	);
-}
-
 function LoadingSkeleton() {
 	return (
 		<div className="min-h-screen flex items-center justify-center">
