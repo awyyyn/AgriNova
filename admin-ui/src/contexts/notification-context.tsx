@@ -26,7 +26,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 	const [notifications, setNotifications] = useState<NotificationType[]>([]);
 	const [unreadCount, setUnreadCount] = useState(0);
 	const [loading, setLoading] = useState(false);
-	const [socket, setSocket] = useState<Socket | null>(null);
+	const [, setSocket] = useState<Socket | null>(null);
 
 	// Initialize Socket.IO connection
 	useEffect(() => {

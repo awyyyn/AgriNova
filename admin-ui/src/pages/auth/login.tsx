@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Leaf } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { loginForm, LoginForm } from "@/form-schemas";
 import {
@@ -124,9 +124,7 @@ export default function LoginPage() {
 				<div className="text-center mb-8">
 					<div className="inline-flex items-center gap-2 mb-4">
 						<div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-							<span className="text-primary-foreground font-bold text-lg">
-								A
-							</span>
+							<Leaf color="white" />
 						</div>
 						<h1 className="text-2xl font-bold text-primary">AgriNova</h1>
 					</div>
