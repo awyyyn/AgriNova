@@ -5,6 +5,7 @@ import { AuthProvider } from "./contexts/auth-context";
 import { HelmetProvider } from "react-helmet-async";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { NotificationProvider } from "./contexts/notification-context";
+import { ScrollToHash } from "./components/custom/scroll-to-hash";
 
 export default function App() {
 	return (
@@ -13,6 +14,7 @@ export default function App() {
 				<AuthProvider>
 					<NotificationProvider>
 						<BrowserRouter>
+							<ScrollToHash />
 							<Routes />
 						</BrowserRouter>
 					</NotificationProvider>

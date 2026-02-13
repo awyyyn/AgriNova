@@ -18,6 +18,8 @@ import ProfilePage from "./pages/profile/page";
 import PasswordPage from "./pages/profile/change-password/page";
 import { NotificationsPage } from "./pages/notifications/page";
 import CommonLayout from "./layouts/common-layout";
+import TermsPage from "./pages/terms/page";
+import PrivacyPage from "./pages/privacy/page";
 
 export default function Routes() {
 	const publicRoutes: RouteObject[] = [
@@ -28,6 +30,8 @@ export default function Routes() {
 				{ index: true, element: <Home /> },
 				{ path: "/faqs", element: <FAQsPage /> },
 				{ path: "/help", element: <HelpPage /> },
+				{ path: "/terms", element: <TermsPage /> },
+				{ path: "/privacy", element: <PrivacyPage /> },
 			],
 		},
 		{ path: "/unauthorized", element: <Forbidden /> },
