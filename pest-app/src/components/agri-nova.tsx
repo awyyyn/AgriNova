@@ -31,7 +31,7 @@ export default function AgriNova({
 			/>
 			<View className={`${centerElements ? " items-center" : " "} `}>
 				<Text
-					className={`text-lg max-w-xs ${color === "light" ? "text-white" : "text-black"} ${centerElements ? "text-center " : ""}`}>
+					className={`text-xl max-w-xs ${color === "light" ? "text-white" : "text-black"} ${centerElements ? "text-center " : ""}`}>
 					{description ||
 						"From detection to actions - your smart farming partner."}
 				</Text>

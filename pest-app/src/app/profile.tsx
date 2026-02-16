@@ -154,7 +154,7 @@ export default function ProfileScreen() {
 				</TouchableOpacity>
 
 				{isEditing && (
-					<Text className="text-sm text-green-600 mt-2">
+					<Text className="text-lg text-[#2e7d32] mt-2">
 						Tap to change photo
 					</Text>
 				)}
@@ -162,14 +162,14 @@ export default function ProfileScreen() {
 
 			{/* First Name */}
 			<View className="mb-4">
-				<Text className="text-gray-500 mb-1">First Name</Text>
+				<Text className="text-gray-500 mb-1 text-xl">First Name</Text>
 				<TextInput
 					editable={isEditing}
 					value={profile.firstName}
 					onChangeText={(text) =>
 						setProfile((prev) => ({ ...prev, firstName: text }))
 					}
-					className={`rounded-lg px-4 py-3 ${
+					className={`rounded-lg px-4 py-3 text-xl ${
 						isEditing
 							? "border border-gray-300 bg-white"
 							: "bg-gray-100 text-gray-700"
@@ -179,14 +179,14 @@ export default function ProfileScreen() {
 
 			{/* Last Name */}
 			<View>
-				<Text className="text-gray-500 mb-1">Last Name</Text>
+				<Text className="text-gray-500 mb-1 text-xl">Last Name</Text>
 				<TextInput
 					editable={isEditing}
 					value={profile.lastName ?? ""}
 					onChangeText={(text) =>
 						setProfile((prev) => ({ ...prev, lastName: text }))
 					}
-					className={`rounded-lg px-4 py-3 ${
+					className={`rounded-lg px-4 py-3 text-xl ${
 						isEditing
 							? "border border-gray-300 bg-white"
 							: "bg-gray-100 text-gray-700"

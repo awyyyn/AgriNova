@@ -71,20 +71,22 @@ export default function HomeScreen() {
 					tintColor="#41B249"
 				/>
 			}>
-			<Heading size="3xl">Welcome back</Heading>
-			<Text className="text-lg px-2 mb-2 leading-relaxed tracking-wide">
+			<Heading size="4xl">Welcome back</Heading>
+			<Text className="text-xl px-2 mb-2 leading-relaxed tracking-wide">
 				Protect your plants with AI-powered pest detection
 			</Text>
 
-			<Card size="lg" className="rounded-2xl bg-primary-500 mb-4">
+			<Card
+				size="lg"
+				className="rounded-none bg-[#2e7d32] overflow-hidden mb-4">
 				<Heading className="text-white">Quick Scan</Heading>
-				<Text className="text-white">
+				<Text className="text-white text-xl">
 					Detect pest instantly and get treatment recommendations.
 				</Text>
 				<Button
 					onPress={() => router.push("/modal")}
 					className="bg-white mt-3 rounded-xl max-w-[150px]">
-					<ButtonText className="text-primary-500">Start Scan</ButtonText>
+					<ButtonText className="text-[#2e7d32] text-xl">Start Scan</ButtonText>
 				</Button>
 			</Card>
 
@@ -97,32 +99,36 @@ export default function HomeScreen() {
 			) : (
 				<Grid className="gap-5" _extra={{ className: "grid-cols-2" }}>
 					<GridItem _extra={{ className: "" }}>
-						<Card size="lg" className="bg-primary-500">
+						<Card size="lg" className="bg-[#2e7d32] rounded-none">
 							<Scan size={32} color="#FFF" />
-							<Text className="mt-4 text-white font-medium text-lg">
+							<Text className="mt-4 text-xl text-white font-medium  ">
 								Total Scans
 							</Text>
-							<Text className="text-white">{stats?.totalAnalyses ?? 0}</Text>
+							<Text className="text-white text-xl">
+								{stats?.totalAnalyses ?? 0}
+							</Text>
 						</Card>
 					</GridItem>
 
 					<GridItem _extra={{ className: "" }}>
-						<Card size="lg" className="bg-primary-500">
+						<Card size="lg" className="bg-[#2e7d32] rounded-none">
 							<ChartLine size={32} color="#FFF" />
-							<Text className="mt-4 text-white font-medium text-lg">
+							<Text className="mt-4 text-white font-medium text-xl">
 								Success Rate
 							</Text>
-							<Text className="text-white">{stats?.successRate ?? 0}%</Text>
+							<Text className="text-white text-xl">
+								{stats?.successRate ?? 0}%
+							</Text>
 						</Card>
 					</GridItem>
 
 					<GridItem _extra={{ className: "" }}>
-						<Card size="lg" className="bg-primary-500">
+						<Card size="lg" className="bg-[#2e7d32] rounded-none">
 							<Shield size={32} color="#FFF" />
-							<Text className="mt-4 text-white font-medium text-lg">
+							<Text className="mt-4 text-white font-medium text-xl">
 								Pest Found
 							</Text>
-							<Text className="text-white">
+							<Text className="text-white text-xl">
 								{stats?.plantsWithPestsCount ?? 0}
 							</Text>
 						</Card>

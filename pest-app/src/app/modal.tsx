@@ -67,7 +67,7 @@ export default function ModalScreen() {
 				</TouchableOpacity>
 
 				<TouchableOpacity onPress={() => router.back()} className="py-2">
-					<Text className="text-[#109b0b] font-medium text-sm">Back</Text>
+					<Text className="text-[#109b0b] font-medium text-xl">Back</Text>
 				</TouchableOpacity>
 			</View>
 		);
@@ -78,12 +78,12 @@ export default function ModalScreen() {
 			{CameraPreview}
 
 			{/* Back Button */}
-			<View className="absolute left-5" style={{ top: insets.top }}>
+			<View className="absolute left-5 top-10">
 				<TouchableOpacity
 					onPress={() => router.back()}
 					className="bg-white flex flex-row items-center gap-2 px-4 py-2 rounded-lg">
 					<ChevronLeft color="#16a34a" />
-					<Text className="text-green-600 font-medium text-sm">Back</Text>
+					<Text className="text-green-600 font-medium text-xl">Back</Text>
 				</TouchableOpacity>
 			</View>
 

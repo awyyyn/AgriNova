@@ -3,7 +3,7 @@ import ScrollViewLayout from "@src/layouts/scrollview-layout";
 import { Card } from "@src/components/ui/card";
 import { HStack } from "@src/components/ui/hstack";
 import { VStack } from "@src/components/ui/vstack";
-import { Text } from "react-native";
+import { Dimensions, Text } from "react-native";
 import {
 	Avatar,
 	AvatarFallbackText,
@@ -37,7 +37,7 @@ export default function Settings() {
 				<VStack space="lg">
 					<Card size="lg">
 						<HStack space="lg" className="items-center">
-							<Avatar size="lg" className="bg-[#DAFFD7]">
+							<Avatar size="xl" className="bg-[#DAFFD7]">
 								<AvatarImage source={{ uri: user?.photo }} />
 								{!user?.photo && (
 									<AvatarFallbackText className="text-black">
@@ -45,9 +45,14 @@ export default function Settings() {
 									</AvatarFallbackText>
 								)}
 							</Avatar>
-							<VStack>
-								<Text className="text-2xl font-semibold">{name}</Text>
-								<Text className="text-[#25AF1B]">{user?.email}</Text>
+							<VStack style={{}}>
+								<Text
+									numberOfLines={0}
+									ellipsizeMode="tail"
+									className="text-xl font-semibold ">
+									{name}
+								</Text>
+								<Text className="text-[#2e7d32] text-lg">{user?.email}</Text>
 							</VStack>
 						</HStack>
 					</Card>

@@ -18,7 +18,7 @@ export const Header = ({
 
 	return (
 		<View
-			className={`bg-[#52CE19] w-full  rounded-b-3xl justify-center`}
+			className={`bg-[#2e7d32] w-full    justify-center`}
 			style={{
 				paddingTop: Platform.OS === "ios" ? insets.top + 10 : insets.top + 15,
 				paddingBottom: 20,
