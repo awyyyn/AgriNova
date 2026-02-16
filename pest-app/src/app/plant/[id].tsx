@@ -13,6 +13,7 @@ import { HealthBadge } from "@src/components/health-badge";
 import { Card } from "@src/components/ui/card";
 import { HStack } from "@src/components/ui/hstack";
 import { Badge, BadgeText } from "@src/components/ui/badge";
+import { VStack } from "@src/components/ui/vstack";
 
 export default function Plant() {
 	const [previewImg, setPreviewImg] = useState(false);
@@ -54,24 +55,26 @@ export default function Plant() {
 					<View className="flex-1  ">
 						<View className="mb-2">
 							<HStack className="items-center gap-2">
-								<Text className="text-sm text-gray-400">Type:</Text>
+								<Text className="text-md text-gray-400">Type:</Text>
 								<Badge className="">
-									<BadgeText className="font-medium">{pest.type}</BadgeText>
+									<BadgeText className="font-medium text-lg">
+										{pest.type}
+									</BadgeText>
 								</Badge>
 							</HStack>
 							<HStack className="items-center gap-2 mt-1">
-								<Text className="text-sm text-gray-400">Confidence:</Text>
+								<Text className="text-md text-gray-400">Confidence:</Text>
 								<Badge
 									className={`${pest.confidence < 50 ? "bg-red-500" : pest.confidence < 75 ? "bg-orange-500" : "bg-green-500"}`}>
-									<BadgeText className="font-medium text-white">
+									<BadgeText className="font-medium text-white text-lg">
 										{pest.confidence}%
 									</BadgeText>
 								</Badge>
 							</HStack>
 							{pest.type !== "unknown" && (
 								<HStack className="items-center gap-2">
-									<Text className="text-sm text-gray-400">Pest Found:</Text>
-									<Text className=" ">
+									<Text className="text-md text-gray-400">Pest Found:</Text>
+									<Text className="text-lg">
 										{pest.hasPestFound ? "Yes" : "None"}
 									</Text>
 								</HStack>
@@ -79,7 +82,7 @@ export default function Plant() {
 						</View>
 						{pest.plantIdentification?.commonName ? (
 							<>
-								<Text className="text-sm text-gray-400">Common Name:</Text>
+								<Text className="text-md text-gray-400">Common Name:</Text>
 								<Text className="text-2xl font-bold">
 									{pest.plantIdentification?.commonName || "Unknown Plant"}
 								</Text>
@@ -88,18 +91,18 @@ export default function Plant() {
 							<>
 								{/* Status badge */}
 								<View className="self-start bg-amber-100 px-3 py-1 rounded-full mb-3">
-									<Text className="text-amber-700 text-xs font-medium">
+									<Text className="text-amber-700 text-md font-medium">
 										Analysis Inconclusive
 									</Text>
 								</View>
 
 								{/* Title */}
-								<Text className="text-xl font-semibold mb-2">
+								<Text className="text-2xl font-semibold mb-2">
 									No plant detected in this image
 								</Text>
 
 								{/* Explanation */}
-								<Text className="text-gray-600 mb-4">
+								<Text className="text-gray-600 mb-4 text-xl">
 									During analysis, the system could not detect a plant, fruit,
 									or vegetable in this image. As a result, pest detection and
 									treatment recommendations were not generated.
@@ -107,14 +110,16 @@ export default function Plant() {
 
 								{/* Reasons */}
 								<View className="bg-gray-50 rounded-2xl p-4 mb-4">
-									<Text className="font-semibold mb-2">Possible reasons:</Text>
-									<Text className="text-gray-600">
+									<Text className="font-semibold mb-2 text-lg">
+										Possible reasons:
+									</Text>
+									<Text className="text-gray-600 text-xl">
 										• Plant is too small or unclear
 									</Text>
-									<Text className="text-gray-600">
+									<Text className="text-gray-600 text-xl">
 										• Image contains non-plant objects
 									</Text>
-									<Text className="text-gray-600">
+									<Text className="text-gray-600 text-xl">
 										• Poor lighting or angle
 									</Text>
 								</View>
@@ -122,7 +127,7 @@ export default function Plant() {
 								{/* Info note */}
 								<View className="flex-row gap-3 bg-blue-50 rounded-2xl p-4 mb-6">
 									<Info size={20} color="#2563eb" />
-									<Text className="text-blue-700 flex-1">
+									<Text className="text-blue-700 flex-1 text-lg">
 										This analysis was saved for history purposes, but no
 										insights are available for this image.
 									</Text>
@@ -131,8 +136,8 @@ export default function Plant() {
 						)}
 						{pest.plantIdentification?.scientificName && (
 							<>
-								<Text className="text-sm text-gray-400">Scientific Name:</Text>
-								<Text className="text-gray-500 italic">
+								<Text className="text-md text-gray-400">Scientific Name:</Text>
+								<Text className="text-gray-500 italic text-lg">
 									({pest.plantIdentification.scientificName})
 								</Text>
 							</>
@@ -143,24 +148,32 @@ export default function Plant() {
 				{/* Diagnosis Card */}
 				{pest.diagnosis && (
 					<Card className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Diagnosis</Text>
+						<Text className="font-bold text-2xl mb-2">Diagnosis</Text>
 						<HStack>
-							<Text>Name: </Text>
-							<Text className="font-medium">{pest.diagnosis.name}</Text>
+							<Text className="text-lg">Name: </Text>
+							<Text className="font-medium text-xl">{pest.diagnosis.name}</Text>
 						</HStack>
-						<Text>Severity: {pest.diagnosis.severity}</Text>
+						<HStack>
+							<Text className="text-lg">Severity: </Text>
+							<Text className="text-xl capitalize">
+								{pest.diagnosis.severity}
+							</Text>
+						</HStack>
 						{pest.diagnosis.symptoms.length > 0 && (
 							<>
-								<Text>Symptoms: </Text>
+								<Text className="text-lg">Symptoms: </Text>
 								{pest.diagnosis.symptoms.map((item, index) => (
-									<Text key={item} className="pl-5 capitalize">
+									<Text key={item} className="pl-5 text-xl capitalize">
 										- {item}
 									</Text>
 								))}
 							</>
 						)}
 						{pest.diagnosis.confidence && (
-							<Text>Confidence: {pest.diagnosis.confidence}%</Text>
+							<HStack>
+								<Text className="text-lg">Confidence:</Text>
+								<Text className="text-xl">{pest.diagnosis.confidence}%</Text>
+							</HStack>
 						)}
 					</Card>
 				)}
@@ -168,31 +181,42 @@ export default function Plant() {
 				{/* Treatment Card */}
 				{pest.treatment && (
 					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Treatment</Text>
+						<Text className="font-bold text-2xl mb-2  ">Treatment</Text>
 
 						{pest.treatment.organic.length > 0 && (
-							<View className="flex-row items-center my-1">
+							<View className="flex-row items-start my-1">
 								<Leaf />
-								<Text className="ml-2">
-									Organic: {pest.treatment.organic.join(", ")}
-								</Text>
+								<VStack>
+									<Text className="ml-2 text-xl">Organic:</Text>
+									{pest.treatment.organic.map((org) => (
+										<Text className="text-xl" key={org}>
+											- {org}
+										</Text>
+									))}
+								</VStack>
 							</View>
 						)}
 
 						{pest.treatment.chemical && pest.treatment.chemical.length > 0 && (
-							<View className="flex-row items-center my-1">
+							<View className="flex-row items-start my-1">
 								<FlaskRound />
-								<Text className="ml-2">
-									Chemical: {pest.treatment.chemical.join(", ")}
-								</Text>
+
+								<VStack>
+									<Text className="ml-2 text-xl">Chemical:</Text>
+									{pest.treatment.chemical.map((chem) => (
+										<Text key={chem} className="text-xl">
+											- {chem}
+										</Text>
+									))}
+								</VStack>
 							</View>
 						)}
 
 						{pest.treatment?.diy && (
 							<View className="mt-2">
-								<Text className="font-bold text-lg mb-2">DIY Treatments</Text>
+								<Text className="font-bold text-xl mb-2">DIY Treatments</Text>
 								{pest.treatment?.diy.map((diy, index) => (
-									<Text key={index} className="pl-4">
+									<Text key={index} className="pl-4 text-xl">
 										- {diy}
 									</Text>
 								))}
@@ -200,7 +224,9 @@ export default function Plant() {
 						)}
 
 						{pest.treatment.notes && (
-							<Text className="mt-1">Notes: {pest.treatment.notes}</Text>
+							<Text className="mt-1 text-lg">
+								Notes: {pest.treatment.notes}
+							</Text>
 						)}
 					</View>
 				)}
@@ -208,9 +234,11 @@ export default function Plant() {
 				{/* Prevention Tips */}
 				{pest.preventionTips && pest.preventionTips.length > 0 && (
 					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Prevention Tips</Text>
+						<Text className="font-bold text-2xl mb-2 ">Prevention Tips</Text>
 						{pest.preventionTips.map((tip, index) => (
-							<Text key={index}>• {tip}</Text>
+							<Text key={index} className="text-xl">
+								• {tip}
+							</Text>
 						))}
 					</View>
 				)}
@@ -218,8 +246,8 @@ export default function Plant() {
 				{/* Recovery Timeline */}
 				{pest.recoveryTimeline && (
 					<View className="bg-white rounded-xl p-4 mb-4 shadow">
-						<Text className="font-bold text-lg mb-2">Recovery Timeline</Text>
-						<Text>{pest.recoveryTimeline}</Text>
+						<Text className="font-bold text-2xl mb-2 ">Recovery Timeline</Text>
+						<Text className="text-xl">{pest.recoveryTimeline}</Text>
 					</View>
 				)}
 			</ScrollView>
