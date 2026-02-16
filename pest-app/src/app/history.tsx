@@ -137,39 +137,39 @@ export default function PestAnalysisHistory() {
 
 			{/* Info */}
 			<View className="flex-1 justify-between">
-				<HStack className="justify-between">
+				<HStack className="flex-1 justify-between">
 					<View>
 						{item.plantIdentification?.commonName && (
-							<Text className="text-xs text-gray-500">Common name:</Text>
+							<Text className="text-sm text-gray-500">Common name:</Text>
 						)}
-						<Text className="font-semibold text-base">
+						<Text className="font-semibold text-xl">
 							{item.plantIdentification?.commonName ||
 								`Analysis #${item.id.slice(0, 6)}`}
 						</Text>
 						{item.plantIdentification?.scientificName && (
 							<>
-								<Text className="text-xs text-gray-500">Scientific name:</Text>
-								<Text className="font-semibold text-base">
+								<Text className="text-sm text-gray-500">Scientific name:</Text>
+								<Text className="font-semibold text-xl">
 									{item.plantIdentification.scientificName}
 								</Text>
 							</>
 						)}
 					</View>
 
-					<VStack className="items-end">
-						<Text className="text-xs text-gray-500">
+					<VStack className="items-ends">
+						{/* <Text className="text-xs text-gray-500">
 							{format(new Date(item.createdAt), "hh:mm a").toString()}
-						</Text>
-						<Text className="text-xs text-gray-400">
+						</Text> */}
+						{/* <Text className="text-xs text-gray-400">
 							{format(new Date(item.createdAt), "MMM dd, yyyy").toString()}
-						</Text>
+						</Text> */}
 					</VStack>
 				</HStack>
 
 				<View className="flex-row items-center gap-2 mt-2">
-					<HealthBadge status={item.healthStatus || "unknown"} />
+					<HealthBadge size="sm" status={item.healthStatus || "unknown"} />
 					{item.confidence ? (
-						<Text className="text-xs text-gray-500">
+						<Text className="text-sm text-gray-500">
 							Confidence: {item.confidence}%
 						</Text>
 					) : null}

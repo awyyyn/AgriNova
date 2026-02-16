@@ -36,7 +36,7 @@ export default function Password() {
 
 	async function handleChangePassword(
 		values: ChangePasswordForm,
-		helpers: FormikHelpers<ChangePasswordForm>
+		helpers: FormikHelpers<ChangePasswordForm>,
 	) {
 		try {
 			console.log("Changing password...");
@@ -79,13 +79,13 @@ export default function Password() {
 
 	return (
 		<View className="p-[4vw] flex-1 bg-[#ECFDF0]">
-			<Text className="text-lg leading-loose">
+			<Text className="text-xl leading-tight">
 				Choose a strong password and don&apos;t reuse it for other accounts
 			</Text>
 
 			{user?.lastChangePassword && (
 				<HStack>
-					<Text className="text-sm text-gray-600  ">
+					<Text className="text-lg text-gray-600  ">
 						Last changed password on:{" "}
 					</Text>
 					<Text className="font-semibold">
@@ -118,12 +118,12 @@ export default function Password() {
 									!!(errors.currentPassword && touched.currentPassword)
 								}>
 								<FormControlLabel>
-									<FormControlLabelText className="text-lg">
+									<FormControlLabelText className="text-xl">
 										Current Password:
 									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
+									className="bg-[#FEEDED]  rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
 									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
@@ -151,14 +151,16 @@ export default function Password() {
 									</InputSlot>
 								</Input>
 								<FormControlError>
-									<FormControlErrorText>
+									<FormControlErrorText className="text-xl">
 										{errors.currentPassword}
 									</FormControlErrorText>
 								</FormControlError>
 							</FormControl>
 							<FormControl isInvalid={!!(errors.password && touched.password)}>
 								<FormControlLabel>
-									<FormControlLabelText>Current Password:</FormControlLabelText>
+									<FormControlLabelText className="text-xl">
+										Current Password:
+									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
 									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
@@ -189,14 +191,16 @@ export default function Password() {
 									</InputSlot>
 								</Input>
 								<FormControlHelper>
-									<FormControlHelperText>
+									<FormControlHelperText className="text-lg">
 										Password strength: Use at least 8 characters. Don&apos;t use
 										a password from another site, or something too obvious like
 										your pet&apos;s name.
 									</FormControlHelperText>
 								</FormControlHelper>
 								<FormControlError>
-									<FormControlErrorText>{errors.password}</FormControlErrorText>
+									<FormControlErrorText className="text-xl">
+										{errors.password}
+									</FormControlErrorText>
 								</FormControlError>
 							</FormControl>
 							<FormControl
@@ -204,7 +208,9 @@ export default function Password() {
 									!!(errors.confirmPassword && touched.confirmPassword)
 								}>
 								<FormControlLabel>
-									<FormControlLabelText>Confirm Password:</FormControlLabelText>
+									<FormControlLabelText className="text-xl">
+										Confirm Password:
+									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
 									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
@@ -248,7 +254,7 @@ export default function Password() {
 								// disabled={isSubmitting}
 							>
 								<Text
-									className="disabled:text-gray-800/30 text-white text-center text-xl"
+									className="text-xl disabled:text-gray-800/30 text-white text-center text-xl"
 									disabled={isSubmitting}>
 									{isSubmitting ? "Updating..." : "Update Password"}
 								</Text>
