@@ -123,7 +123,7 @@ export default function Password() {
 									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED]  rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
+									className="bg-[#FEEDED]  rounded-full py-1 border border-[#2e7d32] active:border-[#2e7d32]"
 									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
@@ -133,7 +133,7 @@ export default function Password() {
 										onChangeText={handleChange("currentPassword")}
 										onBlur={handleBlur("currentPassword")}
 										placeholder="********"
-										placeholderTextColor="#52CE1975"
+										placeholderTextColor="#2e7d3275"
 										value={values.currentPassword}
 										type={showPassword.currentPassword ? "text" : "password"}
 									/>
@@ -163,7 +163,7 @@ export default function Password() {
 									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
+									className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32] active:border-[#2e7d32]"
 									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
@@ -173,7 +173,7 @@ export default function Password() {
 										onChangeText={handleChange("password")}
 										onBlur={handleBlur("password")}
 										placeholder="********"
-										placeholderTextColor="#52CE1975"
+										placeholderTextColor="#2e7d3275"
 										value={values.password}
 										type={showPassword.password ? "text" : "password"}
 									/>
@@ -213,7 +213,7 @@ export default function Password() {
 									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] active:border-[#52CE19]"
+									className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32] active:border-[#2e7d32]"
 									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
@@ -223,7 +223,7 @@ export default function Password() {
 										onChangeText={handleChange("confirmPassword")}
 										onBlur={handleBlur("confirmPassword")}
 										placeholder="********"
-										placeholderTextColor="#52CE1975"
+										placeholderTextColor="#2e7d3275"
 										value={values.confirmPassword}
 										type={showPassword.confirmPassword ? "text" : "password"}
 									/>
@@ -249,7 +249,7 @@ export default function Password() {
 
 							<TouchableOpacity
 								activeOpacity={0.8}
-								className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
+								className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#2e7d32]  "
 								onPress={() => handleSubmit()}
 								// disabled={isSubmitting}
 							>

@@ -15,7 +15,7 @@ export default function LoadingOverlay({
 	return (
 		<View style={styles.container}>
 			<View style={styles.card}>
-				<ActivityIndicator size="large" color="#52CE19" />
+				<ActivityIndicator size="large" color="#2e7d32" />
 				<Text style={styles.text}>{message}</Text>
 			</View>
 		</View>

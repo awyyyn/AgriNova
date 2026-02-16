@@ -45,7 +45,7 @@ export default function AgriNova({
 					}}
 					activeOpacity={0.6}
 					style={{
-						backgroundColor: "#52CE19",
+						backgroundColor: "#2e7d32",
 						padding: 10,
 						alignItems: !centerElements ? "baseline" : "center",
 						marginTop: 22,

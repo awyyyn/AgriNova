@@ -26,7 +26,7 @@ export default function ForgotPasswordPage() {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify({ email }),
-				}
+				},
 			);
 			const data = await response.json();
 
@@ -49,7 +49,7 @@ export default function ForgotPasswordPage() {
 				{
 					richColors: true,
 					description: "An unexpected error occurred.",
-				}
+				},
 			);
 		} finally {
 			setLoading(false);

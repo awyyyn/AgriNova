@@ -27,7 +27,7 @@ export default function ForgotPassword() {
 
 	const handleForgotPassword = async (
 		values: EmailForm,
-		helpers: FormikHelpers<EmailForm>
+		helpers: FormikHelpers<EmailForm>,
 	) => {
 		try {
 			const response = await fetch(
@@ -38,7 +38,7 @@ export default function ForgotPassword() {
 						"Content-Type": "application/json",
 					},
 					body: JSON.stringify(values),
-				}
+				},
 			);
 			const data = await response.json();
 
@@ -98,7 +98,7 @@ export default function ForgotPassword() {
 									<FormControlLabelText>Email Address</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] "
+									className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32] "
 									size="lg"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
@@ -115,12 +115,14 @@ export default function ForgotPassword() {
 									/>
 								</Input>
 								<FormControlError>
-									<FormControlErrorText>{errors.email}</FormControlErrorText>
+									<FormControlErrorText className="text-lg">
+										{errors.email}
+									</FormControlErrorText>
 								</FormControlError>
 								<TouchableOpacity
 									// size="lg"
 									activeOpacity={0.8}
-									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
+									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#2e7d32]  "
 									onPress={() => handleSubmit()}
 									disabled={isSubmitting}>
 									<Text
@@ -136,7 +138,7 @@ export default function ForgotPassword() {
 									onPress={() => router.back()}
 									disabled={isSubmitting}>
 									<ButtonText
-										className="disabled:text-gray-800/30 "
+										className="disabled:text-gray-800/30 text-lg text-[#2e7d32]"
 										disabled={isSubmitting}>
 										Back to Log in
 									</ButtonText>

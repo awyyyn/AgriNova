@@ -37,7 +37,7 @@ export default function SignIn() {
 	const router = useRouter();
 	const handleSignIn = async (
 		values: LoginForm,
-		helpers: FormikHelpers<LoginForm>
+		helpers: FormikHelpers<LoginForm>,
 	) => {
 		const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 		try {
@@ -104,16 +104,19 @@ export default function SignIn() {
 						<VStack space="lg" className=" mt-10">
 							<FormControl isInvalid={!!(errors.email && touched.email)}>
 								<FormControlLabel>
-									<FormControlLabelText>Email Address</FormControlLabelText>
+									<FormControlLabelText className="text-xl">
+										Email Address
+									</FormControlLabelText>
 								</FormControlLabel>
 								<Input
-									className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] "
+									className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32] "
 									size="xl"
 									isReadOnly={isSubmitting}>
 									<InputSlot className="pl-3">
 										<InputIcon color="#009951" as={Mail} />
 									</InputSlot>
 									<InputField
+										className="text-xl"
 										onChangeText={handleChange("email")}
 										onBlur={handleBlur("email")}
 										value={values.email}
@@ -124,7 +127,9 @@ export default function SignIn() {
 									/>
 								</Input>
 								<FormControlError>
-									<FormControlErrorText>{errors.email}</FormControlErrorText>
+									<FormControlErrorText className="text-lg">
+										{errors.email}
+									</FormControlErrorText>
 								</FormControlError>
 							</FormControl>
 
@@ -132,11 +137,13 @@ export default function SignIn() {
 								<FormControl
 									isInvalid={!!(errors.password && touched.password)}>
 									<FormControlLabel>
-										<FormControlLabelText>Password</FormControlLabelText>
+										<FormControlLabelText className="text-xl">
+											Password
+										</FormControlLabelText>
 									</FormControlLabel>
 
 									<Input
-										className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19]"
+										className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32]"
 										size="xl"
 										isReadOnly={isSubmitting}>
 										<InputSlot className="pl-3">
@@ -146,7 +153,8 @@ export default function SignIn() {
 											onChangeText={handleChange("password")}
 											onBlur={handleBlur("password")}
 											placeholder="********"
-											placeholderTextColor="#52CE1975"
+											className="text-xl"
+											placeholderTextColor="#2e7d3275"
 											value={values.password}
 											type={showPassword ? "text" : "password"}
 										/>
@@ -158,7 +166,7 @@ export default function SignIn() {
 									</Input>
 									<FormControlError>
 										{/* <FormControlErrorIcon /> */}
-										<FormControlErrorText>
+										<FormControlErrorText className="text-lg">
 											{errors.password}
 										</FormControlErrorText>
 									</FormControlError>
@@ -166,7 +174,7 @@ export default function SignIn() {
 
 								<TouchableOpacity
 									onPress={() => router.push("/(auth)/forgot-password")}>
-									<Text className="ml-auto   mt-1  text-gray-600 font-medium">
+									<Text className="ml-auto  text-lg  mt-1  text-gray-600 font-medium">
 										Forgot Password?
 									</Text>
 								</TouchableOpacity>
@@ -176,27 +184,33 @@ export default function SignIn() {
 								<TouchableOpacity
 									// size="lg"
 									activeOpacity={0.8}
-									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
+									className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#2e7d32]  "
 									onPress={() => handleSubmit()}
 									disabled={isSubmitting}>
 									<Text
-										className="disabled:text-gray-800/30 text-white text-center text-xl"
+										className="text-xl disabled:text-gray-800/30 text-white text-center text-xl"
 										disabled={isSubmitting}>
 										Submit
 									</Text>
 								</TouchableOpacity>
 							</Center>
-							<HStack space="sm" className="justify-center">
-								<Text className="text-gray-600">
+							<VStack
+								space="sm"
+								className="justify-center items-center -space-y-6">
+								<Text className="text-gray-600 text-lg">
 									Don&apos;t have an account?
 								</Text>
 								<TouchableOpacity
-									onPress={() => router.push("/(auth)/create-account")}>
-									<Text className="text-gray-600 font-medium">
+									hitSlop={20}
+									className="-mt-2"
+									onPress={() =>
+										!isSubmitting && router.push("/(auth)/create-account")
+									}>
+									<Text className="text-gray-600 font-medium text-lg">
 										Create Account here
 									</Text>
 								</TouchableOpacity>
-							</HStack>
+							</VStack>
 						</VStack>
 					);
 				}}

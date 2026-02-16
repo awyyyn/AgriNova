@@ -212,7 +212,7 @@ export default function ProfileScreen() {
 					position: "absolute",
 					bottom: insets.bottom + 12,
 					right: 20,
-					backgroundColor: isEditing ? "#16A34A" : "#52CE19",
+					backgroundColor: isEditing ? "#16A34A" : "#2e7d32",
 				}}>
 				{!saving ? (
 					<FabIcon as={isEditing ? Check : Edit} />

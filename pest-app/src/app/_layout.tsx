@@ -103,7 +103,7 @@ export default function RootLayout() {
 												fontWeight: "600",
 											},
 											headerStyle: {
-												backgroundColor: "#52CE19",
+												backgroundColor: "#2e7d32",
 											},
 											sheetGrabberVisible: true,
 											sheetCornerRadius: 16,
@@ -166,7 +166,7 @@ export default function RootLayout() {
 												fontWeight: Platform.OS === "ios" ? "600" : "bold",
 											},
 											headerStyle: {
-												backgroundColor: "#52CE19",
+												backgroundColor: "#2e7d32",
 											},
 											headerTitle: "Profile",
 										}}
@@ -180,7 +180,7 @@ export default function RootLayout() {
 												fontWeight: Platform.OS === "ios" ? "600" : "bold",
 											},
 											headerStyle: {
-												backgroundColor: "#52CE19",
+												backgroundColor: "#2e7d32",
 											},
 											headerTitle: "FAQ's",
 										}}
@@ -195,7 +195,7 @@ export default function RootLayout() {
 												fontWeight: Platform.OS === "ios" ? "600" : "bold",
 											},
 											headerStyle: {
-												backgroundColor: "#52CE19",
+												backgroundColor: "#2e7d32",
 											},
 											headerTitle: "Change Password",
 										}}
@@ -210,7 +210,7 @@ export default function RootLayout() {
 												fontWeight: Platform.OS === "ios" ? "600" : "bold",
 											},
 											headerStyle: {
-												backgroundColor: "#52CE19",
+												backgroundColor: "#2e7d32",
 											},
 											headerTitle: "Analysis History",
 										}}

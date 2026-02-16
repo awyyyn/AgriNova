@@ -117,7 +117,7 @@ export default function HomeScreen() {
 								Success Rate
 							</Text>
 							<Text className="text-white text-xl">
-								{stats?.successRate ?? 0}%
+								{Number(stats?.successRate ?? 0).toFixed(2)}%
 							</Text>
 						</Card>
 					</GridItem>

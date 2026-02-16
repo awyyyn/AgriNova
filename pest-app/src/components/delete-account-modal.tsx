@@ -107,7 +107,7 @@ export default function DeleteAccountModal({
 							<InputField
 								onChangeText={setPassword}
 								placeholder="********"
-								placeholderTextColor="#52CE1975"
+								placeholderTextColor="#2e7d3275"
 								value={password}
 								type={showPassword ? "text" : "password"}
 							/>

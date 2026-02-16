@@ -102,7 +102,7 @@ export default function Analyze() {
 			{!loading && !analyzed && (
 				<TouchableOpacity
 					onPress={handleAnalyze}
-					className="bg-[#44DF3E] p-4 rounded-xl">
+					className="bg-[#2e7d32] p-4 rounded-xl">
 					<Text className="text-center text-lg font-semibold text-white">
 						Analyze Plant
 					</Text>
@@ -125,18 +125,18 @@ export default function Analyze() {
 						isDark ? "border-red-400 bg-red-900" : "border-red-200 bg-red-50"
 					}`}>
 					<Text
-						className={`${isDark ? "text-red-200" : "text-red-600"} font-semibold`}>
+						className={`${isDark ? "text-red-200" : "text-red-600"} text-2xl font-semibold`}>
 						Analysis Failed
 					</Text>
 					<Text
-						className={`${isDark ? "text-red-300" : "text-red-500"} text-sm`}>
+						className={`${isDark ? "text-red-300" : "text-red-500"} text-xl`}>
 						{error}
 					</Text>
 
 					<TouchableOpacity
 						onPress={handleAnalyze}
 						className="mt-2 bg-red-500 rounded-lg py-2">
-						<Text className="text-white text-center font-medium">
+						<Text className="text-white text-center text-xl font-medium">
 							Try Again
 						</Text>
 					</TouchableOpacity>
@@ -157,7 +157,7 @@ export default function Analyze() {
 					</Text>
 
 					{/* Description */}
-					<Text className="text-center text-gray-600 mb-6">
+					<Text className="text-center text-xl text-gray-600 mb-6">
 						The image doesn&apos;t appear to contain a plant, fruit, or
 						vegetable. Please upload a clear photo of a plant leaf, fruit, or
 						crop for accurate analysis.
@@ -165,25 +165,29 @@ export default function Analyze() {
 
 					{/* Tips */}
 					<View className="bg-green-50 rounded-2xl p-4 mb-8">
-						<Text className="font-semibold mb-2 text-green-700">
+						<Text className="font-semibold text-xl mb-2 text-[#2e7d32]">
 							For best results:
 						</Text>
-						<Text className="text-green-700">• Good lighting</Text>
-						<Text className="text-green-700">• Plant fills the frame</Text>
-						<Text className="text-green-700">• One plant per photo</Text>
+						<Text className="text-[#2e7d32] text-xl">• Good lighting</Text>
+						<Text className="text-[#2e7d32] text-xl">
+							• Plant fills the frame
+						</Text>
+						<Text className="text-[#2e7d32] text-xl">
+							• One plant per photo
+						</Text>
 					</View>
 
 					{/* Actions */}
 					<Pressable
 						onPress={() => router.dismissTo("/modal")}
-						className="bg-green-600 py-4 rounded-2xl mb-3">
-						<Text className="text-white text-center font-semibold">
+						className="bg-[#2e7d32] py-4 rounded-2xl mb-3">
+						<Text className="text-white text-xl text-center font-semibold">
 							Retake Photo
 						</Text>
 					</Pressable>
 
 					<Pressable onPress={() => router.dismissTo("/(tabs)/scan")}>
-						<Text className="text-center text-green-700">
+						<Text className="text-center text-[#2e7d32] text-xl">
 							Upload another image
 						</Text>
 					</Pressable>
@@ -199,24 +203,25 @@ export default function Analyze() {
 							isDark ? "bg-gray-800" : "bg-white"
 						}`}>
 						<Text
-							className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+							className={`text-2xl font-semibold ${isDark ? "text-white" : "text-black"}`}>
 							Plant Overview
 						</Text>
 						<Text className={`${isDark ? "text-gray-300" : "text-gray-700"}`}>
 							Status:{" "}
 							<Text
-								className={
+								className={`${
 									data.healthStatus === "healthy"
 										? "text-green-400 font-semibold"
 										: "text-red-400 font-semibold"
-								}>
+								} text-xl`}>
 								{data.healthStatus}{" "}
 								{data.confidence && `(Confidence: ${data.confidence}%)`}
 							</Text>
 						</Text>
 
 						{data.plantIdentification?.commonName && (
-							<Text className={`${isDark ? "text-gray-300" : "text-gray-600"}`}>
+							<Text
+								className={`${isDark ? "text-gray-300" : "text-gray-600"} text-xl`}>
 								Plant: {data.plantIdentification.commonName}
 							</Text>
 						)}
@@ -225,28 +230,20 @@ export default function Analyze() {
 					{/* Diagnosis */}
 					{data.diagnosis && (
 						<View
-							className={`rounded-2xl p-4 shadow-sm gap-2 ${
+							className={`rounded-2xl   p-4 shadow-sm gap-2 ${
 								isDark ? "bg-gray-800" : "bg-white"
 							}`}>
 							<Text
-								className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+								className={`text-2xl font-semibold ${isDark ? "text-white" : "text-black"}`}>
 								Diagnosis
 							</Text>
 
-							<View className="flex-row items-center gap-2">
-								<Text className="font-medium">{data.diagnosis.name}</Text>
-								<View
-									className={`px-2 py-1 rounded-full ${
-										data.diagnosis.severity === "mild"
-											? "bg-yellow-100"
-											: data.diagnosis.severity === "moderate"
-												? "bg-orange-100"
-												: "bg-red-100"
-									}`}>
-									<Text className="text-xs capitalize">
-										{data.diagnosis.severity}
-									</Text>
-								</View>
+							<View className="flex-swrow itesms-center relative gap-2">
+								<Text className=" text-xl">{data.diagnosis.name}</Text>
+
+								<Text className="text-xl capitalize">
+									Severity: {data.diagnosis.severity}
+								</Text>
 								{data.diagnosis.confidence && (
 									<Text className="text-xs text-gray-500">
 										({data.diagnosis.confidence}% confidence)
@@ -257,7 +254,7 @@ export default function Analyze() {
 							{data.diagnosis.symptoms.map((s, i) => (
 								<Text
 									key={i}
-									className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+									className={`${isDark ? "text-gray-300" : "text-gray-500"} text-xl`}>
 									• {s}
 								</Text>
 							))}
@@ -271,26 +268,26 @@ export default function Analyze() {
 								isDark ? "bg-gray-800" : "bg-white"
 							}`}>
 							<Text
-								className={`text-lg font-semibold ${isDark ? "text-white" : "text-black"}`}>
+								className={`text-2xl font-semibold ${isDark ? "text-white" : "text-black"}`}>
 								Treatment
 							</Text>
 
-							<Text className="font-medium">Organic</Text>
+							<Text className="font-medium text-xl">Organic</Text>
 							{data.treatment.organic.map((t, i) => (
 								<Text
 									key={i}
-									className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+									className={`text-xl ${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
 									• {t}
 								</Text>
 							))}
 
 							{data.treatment.chemical?.length ? (
 								<>
-									<Text className="font-medium mt-2">Chemical</Text>
+									<Text className="font-medium mt-2 text-xl">Chemical</Text>
 									{data.treatment.chemical.map((t, i) => (
 										<Text
 											key={i}
-											className={`${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
+											className={`text-xl ${isDark ? "text-gray-300" : "text-gray-500"} text-sm`}>
 											• {t}
 										</Text>
 									))}
@@ -302,15 +299,17 @@ export default function Analyze() {
 									className={`rounded-2xl p-4 shadow-sm gap-2 ${
 										isDark ? "bg-gray-800" : "bg-white"
 									}`}>
-									<Text className="font-bold text-lg mb-2">DIY Treatments</Text>
+									<Text className="font-bold text-xl mb-2">DIY Treatments</Text>
 									{data.treatment?.diy.map((diy, index) => (
-										<Text key={index}>{diy}</Text>
+										<Text key={index} className="text-xl">
+											{diy}
+										</Text>
 									))}
 								</View>
 							)}
 
 							{data.treatment.notes && (
-								<Text className="text-xs text-gray-400 mt-1">
+								<Text className="text-lg text-gray-400 mt-1">
 									{data.treatment.notes}
 								</Text>
 							)}
@@ -326,20 +325,20 @@ export default function Analyze() {
 									: "bg-green-50 border-green-200"
 							}`}>
 							<Text
-								className={`text-lg font-semibold ${isDark ? "text-green-200" : "text-green-700"}`}>
+								className={`text-xl font-semibold ${isDark ? "text-green-200" : "text-[#2e7d32]"}`}>
 								Prevention Tips
 							</Text>
 
 							{data.preventionTips.map((tip, i) => (
 								<Text
 									key={i}
-									className={`${isDark ? "text-green-300" : "text-green-600"} text-sm`}>
+									className={`${isDark ? "text-green-300" : "text-[#2e7d32]"} text-lg`}>
 									• {tip}
 								</Text>
 							))}
 
-							{data.recoveryTimeline && (
-								<Text className="text-xs text-green-500 mt-2">
+							{!data.recoveryTimeline && (
+								<Text className="text-xs text-[#2e7d32] mt-2">
 									Expected recovery: {data.recoveryTimeline}
 								</Text>
 							)}

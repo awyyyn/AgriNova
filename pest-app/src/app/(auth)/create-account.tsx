@@ -41,7 +41,7 @@ export default function CreateAccount() {
 	const { login } = useAuthStore();
 	const handleSignIn = async (
 		values: RegisterForm,
-		helpers: FormikHelpers<RegisterForm>
+		helpers: FormikHelpers<RegisterForm>,
 	) => {
 		const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 		try {
@@ -123,10 +123,12 @@ export default function CreateAccount() {
 								<VStack space="lg" className=" mt-10">
 									<FormControl isInvalid={!!(errors.email && touched.email)}>
 										<FormControlLabel>
-											<FormControlLabelText>Email Address</FormControlLabelText>
+											<FormControlLabelText className="text-xl">
+												Email Address
+											</FormControlLabelText>
 										</FormControlLabel>
 										<Input
-											className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19] "
+											className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32] "
 											size="xl"
 											isReadOnly={isSubmitting}>
 											<InputSlot className="pl-3">
@@ -143,7 +145,7 @@ export default function CreateAccount() {
 											/>
 										</Input>
 										<FormControlError>
-											<FormControlErrorText>
+											<FormControlErrorText className="text-lg">
 												{errors.email}
 											</FormControlErrorText>
 										</FormControlError>
@@ -152,11 +154,13 @@ export default function CreateAccount() {
 									<FormControl
 										isInvalid={!!(errors.password && touched.password)}>
 										<FormControlLabel>
-											<FormControlLabelText>Password</FormControlLabelText>
+											<FormControlLabelText className="text-xl">
+												Password
+											</FormControlLabelText>
 										</FormControlLabel>
 
 										<Input
-											className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19]"
+											className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32]"
 											size="xl"
 											isReadOnly={isSubmitting}>
 											<InputSlot className="pl-3">
@@ -166,7 +170,7 @@ export default function CreateAccount() {
 												onChangeText={handleChange("password")}
 												onBlur={handleBlur("password")}
 												placeholder="********"
-												placeholderTextColor="#52CE1975"
+												placeholderTextColor="#2e7d3275"
 												value={values.password}
 												type={showPassword ? "text" : "password"}
 											/>
@@ -178,7 +182,7 @@ export default function CreateAccount() {
 										</Input>
 										<FormControlError>
 											{/* <FormControlErrorIcon /> */}
-											<FormControlErrorText>
+											<FormControlErrorText className="text-lg">
 												{errors.password}
 											</FormControlErrorText>
 										</FormControlError>
@@ -189,13 +193,13 @@ export default function CreateAccount() {
 											!!(errors.confirmPassword && touched.confirmPassword)
 										}>
 										<FormControlLabel>
-											<FormControlLabelText>
+											<FormControlLabelText className="text-xl">
 												Confirm Password
 											</FormControlLabelText>
 										</FormControlLabel>
 
 										<Input
-											className="bg-[#FEEDED] rounded-full py-1 border border-[#52CE19]"
+											className="bg-[#FEEDED] rounded-full py-1 border border-[#2e7d32]"
 											size="xl"
 											isReadOnly={isSubmitting}>
 											<InputSlot className="pl-3">
@@ -205,7 +209,7 @@ export default function CreateAccount() {
 												onChangeText={handleChange("confirmPassword")}
 												onBlur={handleBlur("confirmPassword")}
 												placeholder="********"
-												placeholderTextColor="#52CE1975"
+												placeholderTextColor="#2e7d3275"
 												value={values.confirmPassword}
 												type={showPassword ? "text" : "password"}
 											/>
@@ -217,7 +221,7 @@ export default function CreateAccount() {
 										</Input>
 										<FormControlError>
 											{/* <FormControlErrorIcon /> */}
-											<FormControlErrorText>
+											<FormControlErrorText className="text-lg">
 												{errors.confirmPassword}
 											</FormControlErrorText>
 										</FormControlError>
@@ -227,7 +231,7 @@ export default function CreateAccount() {
 										<TouchableOpacity
 											// size="lg"
 											activeOpacity={0.8}
-											className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#52CE19]  "
+											className="rounded-full mt-5 min-w-[200px] disabled:bg-gray-800/20 group py-2 bg-[#2e7d32]  "
 											onPress={() => handleSubmit()}
 											disabled={isSubmitting}>
 											<Text
@@ -237,16 +241,19 @@ export default function CreateAccount() {
 											</Text>
 										</TouchableOpacity>
 									</Center>
-									<HStack space="sm" className="justify-center">
-										<Text className="text-gray-600">
+									<VStack space="sm" className="items-center">
+										<Text className="text-gray-600 text-lg">
 											Already have an account?
 										</Text>
-										<TouchableOpacity onPress={() => router.back()}>
-											<Text className="text-gray-600 font-medium">
+										<TouchableOpacity
+											className="-mt-2"
+											hitSlop={20}
+											onPress={() => router.back()}>
+											<Text className="text-gray-600 font-medium text-lg">
 												Login here
 											</Text>
 										</TouchableOpacity>
-									</HStack>
+									</VStack>
 								</VStack>
 							);
 						}}
