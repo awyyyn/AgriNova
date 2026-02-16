@@ -53,7 +53,7 @@ export default function DeleteAccountModal({
 						Authorization: `Bearer ${token}`,
 					},
 					body: JSON.stringify({ password }),
-				}
+				},
 			);
 
 			const data = await response.json();
@@ -71,7 +71,7 @@ export default function DeleteAccountModal({
 			// Handle successful account deletion (e.g., logout, redirect)
 		} catch (error) {
 			setError(
-				(error as Error).message || "An error occurred. Please try again."
+				(error as Error).message || "An error occurred. Please try again.",
 			);
 		} finally {
 			setLoading(false);
@@ -90,12 +90,12 @@ export default function DeleteAccountModal({
 			<ModalBackdrop />
 			<ModalContent className="max-w-[305px]  ">
 				<ModalHeader>
-					<Heading size="md" className="text-typography-950 mb-2">
+					<Heading size="md" className="text-typography-950 mb-2 text-2xl">
 						Delete account
 					</Heading>
 				</ModalHeader>
 				<ModalBody className="mt-0 mb-4">
-					<Text className="mb-2">
+					<Text className="mb-2 text-xl">
 						Enter password to confirm account deletion.
 					</Text>
 					<FormControl isInvalid={!!error} isReadOnly={loading}>
@@ -121,7 +121,7 @@ export default function DeleteAccountModal({
 							<FormControlErrorText>{error}</FormControlErrorText>
 						</FormControlError>
 						<FormControlHelper>
-							<FormControlHelperText>
+							<FormControlHelperText className="text-lg">
 								Are you sure you want to delete this account? This action cannot
 								be undone.
 							</FormControlHelperText>
@@ -133,8 +133,10 @@ export default function DeleteAccountModal({
 						onPress={handleDeleteAccount}
 						size="lg"
 						disabled={loading}
-						className="flex-grow  w-full bg-error-600 disabled:bg-error-200  ">
-						<ButtonText>{loading ? "Deleting..." : "Delete"}</ButtonText>
+						className="flex-grow   w-full bg-error-600 disabled:bg-error-200  ">
+						<ButtonText className="text-xl">
+							{loading ? "Deleting..." : "Delete"}
+						</ButtonText>
 					</Button>
 					<Button
 						disabled={loading}
@@ -147,7 +149,7 @@ export default function DeleteAccountModal({
 							setPassword("");
 						}}
 						className="flex-grow w-full">
-						<ButtonText>Cancel</ButtonText>
+						<ButtonText className="text-xl">Cancel</ButtonText>
 					</Button>
 				</ModalFooter>
 			</ModalContent>

@@ -79,7 +79,7 @@ export default function FAQsPage() {
 			{/* Header */}
 			<View className="mb-6">
 				{/* <Text className="text-3xl font-bold text-green-700 mb-2">FAQs</Text> */}
-				<Text className="text-base text-gray-600">
+				<Text className="text-2xl text-gray-600">
 					Frequently Asked Questions about AgriNova
 				</Text>
 			</View>
@@ -99,7 +99,7 @@ export default function FAQsPage() {
 								className="flex-row items-center justify-between p-4 bg-gray-50">
 								<View className="flex-row items-center gap-3 flex-1">
 									<HelpCircle size={20} color="#15803d" />
-									<Text className="text-base font-medium text-gray-800 flex-1">
+									<Text className="text-xl font-medium text-gray-800 flex-1">
 										{item.question}
 									</Text>
 								</View>
@@ -113,7 +113,9 @@ export default function FAQsPage() {
 
 							{isOpen && (
 								<View className="p-4 bg-white border-t border-gray-200">
-									<Text className="text-gray-700 leading-6">{item.answer}</Text>
+									<Text className="text-gray-700 text-xl leading-6">
+										{item.answer}
+									</Text>
 								</View>
 							)}
 						</View>
@@ -122,7 +124,7 @@ export default function FAQsPage() {
 			</View>
 
 			{/* Footer */}
-			<Text className="text-center text-xs text-gray-400 mt-10">
+			<Text className="text-center text-lg text-gray-400 mt-10">
 				Still have questions? AgriNova is here to help 🌱
 			</Text>
 		</ScrollView>
