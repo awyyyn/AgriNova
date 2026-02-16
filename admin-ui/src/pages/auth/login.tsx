@@ -48,6 +48,11 @@ export default function LoginPage() {
 				throw new Error(data.errorMessage || "Login failed");
 			}
 
+			// TEMP SOLUTION
+			if (data.data.user.role === "USER") {
+				throw new Error("UnAuthorized!");
+			}
+
 			console.log("========= Login Response =========");
 			toast.success("Login successful!", {
 				description: "Welcome back!",
