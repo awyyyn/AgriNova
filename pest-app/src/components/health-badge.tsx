@@ -19,12 +19,15 @@ export function HealthBadge({ status, size = "md" }: HealthBadgeProps) {
 				? "bg-red-500"
 				: "bg-gray-200";
 
+	const fontSize =
+		size === "lg" ? "text-2xl" : size === "md" ? "text-xl" : "text-sm";
+
 	return (
 		<Badge
 			size={size}
 			className={`${bgColor} rounded-lg px-2 min-w-[75px] flex flex-row justify-between`}>
 			<BadgeText
-				className={`${status === "unknown" ? "text-black" : "text-white"} capitalize `}>
+				className={`${status === "unknown" ? "text-black" : "text-white"} capitalize ${fontSize} `}>
 				{status}
 			</BadgeText>
 			<BadgeIcon
