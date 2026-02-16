@@ -32,31 +32,33 @@ io.use(SocketIOMiddleware);
 io.on("connection", (socket) => {
 	const user = socket.data.user;
 
-	console.log(`Client connected: ${socket.id} (${user.email})`);
+	if (user) {
+		console.log(`Client connected: ${socket.id} (${user.email})`);
 
-	// Join admin room if user is admin
-	if (user.role === "ADMIN" || user.role === "SUPER_ADMIN") {
-		socket.join("admins");
-		console.log(`Admin ${user.email} joined admins room`);
+		// Join admin room if user is admin
+		if (user && (user?.role === "ADMIN" || user?.role === "SUPER_ADMIN")) {
+			socket.join("admins");
+			console.log(`Admin ${user?.email} joined admins room`);
+		}
+
+		// Send connection confirmation
+		socket.emit("connected", {
+			message: "Connected to notification server",
+			userId: user.id,
+			role: user.role,
+		});
+
+		// Handle disconnection
+		socket.on("disconnect", () => {
+			console.log(`Client disconnected: ${socket.id}`);
+		});
+
+		// Optional: Handle manual notification request
+		socket.on("request-notifications", async () => {
+			// Could fetch and send latest notifications here
+			socket.emit("notifications-sent");
+		});
 	}
-
-	// Send connection confirmation
-	socket.emit("connected", {
-		message: "Connected to notification server",
-		userId: user.id,
-		role: user.role,
-	});
-
-	// Handle disconnection
-	socket.on("disconnect", () => {
-		console.log(`Client disconnected: ${socket.id}`);
-	});
-
-	// Optional: Handle manual notification request
-	socket.on("request-notifications", async () => {
-		// Could fetch and send latest notifications here
-		socket.emit("notifications-sent");
-	});
 });
 
 app.get("/health-check", (req: Request, res: Response) => {
