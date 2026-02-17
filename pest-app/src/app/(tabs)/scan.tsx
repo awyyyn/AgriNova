@@ -5,7 +5,7 @@ import { Card } from "@src/components/ui/card";
 import { useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import { VStack } from "@src/components/ui/vstack";
-import { Camera } from "lucide-react-native";
+import { Camera, Upload } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { handleUploadToAppwrite } from "@src/services/appwrite";
 import { slugify } from "@src/utils";
@@ -50,17 +50,35 @@ export default function Scan() {
 
 	return (
 		<ScrollViewLayout>
-			<Card size="lg">
-				<Text className="text-2xl font-jakarta font-medium">
+			<Card
+				size="lg"
+				style={{
+					shadowColor: "#82D55C",
+					shadowOffset: { width: 0, height: 3 },
+					shadowRadius: 4,
+					shadowOpacity: 1,
+					elevation: 10,
+				}}
+				className="bg-[#F0FDF4] border border-[#0A980F] mt-2 ">
+				<Text className="text-2xl text-center font-jakarta font-medium">
 					Scan or Upload an Image
 				</Text>
-				<Text className="leading-relaxed text-xl">
+				<Text className="leading-relaxed text-center text-xl">
 					Use the camera to scan a pest or plant, or upload an image from your
 					gallery for identification.
 				</Text>
 			</Card>
 
-			<Card className="shadow-ssm mt-5" size="lg">
+			<Card
+				style={{
+					shadowColor: "#82D55C",
+					shadowOffset: { width: 0, height: 3 },
+					shadowRadius: 4,
+					shadowOpacity: 1,
+					elevation: 10,
+				}}
+				className="bg-[#F0FDF4] border border-[#0A980F] mt-5 "
+				size="lg">
 				<Text className="font-medium text-2xl">Tips:</Text>
 				<VStack className="mt-2" space="sm">
 					<Text className="pl-[1rem] text-xl">
@@ -78,21 +96,30 @@ export default function Scan() {
 				</VStack>
 			</Card>
 
-			<Card className="mt-5 py-10" size="lg">
+			<Card
+				style={{
+					shadowColor: "#82D55C",
+					shadowOffset: { width: 0, height: 3 },
+					shadowRadius: 4,
+					shadowOpacity: 1,
+					elevation: 10,
+				}}
+				className="mt-5 py-10 bg-[#F0FDF4] border border-[#0A980F]"
+				size="lg">
 				<TouchableOpacity
 					onPress={handleScan}
-					className="h-[117px] w-[117px] mx-auto bg-[#2e7d3220] rounded-full relative   flex items-center justify-center"
+					className="h-[117px] w-[117px] mx-auto bg-[#A5F5A0] rounded-full relative   flex items-center justify-center"
 					// className="border border-gray-300 py-4 rounded-xl flex-row justify-center items-center gap-2"
 				>
 					{/* <Ionicons name="image" size={20} color="#111" /> */}
-					<Camera size={50} color="#2e7d32" />
+					<Camera size={50} color="#000" />
 				</TouchableOpacity>
 				<Text className="  text-xl text-center">Start Scanning</Text>
 				<TouchableOpacity
 					onPress={handleUpload}
 					className=" mt-2 py-4 bg-[#2e7d32] rounded-2xl flex-row justify-center items-center gap-2">
-					{/* <Ionicons name="image" size={20} color="#111" /> */}
-					<Text className="  text-xl text-white">Upload from Gallery</Text>
+					<Upload size={25} color="#FFF" />
+					<Text className=" ml-2 text-xl text-white">Upload Image</Text>
 				</TouchableOpacity>
 			</Card>
 		</ScrollViewLayout>
