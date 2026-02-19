@@ -9,6 +9,7 @@ interface ReadPlants {
 	query?: string;
 	userId?: string;
 	type?: Plant["type"];
+	hasPest?: boolean;
 }
 
 export const readPlantAnalysis = async ({
@@ -16,6 +17,7 @@ export const readPlantAnalysis = async ({
 	query,
 	userId,
 	type,
+	hasPest = false,
 }: ReadPlants = {}) => {
 	let where: Prisma.PlantWhereInput = {};
 
@@ -27,7 +29,9 @@ export const readPlantAnalysis = async ({
 		where.type = type;
 	}
 
-	console.log("Querying plants with where clause:", where);
+	if (!!hasPest) {
+		where.hasPestFound = true;
+	}
 
 	if (query) {
 		where.OR = [

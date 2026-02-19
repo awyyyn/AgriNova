@@ -230,24 +230,25 @@ export const readPlantsController = async (req: Request, res: Response) => {
 			limit,
 			query,
 			type,
+			hasPest,
 		}: {
 			page?: number;
 			limit?: number;
 			query?: string;
 			type?: Plant["type"];
+			hasPest?: boolean;
 		} = req.query;
 
 		if (req.role === "USER") {
 			userId = req.userId;
 		}
 
-		console.log(req);
-
 		const response = await readPlantAnalysis({
 			userId,
 			pagination: page && limit ? { page, limit } : undefined,
 			query,
 			type,
+			hasPest: Boolean(hasPest),
 		});
 
 		res.status(200).json(response);
