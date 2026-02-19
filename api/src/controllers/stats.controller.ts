@@ -1,3 +1,4 @@
+import { getUserPlantStats } from "@src/services/user-stat.service.js";
 import {
 	computeAverageConfidence,
 	computeHealthyPlantsCount,
@@ -32,6 +33,20 @@ export const readStatsController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error(`Error in readStatsController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const readUserStatsController = async (req: Request, res: Response) => {
+	try {
+		const data = await getUserPlantStats(req.userId);
+
+		res.status(200).json({ data });
+	} catch (error) {
+		console.error(`Error in readUserStatsController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
