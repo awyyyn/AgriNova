@@ -5,6 +5,7 @@ import {
 	ScrollView,
 	Dimensions,
 	View,
+	TouchableOpacity,
 } from "react-native";
 import { useEffect, useState, useCallback } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -12,15 +13,7 @@ import { Header } from "@src/components/header";
 import { Card } from "@src/components/ui/card";
 import { Heading } from "@src/components/ui/heading";
 import { Grid, GridItem } from "@src/components/ui/grid";
-import {
-	Activity,
-	Bug,
-	ChartLine,
-	File,
-	FileText,
-	Scan,
-	Shield,
-} from "lucide-react-native";
+import { Activity, Bug, FileText } from "lucide-react-native";
 import { Button, ButtonText } from "@src/components/ui/button";
 import { router } from "expo-router";
 import { useAuthStore } from "@src/store/useAuthStore";
@@ -143,72 +136,78 @@ export default function HomeScreen() {
 				) : (
 					<Grid className="gap-5" _extra={{ className: "grid-cols-1" }}>
 						<GridItem _extra={{ className: "" }}>
-							<Card
-								style={{
-									shadowColor: "#82D55C",
-									shadowOffset: { width: 0, height: 3 },
-									shadowRadius: 4,
-									shadowOpacity: 1,
-									elevation: 10,
-								}}
-								className="  bg-[#F0FDF4] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start"
-								size="lg">
-								<View>
-									<Text className=" text-xl text-black font-medium  ">
-										Total Scans
-									</Text>
-									<Text className="text-black text-xl mt-5">
-										{stats?.totalAnalyses ?? 0}
-									</Text>
-								</View>
-								<FileText size={32} color="#2e7d32" />
-							</Card>
+							<TouchableOpacity onPress={() => router.push("/history")}>
+								<Card
+									style={{
+										shadowColor: "#82D55C",
+										shadowOffset: { width: 0, height: 3 },
+										shadowRadius: 4,
+										shadowOpacity: 1,
+										elevation: 10,
+									}}
+									className="  bg-[#F0FDF4] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start"
+									size="lg">
+									<View>
+										<Text className=" text-xl text-black font-medium  ">
+											Total Scans
+										</Text>
+										<Text className="text-black text-xl mt-5">
+											{stats?.totalAnalyses ?? 0}
+										</Text>
+									</View>
+									<FileText size={32} color="#2e7d32" />
+								</Card>
+							</TouchableOpacity>
 						</GridItem>
 
 						<GridItem _extra={{ className: "" }}>
-							<Card
-								style={{
-									shadowColor: "#82D55C",
-									shadowOffset: { width: 0, height: 3 },
-									shadowRadius: 4,
-									shadowOpacity: 1,
-									elevation: 10,
-								}}
-								size="lg"
-								className="bg-[#FFF7ED] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start">
-								<View>
-									<Text className="  text-black font-medium text-xl">
-										Success Rate
-									</Text>
-									<Text className="text-black text-xl mt-5">
-										{Number(stats?.successRate ?? 0).toFixed(2)}%
-									</Text>
-								</View>
-								<Activity size={32} color="#F00" />
-							</Card>
+							<TouchableOpacity onPress={() => router.push("/success-rate")}>
+								<Card
+									style={{
+										shadowColor: "#82D55C",
+										shadowOffset: { width: 0, height: 3 },
+										shadowRadius: 4,
+										shadowOpacity: 1,
+										elevation: 10,
+									}}
+									size="lg"
+									className="bg-[#FFF7ED] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start">
+									<View>
+										<Text className="  text-black font-medium text-xl">
+											Success Rate
+										</Text>
+										<Text className="text-black text-xl mt-5">
+											{Number(stats?.successRate ?? 0).toFixed(2)}%
+										</Text>
+									</View>
+									<Activity size={32} color="#F00" />
+								</Card>
+							</TouchableOpacity>
 						</GridItem>
 
 						<GridItem _extra={{ className: "" }}>
-							<Card
-								style={{
-									shadowColor: "#82D55C",
-									shadowOffset: { width: 0, height: 3 },
-									shadowRadius: 4,
-									shadowOpacity: 1,
-									elevation: 10,
-								}}
-								size="lg"
-								className="bg-[#FEF2F2] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start">
-								<View>
-									<Text className=" text-black font-medium text-xl">
-										Pest Found
-									</Text>
-									<Text className="text-black text-xl mt-5">
-										{stats?.plantsWithPestsCount ?? 0}
-									</Text>
-								</View>
-								<Bug size={32} color="#F00" />
-							</Card>
+							<TouchableOpacity onPress={() => router.push("/pests")}>
+								<Card
+									style={{
+										shadowColor: "#82D55C",
+										shadowOffset: { width: 0, height: 3 },
+										shadowRadius: 4,
+										shadowOpacity: 1,
+										elevation: 10,
+									}}
+									size="lg"
+									className="bg-[#FEF2F2] border border-[#2e7d32] rounded-2xl flex flex-row justify-between items-start">
+									<View>
+										<Text className=" text-black font-medium text-xl">
+											Pest Found
+										</Text>
+										<Text className="text-black text-xl mt-5">
+											{stats?.plantsWithPestsCount ?? 0}
+										</Text>
+									</View>
+									<Bug size={32} color="#F00" />
+								</Card>
+							</TouchableOpacity>
 						</GridItem>
 					</Grid>
 				)}
