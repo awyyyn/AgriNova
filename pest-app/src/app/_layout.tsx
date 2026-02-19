@@ -230,6 +230,21 @@ export default function RootLayout() {
 											headerTitle: "Pests Found",
 										}}
 									/>
+									<Stack.Screen
+										name="success-rate"
+										options={{
+											headerTintColor: "#FFFFFF",
+											headerBackTitle: "Back",
+											headerBackButtonDisplayMode: "minimal",
+											headerTitleStyle: {
+												fontWeight: Platform.OS === "ios" ? "600" : "bold",
+											},
+											headerStyle: {
+												backgroundColor: "#2e7d32",
+											},
+											headerTitle: "Success Rate",
+										}}
+									/>
 								</Stack.Protected>
 							</Stack>
 							<StatusBar style="auto" />
