@@ -202,3 +202,49 @@ export async function getMonthlyGrowth() {
 
 	return months;
 }
+
+export const getDailySuccessRate = async (userId?: string) => {
+	const plants = await prisma.plant.findMany({
+		select: {
+			createdAt: true,
+			healthStatus: true,
+			hasPestFound: true,
+			confidence: true,
+		},
+		where: { userId },
+		orderBy: { createdAt: "desc" },
+	});
+
+	const byDay = plants.reduce(
+		(acc, plant) => {
+			const day = plant.createdAt.toISOString().split("T")[0];
+
+			if (!acc[day]) acc[day] = { totalConfidence: 0, successfulConfidence: 0 };
+
+			acc[day].totalConfidence += plant.confidence;
+
+			if (!plant.hasPestFound || plant.healthStatus === "healthy") {
+				acc[day].successfulConfidence += plant.confidence;
+			}
+
+			return acc;
+		},
+		{} as Record<
+			string,
+			{ totalConfidence: number; successfulConfidence: number }
+		>,
+	);
+
+	const last10DaysWithData = Object.entries(byDay)
+		.sort(([a], [b]) => b.localeCompare(a))
+		.slice(0, 10)
+		.map(([date, { totalConfidence, successfulConfidence }]) => ({
+			date,
+			successRate:
+				totalConfidence > 0
+					? (successfulConfidence / totalConfidence) * 100
+					: 0,
+		}));
+
+	return last10DaysWithData;
+};
