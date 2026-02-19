@@ -215,6 +215,21 @@ export default function RootLayout() {
 											headerTitle: "Analysis History",
 										}}
 									/>
+									<Stack.Screen
+										name="pests"
+										options={{
+											headerTintColor: "#FFFFFF",
+											headerBackTitle: "Back",
+											headerBackButtonDisplayMode: "minimal",
+											headerTitleStyle: {
+												fontWeight: Platform.OS === "ios" ? "600" : "bold",
+											},
+											headerStyle: {
+												backgroundColor: "#2e7d32",
+											},
+											headerTitle: "Pests Found",
+										}}
+									/>
 								</Stack.Protected>
 							</Stack>
 							<StatusBar style="auto" />
