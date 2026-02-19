@@ -1,4 +1,4 @@
-import { getUserPlantStats } from "@src/services/user-stat.service.js";
+import { getUserPlantStats } from "../services/user-stat.service.js";
 import {
 	computeAverageConfidence,
 	computeHealthyPlantsCount,
