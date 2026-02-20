@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router";
 import { useAuth } from "@/contexts/auth-context";
+import { Helmet } from "react-helmet-async";
 
 export default function ChangePasswordPage() {
 	const [currentPassword, setCurrentPassword] = useState("");
@@ -130,155 +131,167 @@ export default function ChangePasswordPage() {
 	}
 
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-			<div className="container mx-auto px-4 py-8 max-w-2xl">
-				{/* Header */}
-				<div className="mb-8">
-					<Link to="/admin/profile">
-						<Button
-							variant="ghost"
-							size="sm"
-							className="mb-6 gap-2 text-slate-600 hover:text-slate-900">
-							<ArrowLeft className="h-4 w-4" />
-							Back
-						</Button>
-					</Link>
-					<div>
-						<h1 className="text-3xl font-bold text-slate-900 mb-2">
-							Change Password
-						</h1>
-						<p className="text-slate-600">
-							Update your password to keep your account secure
-						</p>
-					</div>
-				</div>
-
-				{/* Last Change Password Info */}
-				{lastChangePasswordDate && (
-					<Card className="mb-6 border-slate-200 bg-blue-50">
-						<CardContent className="pt-6">
-							<p className="text-sm text-slate-600">
-								<span className="font-medium text-slate-900">
-									Last password change:
-								</span>{" "}
-								{new Date(lastChangePasswordDate).toLocaleDateString("en-US", {
-									year: "numeric",
-									month: "long",
-									day: "numeric",
-								})}
+		<>
+			<Helmet>
+				<title>Change Password</title>
+			</Helmet>
+			<main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+				<div className="container mx-auto px-4 py-8 max-w-2xl">
+					{/* Header */}
+					<div className="mb-8">
+						<Link to="/admin/profile">
+							<Button
+								variant="ghost"
+								size="sm"
+								className="mb-6 gap-2 text-slate-600 hover:text-slate-900">
+								<ArrowLeft className="h-4 w-4" />
+								Back
+							</Button>
+						</Link>
+						<div>
+							<h1 className="text-3xl font-bold text-slate-900 mb-2">
+								Change Password
+							</h1>
+							<p className="text-slate-600">
+								Update your password to keep your account secure
 							</p>
+						</div>
+					</div>
+
+					{/* Last Change Password Info */}
+					{lastChangePasswordDate && (
+						<Card className="mb-6 border-slate-200 bg-blue-50">
+							<CardContent className="pt-6">
+								<p className="text-sm text-slate-600">
+									<span className="font-medium text-slate-900">
+										Last password change:
+									</span>{" "}
+									{new Date(lastChangePasswordDate).toLocaleDateString(
+										"en-US",
+										{
+											year: "numeric",
+											month: "long",
+											day: "numeric",
+										},
+									)}
+								</p>
+							</CardContent>
+						</Card>
+					)}
+
+					{/* Change Password Form */}
+					<Card className="border-slate-200">
+						<CardHeader>
+							<CardTitle className="text-lg">Password</CardTitle>
+						</CardHeader>
+						<CardContent>
+							<form onSubmit={handleSubmit} className="space-y-6">
+								{/* Current Password */}
+								<div className="space-y-2">
+									<Label
+										htmlFor="currentPassword"
+										className="text-slate-700 font-medium">
+										Current Password
+									</Label>
+									<div className="relative">
+										<Input
+											id="currentPassword"
+											type={showCurrentPassword ? "text" : "password"}
+											value={currentPassword}
+											onChange={(e) => setCurrentPassword(e.target.value)}
+											disabled={isLoading}
+											className="border-slate-200 pr-10"
+											placeholder="Enter your current password"
+										/>
+										<button
+											type="button"
+											onClick={() =>
+												setShowCurrentPassword(!showCurrentPassword)
+											}
+											className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+											{showCurrentPassword ? "👁️" : "👁️‍🗨️"}
+										</button>
+									</div>
+								</div>
+
+								<Separator className="bg-slate-200" />
+
+								{/* New Password */}
+								<div className="space-y-2">
+									<Label
+										htmlFor="newPassword"
+										className="text-slate-700 font-medium">
+										New Password
+									</Label>
+									<div className="relative">
+										<Input
+											id="newPassword"
+											type={showNewPassword ? "text" : "password"}
+											value={newPassword}
+											onChange={(e) => setNewPassword(e.target.value)}
+											disabled={isLoading}
+											className="border-slate-200 pr-10"
+											placeholder="Enter your new password (min. 8 characters)"
+										/>
+										<button
+											type="button"
+											onClick={() => setShowNewPassword(!showNewPassword)}
+											className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+											{showNewPassword ? "👁️" : "👁️‍🗨️"}
+										</button>
+									</div>
+								</div>
+
+								{/* Confirm Password */}
+								<div className="space-y-2">
+									<Label
+										htmlFor="confirmPassword"
+										className="text-slate-700 font-medium">
+										Confirm Password
+									</Label>
+									<div className="relative">
+										<Input
+											id="confirmPassword"
+											type={showConfirmPassword ? "text" : "password"}
+											value={confirmPassword}
+											onChange={(e) => setConfirmPassword(e.target.value)}
+											disabled={isLoading}
+											className="border-slate-200 pr-10"
+											placeholder="Confirm your new password"
+										/>
+										<button
+											type="button"
+											onClick={() =>
+												setShowConfirmPassword(!showConfirmPassword)
+											}
+											className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
+											{showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+										</button>
+									</div>
+								</div>
+
+								{/* Form Actions */}
+								<div className="flex gap-3 pt-6">
+									<Button
+										type="submit"
+										disabled={isLoading}
+										className="flex-1 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50">
+										{isLoading ? "Updating..." : "Change Password"}
+									</Button>
+									<Link to="/admin/profile" className="flex-1">
+										<Button
+											type="button"
+											variant="outline"
+											className="w-full border-slate-200 text-slate-700 hover:bg-slate-50 bg-transparent">
+											Cancel
+										</Button>
+									</Link>
+								</div>
+							</form>
 						</CardContent>
 					</Card>
-				)}
-
-				{/* Change Password Form */}
-				<Card className="border-slate-200">
-					<CardHeader>
-						<CardTitle className="text-lg">Password</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<form onSubmit={handleSubmit} className="space-y-6">
-							{/* Current Password */}
-							<div className="space-y-2">
-								<Label
-									htmlFor="currentPassword"
-									className="text-slate-700 font-medium">
-									Current Password
-								</Label>
-								<div className="relative">
-									<Input
-										id="currentPassword"
-										type={showCurrentPassword ? "text" : "password"}
-										value={currentPassword}
-										onChange={(e) => setCurrentPassword(e.target.value)}
-										disabled={isLoading}
-										className="border-slate-200 pr-10"
-										placeholder="Enter your current password"
-									/>
-									<button
-										type="button"
-										onClick={() => setShowCurrentPassword(!showCurrentPassword)}
-										className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-										{showCurrentPassword ? "👁️" : "👁️‍🗨️"}
-									</button>
-								</div>
-							</div>
-
-							<Separator className="bg-slate-200" />
-
-							{/* New Password */}
-							<div className="space-y-2">
-								<Label
-									htmlFor="newPassword"
-									className="text-slate-700 font-medium">
-									New Password
-								</Label>
-								<div className="relative">
-									<Input
-										id="newPassword"
-										type={showNewPassword ? "text" : "password"}
-										value={newPassword}
-										onChange={(e) => setNewPassword(e.target.value)}
-										disabled={isLoading}
-										className="border-slate-200 pr-10"
-										placeholder="Enter your new password (min. 8 characters)"
-									/>
-									<button
-										type="button"
-										onClick={() => setShowNewPassword(!showNewPassword)}
-										className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-										{showNewPassword ? "👁️" : "👁️‍🗨️"}
-									</button>
-								</div>
-							</div>
-
-							{/* Confirm Password */}
-							<div className="space-y-2">
-								<Label
-									htmlFor="confirmPassword"
-									className="text-slate-700 font-medium">
-									Confirm Password
-								</Label>
-								<div className="relative">
-									<Input
-										id="confirmPassword"
-										type={showConfirmPassword ? "text" : "password"}
-										value={confirmPassword}
-										onChange={(e) => setConfirmPassword(e.target.value)}
-										disabled={isLoading}
-										className="border-slate-200 pr-10"
-										placeholder="Confirm your new password"
-									/>
-									<button
-										type="button"
-										onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-										className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600">
-										{showConfirmPassword ? "👁️" : "👁️‍🗨️"}
-									</button>
-								</div>
-							</div>
-
-							{/* Form Actions */}
-							<div className="flex gap-3 pt-6">
-								<Button
-									type="submit"
-									disabled={isLoading}
-									className="flex-1 bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50">
-									{isLoading ? "Updating..." : "Change Password"}
-								</Button>
-								<Link to="/admin/profile" className="flex-1">
-									<Button
-										type="button"
-										variant="outline"
-										className="w-full border-slate-200 text-slate-700 hover:bg-slate-50 bg-transparent">
-										Cancel
-									</Button>
-								</Link>
-							</div>
-						</form>
-					</CardContent>
-				</Card>
-			</div>
-		</main>
+				</div>
+			</main>
+		</>
 	);
 }
