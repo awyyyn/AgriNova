@@ -26,6 +26,7 @@ import { ActiveUsers } from "@/components/custom/active-users";
 import { RecentActivity } from "@/components/custom/recent-activity";
 import { useReactToPrint } from "react-to-print";
 import { ExportDropdown } from "@/components/custom/export-dropdown";
+import { Helmet } from "react-helmet-async";
 
 // Types
 interface DashboardData {
@@ -172,43 +173,47 @@ export default function Dashboard() {
 	}
 
 	return (
-		<div className="container mx-auto p-6 space-y-6">
-			{/* Header */}
-			<div className="flex items-center justify-between">
-				<div>
-					<h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-					<p className="text-muted-foreground">
-						Plant analysis overview and statistics
-					</p>
-				</div>
+		<>
+			<Helmet>
+				<title>Dashboard</title>
+			</Helmet>
+			<div className="container mx-auto p-6 space-y-6">
+				{/* Header */}
+				<div className="flex items-center justify-between">
+					<div>
+						<h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+						<p className="text-muted-foreground">
+							Plant analysis overview and statistics
+						</p>
+					</div>
 
-				{/* Date Range Selector */}
-				<div className="flex items-center gap-2">
-					{/* Export PDF Button */}
-					<ExportDropdown
-						data={data}
-						rangeName={getRangeName(selectedRange)}
-						onPrintPDF={handlePrint}
-					/>
+					{/* Date Range Selector */}
+					<div className="flex items-center gap-2">
+						{/* Export PDF Button */}
+						<ExportDropdown
+							data={data}
+							rangeName={getRangeName(selectedRange)}
+							onPrintPDF={handlePrint}
+						/>
 
-					<Select value={selectedRange} onValueChange={setSelectedRange}>
-						<SelectTrigger className="w-[180px]">
-							<SelectValue placeholder="Select range" />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="today">Today</SelectItem>
-							<SelectItem value="yesterday">Yesterday</SelectItem>
-							<SelectItem value="last7Days">Last 7 Days</SelectItem>
-							<SelectItem value="last30Days">Last 30 Days</SelectItem>
-							<SelectItem value="thisWeek">This Week</SelectItem>
-							<SelectItem value="lastWeek">Last Week</SelectItem>
-							<SelectItem value="thisMonth">This Month</SelectItem>
-							<SelectItem value="lastMonth">Last Month</SelectItem>
-							{/* <SelectItem value="custom">Custom Range</SelectItem> */}
-						</SelectContent>
-					</Select>
+						<Select value={selectedRange} onValueChange={setSelectedRange}>
+							<SelectTrigger className="w-[180px]">
+								<SelectValue placeholder="Select range" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="today">Today</SelectItem>
+								<SelectItem value="yesterday">Yesterday</SelectItem>
+								<SelectItem value="last7Days">Last 7 Days</SelectItem>
+								<SelectItem value="last30Days">Last 30 Days</SelectItem>
+								<SelectItem value="thisWeek">This Week</SelectItem>
+								<SelectItem value="lastWeek">Last Week</SelectItem>
+								<SelectItem value="thisMonth">This Month</SelectItem>
+								<SelectItem value="lastMonth">Last Month</SelectItem>
+								{/* <SelectItem value="custom">Custom Range</SelectItem> */}
+							</SelectContent>
+						</Select>
 
-					{/* {selectedRange === "custom" && (
+						{/* {selectedRange === "custom" && (
 						<Popover>
 							<PopoverTrigger asChild>
 								<Button
@@ -242,109 +247,114 @@ export default function Dashboard() {
 							</PopoverContent>
 						</Popover>
 					)} */}
-				</div>
-			</div>
-
-			{/* Printable Content */}
-			<div ref={componentRef} className="container mx-auto p-6 space-y-6">
-				{/* Print Header - Only visible when printing */}
-				<div className="hidden print:block mb-8">
-					<div className="text-center mb-4">
-						<h1 className="text-3xl font-bold">AgriNova Dashboard Report</h1>
-						<p className="text-lg text-gray-600 mt-2">
-							{getRangeName(selectedRange)} - Generated on{" "}
-							{format(new Date(), "MMMM dd, yyyy")}
-						</p>
-						{data.weekly.dateRange && (
-							<p className="text-sm text-gray-500 mt-1">
-								Period:{" "}
-								{format(parseISO(data.weekly.dateRange.start), "MMM dd, yyyy")}{" "}
-								- {format(parseISO(data.weekly.dateRange.end), "MMM dd, yyyy")}
-							</p>
-						)}
 					</div>
-					<hr className="border-2 border-gray-300 mb-6" />
 				</div>
 
-				{/* Stats Cards */}
-				<div className="print-avoid-break">
-					<h2 className="text-xl font-semibold mb-4 hidden print:block">
-						Overview Metrics
-					</h2>
-					<DashboardStats data={data} />
-				</div>
+				{/* Printable Content */}
+				<div ref={componentRef} className="container mx-auto p-6 space-y-6">
+					{/* Print Header - Only visible when printing */}
+					<div className="hidden print:block mb-8">
+						<div className="text-center mb-4">
+							<h1 className="text-3xl font-bold">AgriNova Dashboard Report</h1>
+							<p className="text-lg text-gray-600 mt-2">
+								{getRangeName(selectedRange)} - Generated on{" "}
+								{format(new Date(), "MMMM dd, yyyy")}
+							</p>
+							{data.weekly.dateRange && (
+								<p className="text-sm text-gray-500 mt-1">
+									Period:{" "}
+									{format(
+										parseISO(data.weekly.dateRange.start),
+										"MMM dd, yyyy",
+									)}{" "}
+									-{" "}
+									{format(parseISO(data.weekly.dateRange.end), "MMM dd, yyyy")}
+								</p>
+							)}
+						</div>
+						<hr className="border-2 border-gray-300 mb-6" />
+					</div>
 
-				{/* Charts Row */}
-				<div className="grid gap-6 lg:grid-cols-7">
-					{/* Main Chart */}
-					<Card className="lg:col-span-4">
-						<CardHeader>
-							<CardTitle>Analysis Trends</CardTitle>
-							<CardDescription>
-								Daily analysis count for the selected period
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<AnalysisChart
-								startDate={data.weekly.dateRange.start}
-								endDate={data.weekly.dateRange.end}
-							/>
-						</CardContent>
-					</Card>
+					{/* Stats Cards */}
+					<div className="print-avoid-break">
+						<h2 className="text-xl font-semibold mb-4 hidden print:block">
+							Overview Metrics
+						</h2>
+						<DashboardStats data={data} />
+					</div>
 
-					{/* Distribution Charts */}
-					<Card className="lg:col-span-3">
-						<CardHeader>
-							<CardTitle>Distributions</CardTitle>
-							<CardDescription>
-								Analysis type and confidence breakdown
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<DistributionCharts data={data.distributions} />
-						</CardContent>
-					</Card>
-				</div>
+					{/* Charts Row */}
+					<div className="grid gap-6 lg:grid-cols-7">
+						{/* Main Chart */}
+						<Card className="lg:col-span-4">
+							<CardHeader>
+								<CardTitle>Analysis Trends</CardTitle>
+								<CardDescription>
+									Daily analysis count for the selected period
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<AnalysisChart
+									startDate={data.weekly.dateRange.start}
+									endDate={data.weekly.dateRange.end}
+								/>
+							</CardContent>
+						</Card>
 
-				{/* Bottom Row */}
-				<div className="grid gap-6 lg:grid-cols-3">
-					{/* Top Diseases */}
-					<Card>
-						<CardHeader>
-							<CardTitle>Top Diseases</CardTitle>
-							<CardDescription>
-								Most frequently detected diseases
-							</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<TopDiseases diseases={data.topDiseases} />
-						</CardContent>
-					</Card>
+						{/* Distribution Charts */}
+						<Card className="lg:col-span-3">
+							<CardHeader>
+								<CardTitle>Distributions</CardTitle>
+								<CardDescription>
+									Analysis type and confidence breakdown
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<DistributionCharts data={data.distributions} />
+							</CardContent>
+						</Card>
+					</div>
 
-					{/* Active Users */}
-					<Card>
-						<CardHeader>
-							<CardTitle>Most Active Users</CardTitle>
-							<CardDescription>Users with most analyses</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<ActiveUsers users={data.activeUsers} />
-						</CardContent>
-					</Card>
+					{/* Bottom Row */}
+					<div className="grid gap-6 lg:grid-cols-3">
+						{/* Top Diseases */}
+						<Card>
+							<CardHeader>
+								<CardTitle>Top Diseases</CardTitle>
+								<CardDescription>
+									Most frequently detected diseases
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<TopDiseases diseases={data.topDiseases} />
+							</CardContent>
+						</Card>
 
-					{/* Recent Activity */}
-					<Card>
-						<CardHeader>
-							<CardTitle>Recent Activity</CardTitle>
-							<CardDescription>Latest plant analyses</CardDescription>
-						</CardHeader>
-						<CardContent>
-							<RecentActivity analyses={data.recentAnalyses} />
-						</CardContent>
-					</Card>
+						{/* Active Users */}
+						<Card>
+							<CardHeader>
+								<CardTitle>Most Active Users</CardTitle>
+								<CardDescription>Users with most analyses</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<ActiveUsers users={data.activeUsers} />
+							</CardContent>
+						</Card>
+
+						{/* Recent Activity */}
+						<Card>
+							<CardHeader>
+								<CardTitle>Recent Activity</CardTitle>
+								<CardDescription>Latest plant analyses</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<RecentActivity analyses={data.recentAnalyses} />
+							</CardContent>
+						</Card>
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 
