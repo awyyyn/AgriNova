@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
 	View,
 	Text,
 	TouchableOpacity,
-	ActivityIndicator,
 	ScrollView,
 	useColorScheme,
 	Pressable,
@@ -12,15 +11,19 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
 
 import { LazyImage } from "@src/components/lazy-image";
-import { Center } from "@src/components/ui/center";
+
 import { useAuthStore } from "@src/store/useAuthStore";
 import { PlantAnalysisResponse } from "@src/types";
 import { AlertTriangle } from "lucide-react-native";
+import { Button, ButtonText } from "@src/components/ui/button";
+import { toast } from "sonner-native";
+import { MarkPlantAnalyzationAsDone } from "@src/utils";
 
 export default function Analyze() {
 	const { id } = useLocalSearchParams();
 	const router = useRouter();
 	const { token } = useAuthStore();
+	const [markAsDone, setMarkAsDone] = useState(false);
 	const scheme = useColorScheme();
 
 	const [loading, setLoading] = useState(false);
@@ -91,6 +94,24 @@ export default function Analyze() {
 	}
 
 	const isDark = scheme === "dark";
+
+	const handleMarkAsDone = async () => {
+		try {
+			if (!data?.id) return;
+			setMarkAsDone(true);
+			await MarkPlantAnalyzationAsDone(token, data.id);
+			// router.push
+			router.dismissTo("/history");
+		} catch (error) {
+			toast.error("An Error Occurred", {
+				description: (error as Error).message,
+				richColors: true,
+				duration: 5000,
+			});
+		} finally {
+			setMarkAsDone(false);
+		}
+	};
 
 	return (
 		<ScrollView
@@ -225,6 +246,19 @@ export default function Analyze() {
 								Plant: {data.plantIdentification.commonName}
 							</Text>
 						)}
+
+						{!!data.localName.trim() && (
+							<Text
+								className={`${isDark ? "text-gray-300" : "text-gray-600"} text-xl`}>
+								Local Name: {data.localName}
+							</Text>
+						)}
+						{!!data.pestLocalName.trim() && (
+							<Text
+								className={`${isDark ? "text-gray-300" : "text-gray-600"} text-xl`}>
+								Pest Local Name: {data.pestLocalName}
+							</Text>
+						)}
 					</View>
 
 					{/* Diagnosis */}
@@ -344,6 +378,15 @@ export default function Analyze() {
 							)}
 						</View>
 					)}
+
+					<Button
+						onPress={handleMarkAsDone}
+						isDisabled={markAsDone}
+						className="bg-[#2e7d32]">
+						<ButtonText>
+							{markAsDone ? "Marking as done..." : "Mark as done"}
+						</ButtonText>
+					</Button>
 				</>
 			)}
 		</ScrollView>
