@@ -1,7 +1,9 @@
 export interface PlantAnalysisResponse {
+	id: string;
 	imageValidation: "valid" | "invalid";
 	message?: string;
-
+	localName: string;
+	pestLocalName: string;
 	plantIdentification?: {
 		commonName?: string;
 		scientificName?: string;
