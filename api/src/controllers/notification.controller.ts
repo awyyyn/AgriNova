@@ -197,6 +197,50 @@ export async function createPlantAnalyzedNotification(
 	}
 }
 
+export async function createPlantAnalyzedDoneNotification(
+	analysis: any,
+	userId: any,
+) {
+	try {
+		const notification = await prisma.$transaction(async (prsma) => {
+			const user = await prsma.user.findUnique({
+				where: { id: userId },
+			});
+
+			if (!user) return null;
+
+			const message = `${user.firstName} completed an analysis.`;
+
+			return await prsma.notification.create({
+				data: {
+					type: "plant_analyzed_done",
+					title: "✅ Plant Analysis Completed",
+					message,
+					data: {
+						userId: user.id,
+						userName: `${user.firstName} ${user.lastName || ""}`.trim(),
+						plantId: analysis.id,
+						analysisId: analysis.id,
+						plantType: analysis.type,
+						hasPest: analysis.hasPestFound,
+					},
+					recipientRole: ["ADMIN", "SUPER_ADMIN"],
+					read: false,
+				},
+			});
+		});
+
+		// Emit via Socket.IO to all connected admins
+		if (io) {
+			io.to("admins").emit("notification", notification);
+		}
+
+		return notification;
+	} catch (error) {
+		console.error("Error creating plant notification:", error);
+	}
+}
+
 /**
  * Create system notification (for custom use)
  */
