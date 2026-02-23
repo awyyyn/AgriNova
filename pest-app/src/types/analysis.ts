@@ -1,8 +1,10 @@
 // types/plant-analysis.ts
 export interface PlantAnalysisResponse {
+	id: string;
 	imageValidation: "valid" | "invalid";
 	message?: string;
-
+	localName: string;
+	pestLocalName: string;
 	plantIdentification?: {
 		commonName?: string;
 		scientificName?: string;
@@ -28,6 +30,7 @@ export interface PlantAnalysisResponse {
 	type: "plant" | "vegetable" | "fruit" | "unknown";
 	hasPestFound: boolean;
 	confidence: number;
+	isDone: boolean;
 }
 
 export interface PlantAnalysis extends PlantAnalysisResponse {
