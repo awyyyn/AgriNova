@@ -75,3 +75,21 @@ export const readPlantAnalysisById = async (id: string) => {
 
 	return plant;
 };
+
+export const updatePlantAnalysis = async (
+	id: string,
+	data: Partial<Omit<Plant, "id" | "createdAt" | "formattedId" | "userId">>,
+) => {
+	const updatedData = await prisma.plant.update({
+		where: {
+			id,
+		},
+		data,
+	});
+
+	if (!updatedData) {
+		throw new Error("Failed to update data!");
+	}
+
+	return updatedData;
+};
