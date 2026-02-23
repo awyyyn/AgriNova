@@ -3,8 +3,6 @@ import { checkPassword, hashPassword } from "../utils/bcrypt.js";
 import {
 	generateAccessToken,
 	generateRefreshToken,
-	generateResetPasswordToken,
-	verifyResetPasswordToken,
 	verifyToken,
 } from "../utils/jsonwebtoken.js";
 import { Request, Response } from "express";
