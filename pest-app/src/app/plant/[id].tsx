@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { ScrollView, Image, Text, View, Pressable, Modal } from "react-native";
-import { useLocalSearchParams, Redirect } from "expo-router";
+import { useLocalSearchParams, Redirect, useRouter } from "expo-router";
 import { usePestHistoryStore } from "@src/store/usePestHistoryStore";
 import { PlantAnalysis } from "@src/types";
-import { Icon } from "@src/components/ui/icon";
 import { Box } from "@src/components/ui/box";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
@@ -14,16 +13,52 @@ import { Card } from "@src/components/ui/card";
 import { HStack } from "@src/components/ui/hstack";
 import { Badge, BadgeText } from "@src/components/ui/badge";
 import { VStack } from "@src/components/ui/vstack";
+import { Button, ButtonText } from "@src/components/ui/button";
+import { MarkPlantAnalyzationAsDone } from "@src/utils";
+import { useAuthStore } from "@src/store/useAuthStore";
+import { toast } from "sonner-native";
 
 export default function Plant() {
 	const [previewImg, setPreviewImg] = useState(false);
+	const { token } = useAuthStore();
+	const [markAsDone, setMarkAsDone] = useState(false);
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const insets = useSafeAreaInsets();
+	const router = useRouter();
 	const pest: PlantAnalysis | undefined = usePestHistoryStore
 		.getState()
 		.getItemById(id);
+	const { setItems, items } = usePestHistoryStore();
 
 	if (!pest) return <Redirect href="/history" />;
+
+	const handleMarkAsDone = async () => {
+		try {
+			if (!id) return;
+			setMarkAsDone(true);
+			await MarkPlantAnalyzationAsDone(token, id);
+			// router.push
+			const updatedItems = items.map((item) => {
+				if (item.id === pest.id) {
+					return { ...pest, isDone: true };
+				}
+				return item;
+			});
+			setItems(updatedItems);
+			router.dismiss();
+			toast.success("Done", {
+				description: "Analyzed marked as done!",
+			});
+		} catch (error) {
+			toast.error("An Error Occurred", {
+				description: (error as Error).message,
+				richColors: true,
+				duration: 5000,
+			});
+		} finally {
+			setMarkAsDone(false);
+		}
+	};
 
 	return (
 		<>
@@ -85,6 +120,14 @@ export default function Plant() {
 								<Text className="text-md text-gray-400">Common Name:</Text>
 								<Text className="text-2xl font-bold">
 									{pest.plantIdentification?.commonName || "Unknown Plant"}
+								</Text>
+								<Text className="text-md text-gray-400">Local Name:</Text>
+								<Text className="text-xl font-bold">
+									{pest.localName || "N/A"}
+								</Text>
+								<Text className="text-md text-gray-400">Pest Local Name:</Text>
+								<Text className="text-xl font-bold">
+									{pest.pestLocalName || "N/A"}
 								</Text>
 							</>
 						) : (
@@ -249,6 +292,17 @@ export default function Plant() {
 						<Text className="font-bold text-2xl mb-2 ">Recovery Timeline</Text>
 						<Text className="text-xl">{pest.recoveryTimeline}</Text>
 					</View>
+				)}
+
+				{!pest.isDone && (
+					<Button
+						onPress={handleMarkAsDone}
+						isDisabled={markAsDone}
+						className="bg-[#2e7d32]">
+						<ButtonText>
+							{markAsDone ? "Marking as done..." : "Mark as done"}
+						</ButtonText>
+					</Button>
 				)}
 			</ScrollView>
 			<Modal
