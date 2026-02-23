@@ -6,9 +6,13 @@ import { generatePlantAnalysisId } from "../utils/index.js";
 import {
 	readPlantAnalysis,
 	readPlantAnalysisById,
+	updatePlantAnalysis,
 } from "../services/plant.service.js";
 import { Plant } from "../types/index.js";
-import { createPlantAnalyzedNotification } from "./notification.controller.js";
+import {
+	createPlantAnalyzedDoneNotification,
+	createPlantAnalyzedNotification,
+} from "./notification.controller.js";
 
 const ANALYSIS_PROMPT = `
 You are an agricultural plant health expert.
@@ -27,6 +31,8 @@ If a plant IS detected, return this structure:
 
 {
   "imageValidation": "valid",
+  "localName": "string",
+  "pestLocalName": "string",
   "plantIdentification": {
     "commonName": "string | null",
     "scientificName": "string | null"
@@ -77,6 +83,9 @@ DIY TREATMENT RULES (STRICT)
 - Do NOT include fertilizers, soil treatments, or non-spray remedies
 - Do NOT include exact mixing ratios or dangerous instructions
 - If no safe DIY spray exists, return an empty array []
+
+Local Name (Plant) and Pest Local Name
+local name in the philippines (must be tagalog) if imageValidation is invalid just put and empty string
 
 --------------------------------
 SAFETY & TIMING RULES
@@ -155,9 +164,9 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			message: string;
 		} = JSON.parse(outputText);
 
-		if (parsedInvalid.imageValidation === "invalid") {
-			res.status(200).json(parsedInvalid);
+		let id = "";
 
+		if (parsedInvalid.imageValidation === "invalid") {
 			const plantData = await prisma.plant.create({
 				data: {
 					formattedId: generatePlantAnalysisId(),
@@ -174,7 +183,10 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 				},
 			});
 
+			id = plantData.id;
 			await createPlantAnalyzedNotification(plantData, req.userId);
+			res.status(200).json({ ...parsedInvalid, id });
+
 			return;
 		}
 
@@ -183,6 +195,8 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 		const analysis = await prisma.plant.create({
 			data: {
 				img,
+				localName: parsed.localName,
+				pestLocalName: parsed.pestLocalName,
 				formattedId: generatePlantAnalysisId(),
 				confidence: parsed.confidence,
 				diagnosis: parsed.diagnosis,
@@ -202,6 +216,8 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			},
 		});
 
+		id = analysis.id;
+
 		await createPlantAnalyzedNotification(analysis, req.userId);
 
 		if (!analysis) {
@@ -212,7 +228,7 @@ export const analyzePlantController = async (req: Request, res: Response) => {
 			return;
 		}
 
-		res.status(200).json(parsed);
+		res.status(200).json({ ...parsed, id });
 	} catch (error) {
 		console.error(`Error in analyzePlantController:`);
 		console.error(error);
@@ -282,6 +298,69 @@ export const readPlantController = async (req: Request, res: Response) => {
 		});
 	} catch (error) {
 		console.error(`Error in readPlantController:`);
+		console.error(error);
+		res.status(500).json({
+			message: "Internal server error!",
+		});
+	}
+};
+
+export const updatePlantController = async (req: Request, res: Response) => {
+	try {
+		const {
+			confidence,
+			diagnosis,
+			hasPestFound,
+			healthStatus,
+			img,
+			isDone,
+			localName,
+			message,
+			pestLocalName,
+			plantIdentification,
+			preventionTips,
+			recoveryTimeline,
+			treatment,
+			type,
+		} = req.body;
+		const id: string = req.params.id;
+
+		if (!id) {
+			res.status(400).json({
+				message: "Plant analysis ID is required!",
+			});
+			return;
+		}
+
+		const updatedData = await updatePlantAnalysis(id, {
+			confidence,
+			diagnosis,
+			hasPestFound,
+			healthStatus,
+			img,
+			isDone,
+			localName,
+			message,
+			pestLocalName,
+			plantIdentification,
+			preventionTips,
+			recoveryTimeline,
+			treatment,
+			type,
+		});
+
+		if (!!isDone && !!updatedData.isDone) {
+			await createPlantAnalyzedDoneNotification(updatedData, req.userId);
+		}
+
+		res.status(200).json({
+			data: updatedData,
+			message: updatedData
+				? "Plant analysis updated successfully!"
+				: "Plant analysis not found!",
+		});
+	} catch (error) {
+		console.error(`Error in updatePlantController:`);
 		console.error(error);
 		res.status(500).json({
 			message: "Internal server error!",
