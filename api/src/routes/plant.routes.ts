@@ -3,6 +3,7 @@ import {
 	analyzePlantController,
 	readPlantController,
 	readPlantsController,
+	updatePlantController,
 } from "../controllers/plant.controller.js";
 import { readUserStatsController } from "../controllers/stats.controller.js";
 import { Router } from "express";
@@ -13,5 +14,6 @@ router.post("/analyze", middleware, analyzePlantController);
 router.get("/list", middleware, readPlantsController);
 router.get("/stats", middleware, readUserStatsController);
 router.get("/list/:id", middleware, readPlantController);
+router.patch("/:id", middleware, updatePlantController);
 
 export default router;
