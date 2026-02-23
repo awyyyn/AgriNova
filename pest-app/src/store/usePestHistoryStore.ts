@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 import { PlantAnalysis } from "@src/types";
 
 type PestHistoryState = {
@@ -51,7 +52,31 @@ export const usePestHistoryStore = create<PestHistoryState>()(
 			storage: {
 				getItem: async (key) => {
 					const value = await AsyncStorage.getItem(key);
-					return value ? JSON.parse(value) : null;
+
+					if (!value) {
+						const token = await SecureStore.getItemAsync("auth_token");
+
+						if (!token) return null;
+
+						const response = await fetch(
+							`${process.env.EXPO_PUBLIC_API_URL}/plant/list/${key}`,
+							{
+								headers: {
+									Authorization: `Bearer ${token}`,
+									"Content-type": "application/json",
+								},
+							},
+						);
+
+						const data = await response.json();
+
+						if (response.status !== 200 || !response.ok) return null;
+
+						await AsyncStorage.setItem(key, JSON.stringify(data.data));
+
+						return data.data;
+					}
+					return JSON.parse(value);
 				},
 				setItem: async (key, value) => {
 					await AsyncStorage.setItem(key, JSON.stringify(value));
