@@ -51,6 +51,8 @@ model Plant {
   img                 String
   formattedId         String               @unique
   message             String?
+  localName String @default("")
+  pestLocalName String @default("")
   plantIdentification PlantIdentification?
   healthStatus        String?
   diagnosis           Diagnosis?
@@ -63,6 +65,7 @@ model Plant {
   type                String
   hasPestFound        Boolean
   confidence          Float                @default(0)
+  isDone Boolean @default(false)
 
   @@map("plants")
 }
