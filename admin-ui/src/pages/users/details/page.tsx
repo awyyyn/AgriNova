@@ -18,6 +18,7 @@ import {
 import { useNavigate, useParams } from "react-router";
 import { User } from "@/types";
 import * as motion from "motion/react-client";
+import { Helmet } from "react-helmet-async";
 
 const roleStyles: Record<User["role"], string> = {
 	ADMIN: "bg-red-500/10 text-red-600 border-red-500/20",
@@ -88,64 +89,72 @@ export default function UserDetailPage() {
 	}
 
 	return (
-		<main className="min-h-screen bg-background">
-			<div className="container mx-auto py-10 space-y-6">
-				<Button variant="ghost" className="gap-2" onClick={() => navigate(-1)}>
-					<ArrowLeft className="h-4 w-4" /> Back to users
-				</Button>
+		<>
+			<Helmet>
+				<title>User details</title>
+			</Helmet>
+			<main className="min-h-screen bg-background">
+				<div className="container mx-auto py-10 space-y-6">
+					<Button
+						variant="ghost"
+						className="gap-2"
+						onClick={() => navigate(-1)}>
+						<ArrowLeft className="h-4 w-4" /> Back to users
+					</Button>
 
-				<motion.div
-					initial={{ opacity: 0, y: 8 }}
-					animate={{ opacity: 1, y: 0 }}>
-					<Card className="overflow-hidden">
-						<CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-muted/40">
-							<div className="flex items-center gap-4">
-								<Avatar className="h-16 w-16">
-									<AvatarImage src={user.photo || "/placeholder.svg"} />
-									<AvatarFallback>
-										{user.firstName[0]}
-										{user.lastName?.[0] || ""}
-									</AvatarFallback>
-								</Avatar>
-								<div>
-									<CardTitle className="text-2xl flex items-center gap-2">
-										{user.firstName} {user.lastName}
-									</CardTitle>
-									<p className="text-sm text-muted-foreground flex items-center gap-1">
-										<Mail className="h-3 w-3" /> {user.email}
-									</p>
+					<motion.div
+						initial={{ opacity: 0, y: 8 }}
+						animate={{ opacity: 1, y: 0 }}>
+						<Card className="overflow-hidden">
+							<CardHeader className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 bg-muted/40">
+								<div className="flex items-center gap-4">
+									<Avatar className="h-16 w-16">
+										<AvatarImage src={user.photo || "/placeholder.svg"} />
+										<AvatarFallback>
+											{user.firstName[0]}
+											{user.lastName?.[0] || ""}
+										</AvatarFallback>
+									</Avatar>
+									<div>
+										<CardTitle className="text-2xl flex items-center gap-2">
+											{user.firstName} {user.lastName}
+										</CardTitle>
+										<p className="text-sm text-muted-foreground flex items-center gap-1">
+											<Mail className="h-3 w-3" /> {user.email}
+										</p>
+									</div>
 								</div>
-							</div>
-							<Badge variant="outline" className={roleStyles[user.role]}>
-								<Shield className="h-3 w-3 mr-1" /> {user.role}
-							</Badge>
-						</CardHeader>
+								<Badge variant="outline" className={roleStyles[user.role]}>
+									<Shield className="h-3 w-3 mr-1" /> {user.role}
+								</Badge>
+							</CardHeader>
 
-						<CardContent className="space-y-6">
-							<Separator />
+							<CardContent className="space-y-6">
+								<Separator />
 
-							<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-								<Field
-									label="First Name"
-									value={user.firstName}
-									icon={UserIcon}
-								/>
-								<Field
-									label="Last Name"
-									value={user.lastName || "-"}
-									icon={UserIcon}
-								/>
-								<Field label="User ID" value={user.id} icon={Copy} />
-								<Field
-									label="Created At"
-									value={new Date(user.createdAt).toLocaleString()}
-									icon={Calendar}
-								/>
-							</div>
-						</CardContent>
-					</Card>
-				</motion.div>
-			</div>
-		</main>
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+									<Field
+										label="First Name"
+										value={user.firstName}
+										icon={UserIcon}
+									/>
+									<Field
+										label="Last Name"
+										value={user.lastName || "-"}
+										icon={UserIcon}
+									/>
+									<Field label="User ID" value={user.id} icon={Copy} />
+									<Field
+										label="Created At"
+										value={new Date(user.createdAt).toLocaleString()}
+										icon={Calendar}
+									/>
+								</div>
+							</CardContent>
+						</Card>
+					</motion.div>
+				</div>
+			</main>
+		</>
 	);
 }
