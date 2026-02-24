@@ -5,6 +5,7 @@ import ProfileHeader from "./__components/header";
 import ProfileForm from "./__components/form";
 import { useAuth } from "@/contexts/auth-context";
 import { User } from "@/types";
+import { Helmet } from "react-helmet-async";
 
 export default function ProfilePage() {
 	const { user, loading, setUser } = useAuth();
@@ -72,19 +73,24 @@ export default function ProfilePage() {
 	}
 
 	return (
-		<main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-			<div className="container mx-auto px-4 py-8 max-w-2xl">
-				<ProfileHeader isEditing={isEditing} setIsEditing={setIsEditing} />
-				{user && (
-					<ProfileForm
-						user={user}
-						onSave={handleSaveProfile}
-						isSaving={isSaving}
-						isEditing={isEditing}
-						setIsEditing={setIsEditing}
-					/>
-				)}
-			</div>
-		</main>
+		<>
+			<Helmet>
+				<title>Profile</title>
+			</Helmet>
+			<main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+				<div className="container mx-auto px-4 py-8 max-w-2xl">
+					<ProfileHeader isEditing={isEditing} setIsEditing={setIsEditing} />
+					{user && (
+						<ProfileForm
+							user={user}
+							onSave={handleSaveProfile}
+							isSaving={isSaving}
+							isEditing={isEditing}
+							setIsEditing={setIsEditing}
+						/>
+					)}
+				</div>
+			</main>
+		</>
 	);
 }
